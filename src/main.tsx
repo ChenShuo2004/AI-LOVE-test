@@ -417,8 +417,13 @@ function App() {
 
       <nav className="topbar">
         <button className="brand" onClick={reset} aria-label="回到首页">
-          <span className="brand-mark"><Sparkles size={18} /></span>
-          我们最近，还好吗？
+          <span className="brand-mark image-mark">
+            <img src="/brand/warmth-logo.png" alt="" />
+          </span>
+          <span>
+            <strong>WARMTH</strong>
+            <small>有温度阅览室</small>
+          </span>
         </button>
         <span className="soft-pill">情侣关系复盘小游戏</span>
       </nav>
@@ -427,9 +432,9 @@ function App() {
         <section className="hero">
           <div className="hero-copy">
             <span className="eyebrow"><Moon size={16} /> 5 分钟，把没说出口的话看清楚</span>
-            <h1>不评判谁对谁错，只帮你们把关系里的情绪翻译出来。</h1>
+            <h1>你们最近，还好吗？</h1>
             <p>
-              适合冷战后、拉扯中、异地里，或者只是想温柔复盘一下最近的情侣。
+              不评判谁对谁错，只帮你们把关系里的情绪翻译出来。适合冷战后、拉扯中、异地里，或者只是想温柔复盘一下最近的情侣。
               先从一个轻轻的问题开始。
             </p>
           </div>

@@ -95,6 +95,19 @@ button {
   color: #211f27;
   font-weight: 760;
   cursor: pointer;
+  text-align: left;
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand small {
+  margin-top: 2px;
+  color: #8a817a;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .brand-mark,
@@ -106,6 +119,18 @@ button {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.74);
   box-shadow: 0 10px 30px rgba(77, 61, 72, 0.12);
+}
+
+.image-mark {
+  overflow: hidden;
+  background: #f8efe6;
+}
+
+.image-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.9);
 }
 
 .soft-pill,
