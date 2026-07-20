@@ -286,7 +286,7 @@ button {
   position: relative;
   z-index: 3;
   width: min(820px, 94vw);
-  min-height: 720px;
+  min-height: 680px;
   display: grid;
   place-items: center;
   pointer-events: auto;
@@ -645,7 +645,7 @@ button {
     position: relative;
     align-self: center;
     width: 100%;
-    min-height: 740px;
+    min-height: 700px;
   }
 
   .quiz-pop-card {
