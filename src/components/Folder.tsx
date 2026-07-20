@@ -3,6 +3,7 @@ import "./Folder.css";
 
 type FolderProps = {
   color?: string;
+  coverImage?: string;
   size?: number;
   items?: ReactNode[];
   className?: string;
@@ -40,6 +41,7 @@ function darkenColor(hex: string, percent: number) {
 
 function Folder({
   color = "#A97A93",
+  coverImage,
   size = 1,
   items = [],
   className = "",
@@ -61,6 +63,7 @@ function Folder({
   const folderStyle = {
     "--folder-color": color,
     "--folder-back-color": darkenColor(color, 0.08),
+    "--folder-cover-image": coverImage ? `url("${coverImage}")` : "none",
     "--paper-1": darkenColor("#ffffff", 0.1),
     "--paper-2": darkenColor("#ffffff", 0.05),
     "--paper-3": "#ffffff",
@@ -101,7 +104,7 @@ function Folder({
   return (
     <div style={{ transform: `scale(${size})` }} className={className}>
       <div
-        className={`folder ${open ? "open" : ""}`}
+        className={`folder ${open ? "open" : ""} ${coverImage ? "folder--cover" : ""}`}
         style={folderStyle}
         onClick={(event) => handleClick(event)}
         onKeyDown={(event) => {

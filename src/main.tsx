@@ -538,6 +538,7 @@ function App() {
               key={currentQuestion.id}
               className={`quiz-folder ${quizFolderOpen ? "quiz-folder-active" : ""}`}
               color="#A97A93"
+              coverImage="/covers/quiz-folder-cover.jpg"
               size={1}
               open={quizFolderOpen}
               label={quizFolderOpen ? "答题中" : currentIndex === 0 ? "开始测试" : "下一题"}

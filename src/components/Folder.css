@@ -125,13 +125,34 @@
 
 .folder__front:not(.right) {
   z-index: 4;
+  overflow: hidden;
 }
 
 .folder__front.right {
   z-index: 3;
 }
 
+.folder--cover .folder__front:not(.right)::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: linear-gradient(rgba(39, 46, 59, 0.08), rgba(39, 46, 59, 0.38)), var(--folder-cover-image);
+  background-position: center 42%;
+  background-size: cover;
+  content: "";
+}
+
+.folder--cover .folder__label {
+  padding: 0 24px;
+  border-radius: 999px;
+  background: rgba(39, 46, 59, 0.36);
+  box-shadow: 0 10px 30px rgba(39, 46, 59, 0.22);
+  backdrop-filter: blur(10px);
+}
+
 .folder__label {
+  position: relative;
+  z-index: 1;
   color: #fff;
   font-size: 18px;
   font-weight: 850;
