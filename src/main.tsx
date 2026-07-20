@@ -468,7 +468,7 @@ function App() {
     const targetStep: Step = mode === "duo" && !partnerAnswers ? "invite" : "result";
     const timer = window.setTimeout(() => {
       goToStep(targetStep);
-    }, 1800);
+    }, 2600);
 
     return () => window.clearTimeout(timer);
   }, [step, mode, partnerAnswers]);
@@ -665,19 +665,29 @@ function App() {
 
       {step === "loading" && (
         <section className="loading-panel" aria-live="polite">
-          <div className="analysis-card">
-            <div className="analysis-orbit" aria-hidden="true">
-              <span />
-              <span />
-              <span />
+          <div className="envelope-card">
+            <div className="envelope-stage" aria-hidden="true">
+              <div className="envelope-shadow" />
+              <div className="letter-paper">
+                <span>WARMTH</span>
+                <strong>关系报告已写好</strong>
+              </div>
+              <div className="envelope-body">
+                <div className="envelope-back" />
+                <div className="envelope-note">给你们的一封温柔小信</div>
+                <div className="envelope-left" />
+                <div className="envelope-right" />
+                <div className="envelope-front" />
+                <div className="envelope-flap" />
+              </div>
             </div>
-            <span className="eyebrow"><CloudSun size={16} /> 正在整理关系天气</span>
-            <h2>正在把你的答案轻轻摊开</h2>
-            <p>我们会先看见感受，再看见期待，最后给出一个不评判的沟通入口。</p>
-            <div className="analysis-steps">
-              <span>读取最近的在乎</span>
-              <span>校准修复入口</span>
-              <span>生成今日复盘卡</span>
+            <span className="eyebrow"><CloudSun size={16} /> 正在封装关系报告</span>
+            <h2>报告正在装进信封</h2>
+            <p>马上打开这封小信，看看今天适合从哪里温柔地靠近。</p>
+            <div className="envelope-steps">
+              <span>整理答案</span>
+              <span>写入信纸</span>
+              <span>准备打开</span>
             </div>
           </div>
         </section>
