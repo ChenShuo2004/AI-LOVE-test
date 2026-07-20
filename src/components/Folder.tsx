@@ -7,6 +7,9 @@ type FolderProps = {
   items?: ReactNode[];
   className?: string;
   defaultOpen?: boolean;
+  open?: boolean;
+  label?: ReactNode;
+  onOpenChange?: (open: boolean) => void;
 };
 
 type PaperOffset = {
@@ -35,12 +38,22 @@ function darkenColor(hex: string, percent: number) {
   return `#${((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1).toUpperCase()}`;
 }
 
-function Folder({ color = "#A97A93", size = 1, items = [], className = "", defaultOpen = false }: FolderProps) {
+function Folder({
+  color = "#A97A93",
+  size = 1,
+  items = [],
+  className = "",
+  defaultOpen = false,
+  open: controlledOpen,
+  label,
+  onOpenChange,
+}: FolderProps) {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
   while (papers.length < maxItems) papers.push(null);
 
-  const [open, setOpen] = useState(defaultOpen);
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const open = controlledOpen ?? internalOpen;
   const [paperOffsets, setPaperOffsets] = useState<PaperOffset[]>(
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })),
   );
@@ -55,7 +68,9 @@ function Folder({ color = "#A97A93", size = 1, items = [], className = "", defau
 
   const handleClick = (event?: React.MouseEvent<HTMLDivElement>) => {
     if (event?.target instanceof HTMLElement && event.target.closest(".paper")) return;
-    setOpen((previous) => !previous);
+    const nextOpen = !open;
+    if (controlledOpen === undefined) setInternalOpen(nextOpen);
+    onOpenChange?.(nextOpen);
     if (open) setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
   };
 
@@ -119,7 +134,9 @@ function Folder({ color = "#A97A93", size = 1, items = [], className = "", defau
               {item}
             </div>
           ))}
-          <div className="folder__front" />
+          <div className="folder__front">
+            {label && <span className="folder__label">{label}</span>}
+          </div>
           <div className="folder__front right" />
         </div>
       </div>

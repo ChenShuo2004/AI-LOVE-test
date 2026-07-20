@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
@@ -404,25 +404,43 @@ function App() {
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [partnerAnswers] = useState<AnswerMap | null>(invitedAnswers);
   const [promptIndex, setPromptIndex] = useState(0);
+  const [quizFolderOpen, setQuizFolderOpen] = useState(false);
+  const nextQuestionTimerRef = useRef<number | null>(null);
   const questions = mode === "solo" ? soloQuestions : duoQuestions;
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
   const progress = Math.round((currentIndex / questions.length) * 100);
   const isPartnerFlow = Boolean(partnerAnswers);
 
+  useEffect(() => {
+    return () => {
+      if (nextQuestionTimerRef.current) window.clearTimeout(nextQuestionTimerRef.current);
+    };
+  }, []);
+
   function start(nextMode: Mode) {
     setMode(nextMode);
     setAnswers({});
+    setQuizFolderOpen(false);
     setStep("quiz");
   }
 
   function chooseAnswer(value: string) {
     if (!currentQuestion) return;
     const nextAnswers = { ...answers, [currentQuestion.id]: value };
-    setAnswers(nextAnswers);
-    if (Object.keys(nextAnswers).length === questions.length) {
-      setStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
-    }
+    const isDone = Object.keys(nextAnswers).length === questions.length;
+
+    setQuizFolderOpen(false);
+    if (nextQuestionTimerRef.current) window.clearTimeout(nextQuestionTimerRef.current);
+
+    nextQuestionTimerRef.current = window.setTimeout(() => {
+      setAnswers(nextAnswers);
+      if (isDone) {
+        setStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
+      } else {
+        window.setTimeout(() => setQuizFolderOpen(true), 80);
+      }
+    }, 220);
   }
 
   function reset() {
@@ -430,6 +448,7 @@ function App() {
     setStep("home");
     setAnswers({});
     setMode("solo");
+    setQuizFolderOpen(false);
   }
 
   const soloResult = scoreAnswers(questions, answers);
@@ -533,7 +552,9 @@ function App() {
               className="quiz-folder"
               color="#A97A93"
               size={1}
-              defaultOpen
+              open={quizFolderOpen}
+              label={quizFolderOpen ? "答题中" : currentIndex === 0 ? "开始测试" : "下一题"}
+              onOpenChange={setQuizFolderOpen}
               items={[
                 currentIndex + 2 <= questions.length ? <span>{currentIndex + 2}</span> : null,
                 currentIndex + 3 <= questions.length ? <span>{currentIndex + 3}</span> : null,

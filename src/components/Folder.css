@@ -113,12 +113,31 @@
 .folder__front {
   position: absolute;
   z-index: 3;
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
   border-radius: 5px 10px 10px 10px;
   background: var(--folder-color);
   transform-origin: bottom;
   transition: all 0.3s ease-in-out;
+}
+
+.folder__front:not(.right) {
+  z-index: 4;
+}
+
+.folder__front.right {
+  z-index: 3;
+}
+
+.folder__label {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 12px rgba(39, 46, 59, 0.18);
+  pointer-events: none;
 }
 
 .folder:focus-visible {
@@ -136,8 +155,29 @@
 .quiz-folder .folder {
   position: absolute;
   left: 50%;
-  bottom: 24px;
+  bottom: 34px;
   transform: translateX(-50%);
+}
+
+.quiz-folder .folder__back {
+  width: min(420px, 78vw);
+  height: 260px;
+  border-radius: 0 28px 32px 32px;
+  box-shadow: 0 28px 80px rgba(66, 76, 92, 0.18);
+}
+
+.quiz-folder .folder__back::after {
+  width: 142px;
+  height: 38px;
+  border-radius: 18px 18px 0 0;
+}
+
+.quiz-folder .folder__front {
+  border-radius: 16px 30px 32px 32px;
+}
+
+.quiz-folder .folder__label {
+  font-size: clamp(28px, 4vw, 42px);
 }
 
 .quiz-folder .folder:not(.folder--click):hover {
@@ -154,16 +194,16 @@
 
 .quiz-folder .folder.open .paper:nth-child(1) {
   z-index: 1;
-  width: 96px;
-  height: 112px;
-  transform: translate(-150%, -140%) rotateZ(-9deg);
+  width: 120px;
+  height: 140px;
+  transform: translate(-132%, -150%) rotateZ(-9deg);
 }
 
 .quiz-folder .folder.open .paper:nth-child(2) {
   z-index: 2;
-  width: 104px;
-  height: 122px;
-  transform: translate(42%, -150%) rotateZ(10deg);
+  width: 132px;
+  height: 150px;
+  transform: translate(18%, -158%) rotateZ(10deg);
 }
 
 .quiz-folder .folder.open .paper:nth-child(3) {
@@ -173,22 +213,22 @@
   min-height: 520px;
   border-radius: 34px;
   background: rgba(246, 247, 249, 0.84);
-  transform: translate(-50%, -108%) rotateZ(0deg);
+  transform: translate(-50%, -118%) rotateZ(0deg);
   animation: folder-quiz-card-out 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   cursor: default;
   backdrop-filter: blur(18px);
 }
 
 .quiz-folder .folder.open .paper:nth-child(1):hover {
-  transform: translate(-150%, -140%) rotateZ(-9deg) scale(1.06);
+  transform: translate(-132%, -150%) rotateZ(-9deg) scale(1.06);
 }
 
 .quiz-folder .folder.open .paper:nth-child(2):hover {
-  transform: translate(42%, -150%) rotateZ(10deg) scale(1.06);
+  transform: translate(18%, -158%) rotateZ(10deg) scale(1.06);
 }
 
 .quiz-folder .folder.open .paper:nth-child(3):hover {
-  transform: translate(-50%, -108%) rotateZ(0deg);
+  transform: translate(-50%, -118%) rotateZ(0deg);
 }
 
 .quiz-folder .folder.open .folder__front {
@@ -202,32 +242,42 @@
 @keyframes folder-quiz-card-out {
   from {
     opacity: 0;
-    transform: translate(-50%, -36%) scale(0.82) rotateZ(-2deg);
+    transform: translate(-50%, -18%) scale(0.78) rotateZ(-2deg);
   }
 
   56% {
     opacity: 1;
-    transform: translate(-50%, -114%) scale(1.015) rotateZ(0.6deg);
+    transform: translate(-50%, -124%) scale(1.015) rotateZ(0.6deg);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%, -108%) scale(1) rotateZ(0deg);
+    transform: translate(-50%, -118%) scale(1) rotateZ(0deg);
   }
 }
 
 @media (max-width: 860px) {
   .quiz-folder {
     width: min(100%, 92vw);
-    height: 660px;
+    height: 700px;
+  }
+
+  .quiz-folder .folder__back {
+    width: min(330px, 80vw);
+    height: 220px;
+  }
+
+  .quiz-folder .folder__back::after {
+    width: 110px;
+    height: 30px;
   }
 
   .quiz-folder .folder.open .paper:nth-child(1) {
-    transform: translate(-118%, -132%) rotateZ(-8deg);
+    transform: translate(-108%, -142%) rotateZ(-8deg);
   }
 
   .quiz-folder .folder.open .paper:nth-child(2) {
-    transform: translate(18%, -140%) rotateZ(9deg);
+    transform: translate(2%, -150%) rotateZ(9deg);
   }
 
   .quiz-folder .folder.open .paper:nth-child(3) {
