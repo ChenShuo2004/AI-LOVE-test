@@ -133,11 +133,17 @@ button {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.05fr);
-  align-items: center;
-  gap: 44px;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 34px;
   min-height: calc(100vh - 148px);
   padding: 32px 0 36px;
+}
+
+.hero-copy {
+  display: grid;
+  justify-items: center;
+  text-align: center;
 }
 
 .hero-copy h1 {
@@ -151,12 +157,13 @@ button {
 
 .entry-grid {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
 }
 
 .entry-card {
   width: 100%;
-  min-height: 240px;
+  min-height: 250px;
   padding: 26px;
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
   border-radius: 28px;
@@ -555,6 +562,10 @@ button {
     align-items: start;
     min-height: auto;
     padding-top: 44px;
+  }
+
+  .entry-grid {
+    grid-template-columns: 1fr;
   }
 
   .hero-copy h1 {
