@@ -149,7 +149,9 @@ button {
 .hero-copy h1 {
   max-width: 680px;
   margin: 22px 0 18px;
-  font-size: clamp(42px, 7vw, 84px);
+  color: #c284bd;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6vw, 60px);
   line-height: 0.98;
   letter-spacing: 0;
   overflow-wrap: anywhere;
