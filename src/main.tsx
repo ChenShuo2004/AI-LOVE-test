@@ -462,16 +462,9 @@ function App() {
     setQuizFolderOpen(false);
   }
 
-  useEffect(() => {
-    if (step !== "loading") return;
-
-    const targetStep: Step = mode === "duo" && !partnerAnswers ? "invite" : "result";
-    const timer = window.setTimeout(() => {
-      goToStep(targetStep);
-    }, 2600);
-
-    return () => window.clearTimeout(timer);
-  }, [step, mode, partnerAnswers]);
+  function openReport() {
+    goToStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
+  }
 
   useEffect(() => {
     if (!toastMessage) return;
@@ -689,6 +682,9 @@ function App() {
               <span>写入信纸</span>
               <span>准备打开</span>
             </div>
+            <button className="primary-button envelope-open-button" type="button" onClick={openReport}>
+              {mode === "duo" && !partnerAnswers ? "生成邀请卡" : "打开我的报告"} <ArrowRight size={18} />
+            </button>
           </div>
         </section>
       )}
