@@ -19,6 +19,8 @@ export type CardNavItem = {
 type CardNavProps = {
   logo: string;
   logoAlt?: string;
+  brandTitle?: string;
+  brandSubtitle?: string;
   items: CardNavItem[];
   className?: string;
   ease?: string;
@@ -33,6 +35,8 @@ type CardNavProps = {
 function CardNav({
   logo,
   logoAlt = "Logo",
+  brandTitle,
+  brandSubtitle,
   items,
   className = "",
   ease = "power3.out",
@@ -183,6 +187,12 @@ function CardNav({
 
           <div className="logo-container">
             <img src={logo} alt={logoAlt} className="logo" />
+            {(brandTitle || brandSubtitle) && (
+              <span className="logo-copy">
+                {brandTitle && <strong>{brandTitle}</strong>}
+                {brandSubtitle && <small>{brandSubtitle}</small>}
+              </span>
+            )}
           </div>
 
           <button

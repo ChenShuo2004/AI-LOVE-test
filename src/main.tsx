@@ -286,7 +286,7 @@ const reflectionPrompts = [
 const navItems = [
   {
     label: "WARMTH",
-    bgColor: "#211f27",
+    bgColor: "#272E3B",
     textColor: "#fff",
     links: [
       { label: "有温度阅览室", ariaLabel: "WARMTH 品牌" },
@@ -295,8 +295,8 @@ const navItems = [
   },
   {
     label: "Test",
-    bgColor: "#f1e4d6",
-    textColor: "#211f27",
+    bgColor: "#F2EBF0",
+    textColor: "#272E3B",
     links: [
       { label: "单人关系复盘", ariaLabel: "单人关系复盘" },
       { label: "双人邀请测试", ariaLabel: "双人邀请测试" },
@@ -304,8 +304,8 @@ const navItems = [
   },
   {
     label: "Review",
-    bgColor: "#dfe8ee",
-    textColor: "#211f27",
+    bgColor: "#EEF0F3",
+    textColor: "#272E3B",
     links: [
       { label: "关系天气", ariaLabel: "关系天气" },
       { label: "今日复盘卡", ariaLabel: "今日复盘卡" },
@@ -448,10 +448,12 @@ function App() {
       <CardNav
         logo="/brand/warmth-logo.png"
         logoAlt="WARMTH 有温度阅览室"
+        brandTitle="WARMTH"
+        brandSubtitle="情侣关系复盘小游戏"
         items={navItems}
-        baseColor="rgba(255, 252, 247, 0.86)"
-        menuColor="#211f27"
-        buttonBgColor="#211f27"
+        baseColor="rgba(238, 240, 243, 0.9)"
+        menuColor="#272E3B"
+        buttonBgColor="#A97A93"
         buttonTextColor="#fff"
         buttonLabel="回到首页"
         onButtonClick={reset}
