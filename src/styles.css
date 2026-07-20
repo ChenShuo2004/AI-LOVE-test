@@ -118,13 +118,6 @@ button {
   letter-spacing: 0;
 }
 
-.hero-copy p {
-  max-width: 570px;
-  color: #695f68;
-  font-size: 18px;
-  line-height: 1.8;
-}
-
 .entry-grid {
   display: grid;
   gap: 18px;
