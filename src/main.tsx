@@ -404,7 +404,7 @@ function App() {
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [partnerAnswers] = useState<AnswerMap | null>(invitedAnswers);
   const [promptIndex, setPromptIndex] = useState(0);
-  const [quizFolderOpen, setQuizFolderOpen] = useState(Boolean(invitedAnswers));
+  const [quizFolderOpen, setQuizFolderOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const questions = mode === "solo" ? soloQuestions : duoQuestions;
   const currentIndex = Object.keys(answers).length;
@@ -413,15 +413,15 @@ function App() {
   const isPartnerFlow = Boolean(partnerAnswers);
 
   useEffect(() => {
-    window.history.replaceState({ step, mode }, "", window.location.href);
+    window.history.replaceState({ step, mode, quizFolderOpen }, "", window.location.href);
 
     const handlePopState = (event: PopStateEvent) => {
-      const state = event.state as { step?: Step; mode?: Mode } | null;
+      const state = event.state as { step?: Step; mode?: Mode; quizFolderOpen?: boolean } | null;
       if (!state?.step) return;
 
       setStep(state.step);
       if (state.mode) setMode(state.mode);
-      setQuizFolderOpen(state.step === "quiz");
+      setQuizFolderOpen(Boolean(state.quizFolderOpen));
       window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -429,17 +429,17 @@ function App() {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  function goToStep(nextStep: Step, nextMode = mode) {
+  function goToStep(nextStep: Step, nextMode = mode, nextFolderOpen = nextStep === "quiz") {
     setStep(nextStep);
     setMode(nextMode);
-    setQuizFolderOpen(nextStep === "quiz");
-    window.history.pushState({ step: nextStep, mode: nextMode }, "", window.location.href);
+    setQuizFolderOpen(nextFolderOpen);
+    window.history.pushState({ step: nextStep, mode: nextMode, quizFolderOpen: nextFolderOpen }, "", window.location.href);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function start(nextMode: Mode) {
     setAnswers({});
-    goToStep("quiz", nextMode);
+    goToStep("quiz", nextMode, false);
   }
 
   function chooseAnswer(value: string) {
