@@ -406,6 +406,7 @@ function App() {
   const [partnerAnswers] = useState<AnswerMap | null>(invitedAnswers);
   const [promptIndex, setPromptIndex] = useState(0);
   const [quizFolderOpen, setQuizFolderOpen] = useState(Boolean(invitedAnswers));
+  const [toastMessage, setToastMessage] = useState("");
   const questions = mode === "solo" ? soloQuestions : duoQuestions;
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
@@ -486,6 +487,22 @@ function App() {
     return () => window.clearTimeout(timer);
   }, [step, mode, partnerAnswers]);
 
+  useEffect(() => {
+    if (!toastMessage) return;
+
+    const timer = window.setTimeout(() => setToastMessage(""), 2000);
+    return () => window.clearTimeout(timer);
+  }, [toastMessage]);
+
+  async function copyInviteLink() {
+    try {
+      await navigator.clipboard.writeText(inviteUrl);
+      setToastMessage("邀请链接已复制");
+    } catch {
+      setToastMessage("复制失败，请手动复制链接");
+    }
+  }
+
   const soloResult = scoreAnswers(questions, answers);
   const partnerResult = partnerAnswers ? scoreAnswers(duoQuestions, partnerAnswers) : null;
   const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
@@ -517,6 +534,11 @@ function App() {
     <main className="app-shell">
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
+      {toastMessage && (
+        <div className="toast-notice" role="status" aria-live="polite">
+          {toastMessage}
+        </div>
+      )}
 
       <CardNav
         logo="/brand/warmth-logo.png"
@@ -696,7 +718,7 @@ function App() {
             <div className="invite-box">{inviteUrl}</div>
             <button
               className="primary-button"
-              onClick={() => navigator.clipboard?.writeText(inviteUrl)}
+              onClick={copyInviteLink}
             >
               <Copy size={18} /> 复制邀请链接
             </button>
