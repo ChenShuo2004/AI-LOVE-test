@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ArrowUpRight } from "lucide-react";
+import BorderGlow from "./BorderGlow";
 import "./CardNav.css";
 
 type CardNavLink = {
@@ -198,14 +199,27 @@ function CardNav({
           </div>
 
           {showButton ? (
-            <button
-              type="button"
-              className="card-nav-cta-button"
-              style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-              onClick={onButtonClick}
+            <BorderGlow
+              className="card-nav-button-glow"
+              edgeSensitivity={26}
+              glowColor="330 28 58"
+              backgroundColor={buttonBgColor}
+              borderRadius={13}
+              glowRadius={22}
+              glowIntensity={0.78}
+              coneSpread={24}
+              colors={["#A97A93", "#E2D8DF", "#EEF0F3"]}
+              fillOpacity={0.22}
             >
-              {buttonLabel}
-            </button>
+              <button
+                type="button"
+                className="card-nav-cta-button"
+                style={{ backgroundColor: "transparent", color: buttonTextColor }}
+                onClick={onButtonClick}
+              >
+                {buttonLabel}
+              </button>
+            </BorderGlow>
           ) : (
             <span className="card-nav-button-spacer" aria-hidden="true" />
           )}

@@ -110,7 +110,18 @@
   white-space: nowrap;
 }
 
+.card-nav-button-glow {
+  width: 86px;
+  height: 100%;
+  border-radius: 13px;
+}
+
+.card-nav-button-glow .border-glow-inner {
+  height: 100%;
+}
+
 .card-nav-cta-button {
+  width: 100%;
   border: none;
   border-radius: 13px;
   padding: 0 1rem;
@@ -128,6 +139,10 @@
 }
 
 .card-nav-cta-button:hover {
+  transform: translateY(-1px);
+}
+
+.card-nav-button-glow:hover {
   transform: translateY(-1px);
 }
 
@@ -229,6 +244,7 @@
     font-size: 11px;
   }
 
+  .card-nav-button-glow,
   .card-nav-cta-button,
   .card-nav-button-spacer {
     display: none;
