@@ -556,8 +556,8 @@ function App() {
               label={quizFolderOpen ? "答题中" : currentIndex === 0 ? "开始测试" : "下一题"}
               onOpenChange={setQuizFolderOpen}
               items={[
-                currentIndex + 2 <= questions.length ? <span>{currentIndex + 2}</span> : null,
-                currentIndex + 3 <= questions.length ? <span>{currentIndex + 3}</span> : null,
+                null,
+                null,
                 <div className="quiz-pop-card" onClick={(event) => event.stopPropagation()}>
                   <div className="quiz-pop-head">
                     <div>

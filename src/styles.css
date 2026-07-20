@@ -285,8 +285,8 @@ button {
 .quiz-folder-stage {
   position: relative;
   z-index: 3;
-  width: min(760px, 92vw);
-  min-height: 650px;
+  width: min(820px, 94vw);
+  min-height: 720px;
   display: grid;
   place-items: center;
   pointer-events: auto;
@@ -313,7 +313,7 @@ button {
 .result-main h2,
 .invite-panel h2 {
   margin: 16px 0 10px;
-  font-size: clamp(28px, 4vw, 54px);
+  font-size: clamp(30px, 4vw, 48px);
   line-height: 1.08;
   letter-spacing: 0;
 }
@@ -645,7 +645,7 @@ button {
     position: relative;
     align-self: center;
     width: 100%;
-    min-height: 660px;
+    min-height: 740px;
   }
 
   .quiz-pop-card {
