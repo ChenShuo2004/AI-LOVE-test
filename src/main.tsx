@@ -12,7 +12,7 @@ import BorderGlow from "./components/BorderGlow";
 import BlurText from "./components/BlurText";
 import CardNav from "./components/CardNav";
 import Folder from "./components/Folder";
-import { buildDuoRelationshipReport, buildRelationshipReport, type DuoRelationshipReport } from "./data/relationshipReport";
+import { buildDuoRelationshipReport, buildRelationshipReport, type DuoRelationshipReport, type Language } from "./data/relationshipReport";
 import "./styles.css";
 
 type Mode = "solo" | "duo";
@@ -33,16 +33,27 @@ type Question = {
   options: Option[];
 };
 
-const dimensions = {
-  security: "安全感",
-  communication: "沟通感",
-  companionship: "陪伴感",
-  repair: "修复力",
-  intimacy: "亲密感",
-  future: "未来感",
+const dimensionLabels = {
+  zh: {
+    security: "安全感",
+    communication: "沟通感",
+    companionship: "陪伴感",
+    repair: "修复力",
+    intimacy: "亲密感",
+    future: "未来感",
+  },
+  en: {
+    security: "Security",
+    communication: "Communication",
+    companionship: "Companionship",
+    repair: "Repair",
+    intimacy: "Intimacy",
+    future: "Future",
+  },
 };
 
-const abilityKeys = Object.keys(dimensions) as Array<keyof typeof dimensions>;
+type DimensionKey = keyof typeof dimensionLabels.zh;
+const abilityKeys = Object.keys(dimensionLabels.zh) as DimensionKey[];
 
 const soloQuestions: Question[] = [
   {
@@ -387,15 +398,165 @@ const questionBanks: Record<Mode, Question[]> = {
 
 const QUESTIONS_PER_ROUND = 8;
 
-const reflectionPrompts = [
-  "最近一次让你觉得被爱的细节是什么？",
-  "哪句话你其实听了会安心很多？",
-  "这周我们可以少争对错，多完成哪一个小动作？",
-  "有什么委屈不是要责怪，只是希望被理解？",
-  "如果今天只靠近 1%，我们可以怎么做？",
-];
+const reflectionPrompts: Record<Language, string[]> = {
+  zh: [
+    "最近一次让你觉得被爱的细节是什么？",
+    "哪句话你其实听了会安心很多？",
+    "这周我们可以少争对错，多完成哪一个小动作？",
+    "有什么委屈不是要责怪，只是希望被理解？",
+    "如果今天只靠近 1%，我们可以怎么做？",
+  ],
+  en: [
+    "What small detail recently made you feel loved?",
+    "What sentence would help you feel safer if you heard it?",
+    "What small action could you complete this week instead of debating who is right?",
+    "What hurt is not a blame, but a wish to be understood?",
+    "If you moved 1% closer today, what would that look like?",
+  ],
+};
 
-const navItems = [
+const uiText = {
+  zh: {
+    logoAlt: "WARMTH 有温度阅览室",
+    brandSubtitle: "情侣关系复盘小游戏",
+    homeButton: "回到首页",
+    menuClose: "关闭菜单",
+    menuOpen: "打开菜单",
+    heroEyebrow: "5 分钟，把没说出口的话看清楚",
+    heroTitle: "你们最近，还好吗？",
+    soloKicker: "单人测试",
+    soloTitle: "我先自己测",
+    soloDesc: "适合想先理清感受，或者还没准备好邀请 TA 的时候。",
+    soloAction: "开始单人测试",
+    duoKicker: "双人测试",
+    duoTitle: "邀请 TA 一起测",
+    duoDesc: "双方各答一份题，看看你们在意点、委屈点和期待是否一致。",
+    duoAction: "创建双人测试",
+    reviewCard: "今日复盘卡",
+    changePrompt: "换一个问题",
+    soloMode: "单人测试",
+    partnerMode: "TA 已答完，现在轮到你",
+    duoMode: "双人测试：先完成你的部分",
+    progress: "题目进度",
+    folderAnswering: "答题中",
+    folderStart: "开始测试",
+    folderNext: "下一题",
+    backToCard: "返回题卡夹",
+    sortingDone: "整理好了",
+    sorting: "正在整理答案",
+    generateInvite: "生成邀请卡",
+    openReport: "打开我的报告",
+    copied: "邀请链接已复制",
+    copyFailed: "复制失败，请手动复制链接",
+    inviteDone: "你的部分完成了",
+    inviteTitle: "把这张小纸条递给 TA。",
+    inviteDesc: "TA 打开链接答完同一组问题，就会生成你们的双人关系复盘。这个 demo 会把你的答案放在链接里，不需要登录。",
+    copyInvite: "复制邀请链接",
+    soloPreview: "先看看我的单方结果",
+    tipTitle: "小巧思",
+    tipDesc: "真实上线时可以把链接做成一张可保存的邀请卡：一句话、一个二维码、一句“别急着吵，先一起看看”。",
+    abilityLabel: "关系能力图",
+    abilityTitle: "当前关系指标",
+    abilityDesc1: "六项能力来自你的答案权重。",
+    abilityDesc2: "分数越高，代表这一项在当前关系里越容易被看见和使用。",
+    radarLabel: "当前关系六项能力指标图",
+    mainLine: "关系主线",
+    jointScore: "你们的共同分",
+    clarity: "当前清晰度",
+    repairEntry: "修复入口是否清晰",
+    clues: "你此刻能看见多少关系线索",
+    talkFirst: "最该先聊",
+    talkFirstDesc: "先聊最软的需求，再聊谁该改变。",
+    evidenceTitle: "为什么这样判断",
+    coreNeed: "你真正需要被看见的部分",
+    strength: "关系里还亮着的灯",
+    misreadTitle: "最容易被误解的地方",
+    realMessage: "你想表达：",
+    possibleMisread: "TA 可能听成：",
+    betterExpression: "更适合换成：",
+    actionsTitle: "接下来 7 天可以试试",
+    tonightTitle: "今晚可以从这个问题开始",
+    yourNeed: "你更需要",
+    partnerNeed: "TA 更需要",
+    agreement: "建议约定：",
+    sources: "资料依据",
+    shareTitle: "可以发给 TA 的一句话",
+    copySentence: "复制这句诗",
+    resultNote: "结果说明",
+    partnerFallback: "TA 的关系节奏",
+  },
+  en: {
+    logoAlt: "WARMTH Reading Room",
+    brandSubtitle: "Relationship Reflection Game",
+    homeButton: "Home",
+    menuClose: "Close menu",
+    menuOpen: "Open menu",
+    heroEyebrow: "5 minutes to see what has not been said",
+    heroTitle: "How are you two, lately?",
+    soloKicker: "Solo test",
+    soloTitle: "Start with myself",
+    soloDesc: "For moments when you want to sort out your own feelings first, before inviting TA in.",
+    soloAction: "Start solo test",
+    duoKicker: "Two-person test",
+    duoTitle: "Invite TA to join",
+    duoDesc: "Each of you answers the same set of questions, then compares what matters, hurts, and hopes may differ.",
+    duoAction: "Create duo test",
+    reviewCard: "Today's reflection card",
+    changePrompt: "Change question",
+    soloMode: "Solo test",
+    partnerMode: "TA has finished. Now it is your turn",
+    duoMode: "Duo test: finish your part first",
+    progress: "Progress",
+    folderAnswering: "Answering",
+    folderStart: "Start",
+    folderNext: "Next",
+    backToCard: "Return to question folder",
+    sortingDone: "Ready",
+    sorting: "Organizing answers",
+    generateInvite: "Generate invite card",
+    openReport: "Open my report",
+    copied: "Invite link copied",
+    copyFailed: "Copy failed. Please copy the link manually",
+    inviteDone: "Your part is complete",
+    inviteTitle: "Pass this little note to TA.",
+    inviteDesc: "When TA opens the link and answers the same questions, your duo reflection will be generated. This demo stores your answers in the link, with no login needed.",
+    copyInvite: "Copy invite link",
+    soloPreview: "Preview my solo result first",
+    tipTitle: "Tiny product idea",
+    tipDesc: "For launch, this link can become a saveable invite card: one sentence, one QR code, and a gentle line like “Before we argue, let's look together.”",
+    abilityLabel: "Relationship ability map",
+    abilityTitle: "Current relationship signals",
+    abilityDesc1: "The six abilities come from your answer weights.",
+    abilityDesc2: "A higher score means this ability is easier to notice and use in the current relationship.",
+    radarLabel: "Six relationship ability radar chart",
+    mainLine: "Relationship pattern",
+    jointScore: "Shared score",
+    clarity: "Current clarity",
+    repairEntry: "How clear the repair entry feels",
+    clues: "How many relationship clues you can see right now",
+    talkFirst: "Talk about first",
+    talkFirstDesc: "Start with the softest need, then discuss what could change.",
+    evidenceTitle: "Why this result",
+    coreNeed: "What truly needs to be seen",
+    strength: "What is still lit in the relationship",
+    misreadTitle: "Most likely misunderstanding",
+    realMessage: "What you mean: ",
+    possibleMisread: "What TA may hear: ",
+    betterExpression: "Try saying: ",
+    actionsTitle: "Try this over the next 7 days",
+    tonightTitle: "Tonight can start from this question",
+    yourNeed: "You may need",
+    partnerNeed: "TA may need",
+    agreement: "Suggested agreement: ",
+    sources: "References",
+    shareTitle: "One sentence you can send to TA",
+    copySentence: "Copy this sentence",
+    resultNote: "Result note",
+    partnerFallback: "TA's relationship rhythm",
+  },
+} satisfies Record<Language, Record<string, string>>;
+
+const navItemsZh = [
   {
     label: "WARMTH",
     bgColor: "#272E3B",
@@ -424,6 +585,362 @@ const navItems = [
     ],
   },
 ];
+
+const navItemsByLang: Record<Language, typeof navItemsZh> = {
+  zh: navItemsZh,
+  en: [
+    {
+      label: "WARMTH",
+      bgColor: "#272E3B",
+      textColor: "#fff",
+      links: [
+        { label: "WARMTH Reading Room", ariaLabel: "WARMTH brand", href: "https://flowus.cn/c712040f-ef98-44b9-b37d-dd187d92fc4d" },
+        { label: "Quiet, gentle, present", ariaLabel: "WARMTH feeling" },
+      ],
+    },
+    {
+      label: "Test",
+      bgColor: "#F2EBF0",
+      textColor: "#272E3B",
+      links: [
+        { label: "Solo reflection", ariaLabel: "Solo relationship reflection" },
+        { label: "Duo invite test", ariaLabel: "Duo invite test" },
+      ],
+    },
+    {
+      label: "Review",
+      bgColor: "#EEF0F3",
+      textColor: "#272E3B",
+      links: [
+        { label: "Ability map", ariaLabel: "Relationship ability map" },
+        { label: "Daily reflection card", ariaLabel: "Daily reflection card" },
+      ],
+    },
+  ],
+};
+
+type QuestionTranslation = {
+  title: string;
+  hint: string;
+  options: Record<string, string>;
+};
+
+const questionTranslationsEn: Record<string, QuestionTranslation> = {
+  solo_weather: {
+    title: "What does this relationship feel most like lately?",
+    hint: "Choose by first feeling. You do not need to prove it is perfectly right.",
+    options: {
+      stable: "Very steady, like someone leaving a light on before sleep",
+      distant: "A little near and far, like messages that come fast then slow",
+      uncertain: "Often unsure, with my heart checking again and again",
+      tired: "A little tired, but still reluctant to let go",
+      exhausted: "Almost out of energy, and needing a breath first",
+    },
+  },
+  solo_seen: {
+    title: "What do you most hope TA can see in you lately?",
+    hint: "This is not asking for credit. It is lighting up what has not been said.",
+    options: {
+      effort: "My effort",
+      hurt: "My hurt",
+      pressure: "My pressure",
+      change: "My changes",
+      care: "That I still really care",
+    },
+  },
+  solo_stuck: {
+    title: "Where do you two get stuck most often lately?",
+    hint: "Choose the scene that repeats most often.",
+    options: {
+      misread: "Words are easily misunderstood",
+      time: "There is not enough time together",
+      emotion: "Emotions are not held",
+      future: "Ideas about the future differ",
+      close: "Closeness has become less present",
+    },
+  },
+  solo_after_fight: {
+    title: "After an argument or an unhappy moment, what do you usually hope for?",
+    hint: "There is no standard answer here, only your repair rhythm.",
+    options: {
+      talk_now: "Talk it through right away",
+      space: "Calm down first",
+      approach: "The other person comes closer first",
+      apology: "Someone sincerely apologizes first",
+      bury: "It looks fine outside, but I remember it inside",
+    },
+  },
+  solo_thought: {
+    title: "What thought has been coming up most often lately?",
+    hint: "Put that inner voice on the table for a moment.",
+    options: {
+      better: "We could still become better",
+      care_less: "Does TA not care about me that much?",
+      give_in: "Why am I always the one giving in?",
+      silent: "I do not know how to start talking",
+      escape: "I kind of want to escape",
+    },
+  },
+  solo_lack: {
+    title: "What do you feel you are missing most in the relationship?",
+    hint: "Choose the part that most wants to be replenished.",
+    options: {
+      security: "Security",
+      understood: "Being understood",
+      chosen: "Being chosen",
+      space: "Personal space",
+      plan: "Shared planning",
+    },
+  },
+  solo_misread: {
+    title: "What are you most afraid TA will misunderstand about you?",
+    hint: "Many conflicts begin with feeling misread.",
+    options: {
+      cold: "That I do not care",
+      sensitive: "That I am too sensitive",
+      strong: "That I am too forceful",
+      distant: "That I am too cold",
+      needy: "That I ask for too much",
+    },
+  },
+  solo_tonight: {
+    title: "If you could only talk about one thing tonight, what would it be?",
+    hint: "This will become your reflection card for today.",
+    options: {
+      why_tired: "Why have we become tired lately?",
+      love_language: "How do you actually need me to love you?",
+      understand_me: "What do I hope you can understand about me?",
+      go_on: "Do we still want to move forward together?",
+      fight_better: "Can we argue in a different way next time?",
+    },
+  },
+  solo_need: {
+    title: "What do you hope this test gives you at the end?",
+    hint: "The result will lean toward what you truly need right now.",
+    options: {
+      clarity: "Help me see the relationship more clearly",
+      message: "Give me one sentence I can send to TA",
+      decision: "Tell me whether I should continue",
+      entry: "Help us find an entrance to talk",
+      self: "Show me where I can adjust",
+    },
+  },
+  duo_weather: {
+    title: "What does your overall relationship feel most like lately?",
+    hint: "In the same relationship, two people may notice different things.",
+    options: {
+      sunny: "Stable and comfortable, without needing constant confirmation",
+      cloudy: "Still caring, but some things have not been said clearly",
+      rain: "A little hurt, hoping to be seriously seen",
+      fog: "Hard to read each other, easy to misunderstand intentions",
+      storm: "Conflict can flare up, and you need to learn to pause first",
+    },
+  },
+  duo_fix: {
+    title: "What do you feel needs the most repair lately?",
+    hint: "Find the entrance first. Do not rush to judge the ending.",
+    options: {
+      talk: "Communication style",
+      time: "Time together",
+      trust: "Trust",
+      response: "Emotional response",
+      plan: "Future planning",
+    },
+  },
+  duo_sad: {
+    title: "When you are unhappy, what do you hope the other person does?",
+    hint: "This is one of the places where couples most easily miss each other.",
+    options: {
+      ask: "Ask me what happened",
+      space: "Give me a little space",
+      hug: "Hug me or come closer",
+      listen: "Listen seriously until I finish",
+      solve: "Solve the problem together directly",
+    },
+  },
+  duo_effort: {
+    title: "What have you done most for this relationship lately?",
+    hint: "This question often reveals hidden effort.",
+    options: {
+      tolerate: "Patience and compromise",
+      communicate: "Initiating communication",
+      company: "Offering companionship",
+      practical: "Handling practical problems",
+      adjust: "Regulating my own emotions",
+    },
+  },
+  duo_more: {
+    title: "What do you most hope the other person gives you a little more of?",
+    hint: "Smaller expectations are often easier to fulfill.",
+    options: {
+      certainty: "Certainty",
+      patience: "Patience",
+      company: "Companionship",
+      respect: "Respect",
+      close: "Closeness",
+    },
+  },
+  duo_conflict: {
+    title: "In the latest conflict, what hurt the most?",
+    hint: "When hurt is named clearly, conflict has an exit.",
+    options: {
+      unseen: "I was not understood",
+      tone: "Their attitude hurt me",
+      unsolved: "The problem stayed unsolved",
+      ignored: "I felt unimportant",
+      distance: "I did not know how to come closer",
+    },
+  },
+  duo_state: {
+    title: "Which relationship state feels closest to you now?",
+    hint: "This is not a label. It is today's snapshot.",
+    options: {
+      love_tired: "Still in love, but a little tired",
+      stable_silent: "Stable, but with less expression",
+      push_pull: "Often pulling back and forth, but reluctant to let go",
+      chase_hide: "One person chases, one person hides",
+      uncertain: "Unsure whether you can continue",
+    },
+  },
+  duo_action: {
+    title: "If the other person could change only one small action, what would you hope for?",
+    hint: "The more specific it is, the more likely it can happen.",
+    options: {
+      reply: "Reply in time",
+      tone: "Speak more gently",
+      love: "Express love proactively",
+      repair: "Repair proactively after arguments",
+      life: "Participate more in my life",
+    },
+  },
+  duo_same: {
+    title: "Where might you two be most aligned right now?",
+    hint: "Start with common ground. It makes closeness easier.",
+    options: {
+      care: "You both still care",
+      hurt: "You both have hurt",
+      better: "You both want things to get better",
+      afraid: "You are both afraid of being hurt",
+      silent: "Neither of you knows how to say it",
+    },
+  },
+  duo_week: {
+    title: "In the next week, what small thing are you willing to do for the relationship?",
+    hint: "A good reflection eventually lands in one action.",
+    options: {
+      listen: "Listen to the other person well once",
+      date: "Plan a date proactively",
+      pause: "Pause for 10 minutes during an argument",
+      thanks: "Express genuine appreciation once",
+      ask_need: "Ask what the other person truly needs",
+    },
+  },
+  solo_response: {
+    title: "After you send an important signal, how do you most hope TA responds?",
+    hint: "This looks at what kind of secure response you expect.",
+    options: {
+      clear: "Give me clear feedback right away",
+      listen: "Listen fully without rushing to explain",
+      ask: "Ask what else I need",
+      act: "Use action to make up for companionship",
+      space: "Do not push me to return to normal immediately",
+    },
+  },
+  solo_boundary: {
+    title: "What space do you most want to keep for yourself lately?",
+    hint: "Healthy closeness also needs boundaries.",
+    options: {
+      no_push: "Not being pushed to explain immediately",
+      life: "Having my own friends and life",
+      quiet: "Being allowed to be quiet when I feel low",
+      trust: "Not having to prove I care all the time",
+      honest: "Being able to honestly say I feel uncomfortable",
+    },
+  },
+  solo_memory: {
+    title: "When you think about this relationship, what is hardest to let go of?",
+    hint: "What is hard to let go of often holds what is truly valuable.",
+    options: {
+      happy: "Those naturally happy moments",
+      certain: "The certainty TA once gave me",
+      through: "What we got through together",
+      plan: "The future we once planned",
+      daily: "The feeling of being accompanied in everyday life",
+    },
+  },
+  solo_first_step: {
+    title: "If you made only one small change, where would you start?",
+    hint: "The smaller the action, the easier it is to actually happen.",
+    options: {
+      feeling: "Say emotions as feelings",
+      direct: "Less testing, more directness",
+      repair: "Come back to close the conversation after an argument",
+      date: "Plan time together proactively",
+      future: "Confirm one near-term plan together",
+    },
+  },
+  duo_signal: {
+    title: "Which signal do you most hope the other person can understand?",
+    hint: "This is not asking them to read your mind. It is translating the signal more clearly.",
+    options: {
+      silent_sad: "When I am silent, I am actually sad",
+      repeat: "I ask repeatedly because I feel unsure",
+      alone: "Wanting to be alone does not mean I do not love you",
+      share: "When I share small things, I am inviting you in",
+      close: "When I act cute, I am checking closeness",
+    },
+  },
+  duo_restore: {
+    title: "After conflict, what helps you come close again most?",
+    hint: "Repair is not skipping over it. It is letting the heart slowly return to the same side.",
+    options: {
+      sorry: "Hearing a sincere apology",
+      own: "The other person explains without shifting blame",
+      hug: "A hug or a step closer",
+      avoid: "Clearly naming how to avoid it next time",
+      care: "First confirming that you still care about each other",
+    },
+  },
+  duo_daily: {
+    title: "What everyday feeling do you most want to restore together?",
+    hint: "Many relationships do not break on big things, but loosen in daily life.",
+    options: {
+      night: "Talking properly before sleep",
+      share: "Sharing funny things when you see them",
+      busy: "Giving each other updates even when busy",
+      phone: "Looking at phones less when meeting",
+      same_day: "Trying to close conflicts on the same day",
+    },
+  },
+  duo_future_tiny: {
+    title: "About the future, what do you most need to confirm now?",
+    hint: "Confirm one small direction first. No need to answer everything at once.",
+    options: {
+      try: "Are we still willing to try together?",
+      pressure: "How can we share real-life pressure?",
+      boundary: "Can our boundaries be respected?",
+      time: "How should we arrange time together?",
+      confirm: "How do we reassure each other when insecurity appears?",
+    },
+  },
+};
+
+function localizeQuestion(question: Question, lang: Language): Question {
+  if (lang === "zh") return question;
+
+  const translated = questionTranslationsEn[question.id];
+  if (!translated) return question;
+
+  return {
+    ...question,
+    title: translated.title,
+    hint: translated.hint,
+    options: question.options.map((option) => ({
+      ...option,
+      label: translated.options[option.value] ?? option.label,
+    })),
+  };
+}
 
 function encodeAnswers(answers: AnswerMap) {
   return btoa(encodeURIComponent(JSON.stringify(answers)));
@@ -478,7 +995,7 @@ function optionFor(question: Question, value?: string) {
 }
 
 function scoreAnswers(questions: Question[], answers: AnswerMap) {
-  const totals = Object.fromEntries(Object.keys(dimensions).map((key) => [key, 0])) as Record<string, number>;
+  const totals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<string, number>;
   let score = 0;
   questions.forEach((question) => {
     const option = optionFor(question, answers[question.id]);
@@ -494,9 +1011,9 @@ function scoreAnswers(questions: Question[], answers: AnswerMap) {
   return { percent, weakest, strongest, totals };
 }
 
-function scoreAbilities(questions: Question[], answers: AnswerMap) {
-  const totals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<keyof typeof dimensions, number>;
-  const maxTotals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<keyof typeof dimensions, number>;
+function scoreAbilities(questions: Question[], answers: AnswerMap, lang: Language) {
+  const totals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<DimensionKey, number>;
+  const maxTotals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<DimensionKey, number>;
 
   questions.forEach((question) => {
     abilityKeys.forEach((key) => {
@@ -512,7 +1029,7 @@ function scoreAbilities(questions: Question[], answers: AnswerMap) {
 
   return abilityKeys.map((key) => ({
     key,
-    label: dimensions[key],
+    label: dimensionLabels[lang][key],
     value: maxTotals[key] ? Math.round((totals[key] / maxTotals[key]) * 100) : 0,
   }));
 }
@@ -549,6 +1066,7 @@ function App() {
     };
   }, []);
   const [mode, setMode] = useState<Mode>(inviteData.answers ? "duo" : "solo");
+  const [lang, setLang] = useState<Language>(() => (localStorage.getItem("warmth-lang") === "en" ? "en" : "zh"));
   const [step, setStep] = useState<Step>(inviteData.answers ? "quiz" : "home");
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [partnerAnswers] = useState<AnswerMap | null>(inviteData.answers);
@@ -559,7 +1077,9 @@ function App() {
   const [quizFolderOpen, setQuizFolderOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [reportReady, setReportReady] = useState(false);
-  const questions = useMemo(() => questionsFromIds(mode, questionIds), [mode, questionIds]);
+  const text = uiText[lang];
+  const prompts = reflectionPrompts[lang];
+  const questions = useMemo(() => questionsFromIds(mode, questionIds).map((question) => localizeQuestion(question, lang)), [mode, questionIds, lang]);
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
   const progress = Math.round((currentIndex / questions.length) * 100);
@@ -581,6 +1101,11 @@ function App() {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("warmth-lang", lang);
+    document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+  }, [lang]);
 
   function goToStep(nextStep: Step, nextMode = mode, nextFolderOpen = nextStep === "quiz") {
     setStep(nextStep);
@@ -641,9 +1166,9 @@ function App() {
   async function copyInviteLink() {
     try {
       await navigator.clipboard.writeText(inviteUrl);
-      setToastMessage("邀请链接已复制");
+      setToastMessage(text.copied);
     } catch {
-      setToastMessage("复制失败，请手动复制链接");
+      setToastMessage(text.copyFailed);
     }
   }
 
@@ -651,8 +1176,8 @@ function App() {
   const partnerResult = partnerAnswers ? scoreAnswers(questions, partnerAnswers) : null;
   const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
   const abilityScores = mergeAbilities(
-    scoreAbilities(questions, answers),
-    partnerAnswers ? scoreAbilities(questions, partnerAnswers) : null,
+    scoreAbilities(questions, answers, lang),
+    partnerAnswers ? scoreAbilities(questions, partnerAnswers, lang) : null,
   );
   const radarPoints = abilityScores.map((item, index) => radarPoint(index, item.value, abilityScores.length)).join(" ");
   const report = partnerAnswers && partnerResult
@@ -662,12 +1187,14 @@ function App() {
         partnerAnswers,
         score: soloResult,
         partnerScore: partnerResult,
+        lang,
       })
     : buildRelationshipReport({
         questions,
         answers,
         score: soloResult,
         hasPartner: false,
+        lang,
       });
   const duoReport: DuoRelationshipReport | null = partnerAnswers && partnerResult ? report as DuoRelationshipReport : null;
   const inviteUrl =
@@ -675,19 +1202,19 @@ function App() {
       ? `${window.location.origin}${window.location.pathname}?invite=${encodeAnswers(answers)}&questions=${encodeQuestionIds(questions.map((question) => question.id))}`
       : "";
   const appNavItems = [
-    navItems[0],
+    navItemsByLang[lang][0],
     {
-      ...navItems[1],
+      ...navItemsByLang[lang][1],
       links: [
-        { ...navItems[1].links[0], onClick: () => start("solo") },
-        { ...navItems[1].links[1], onClick: () => start("duo") },
+        { ...navItemsByLang[lang][1].links[0], onClick: () => start("solo") },
+        { ...navItemsByLang[lang][1].links[1], onClick: () => start("duo") },
       ],
     },
     {
-      ...navItems[2],
+      ...navItemsByLang[lang][2],
       links: [
-        { ...navItems[2].links[0], onClick: () => (Object.keys(answers).length ? goToStep("result") : start("solo")) },
-        { ...navItems[2].links[1], onClick: () => setPromptIndex((promptIndex + 1) % reflectionPrompts.length) },
+        { ...navItemsByLang[lang][2].links[0], onClick: () => (Object.keys(answers).length ? goToStep("result") : start("solo")) },
+        { ...navItemsByLang[lang][2].links[1], onClick: () => setPromptIndex((promptIndex + 1) % prompts.length) },
       ],
     },
   ];
@@ -704,25 +1231,34 @@ function App() {
 
       <CardNav
         logo="/brand/warmth-logo.png"
-        logoAlt="WARMTH 有温度阅览室"
+        logoAlt={text.logoAlt}
         brandTitle="WARMTH"
-        brandSubtitle="情侣关系复盘小游戏"
+        brandSubtitle={text.brandSubtitle}
         items={appNavItems}
         baseColor="rgba(238, 240, 243, 0.9)"
         menuColor="#272E3B"
         buttonBgColor="#A97A93"
         buttonTextColor="#fff"
-        buttonLabel="回到首页"
+        buttonLabel={text.homeButton}
         showButton={step !== "home"}
         onButtonClick={reset}
       />
+      <button
+        className="language-toggle"
+        type="button"
+        onClick={() => setLang(lang === "zh" ? "en" : "zh")}
+        aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
+      >
+        <span className={lang === "zh" ? "is-active" : ""}>中文</span>
+        <span className={lang === "en" ? "is-active" : ""}>EN</span>
+      </button>
 
       {step === "home" && (
         <section className="hero">
           <div className="hero-copy">
-            <span className="eyebrow"><Moon size={16} /> 5 分钟，把没说出口的话看清楚</span>
+            <span className="eyebrow"><Moon size={16} /> {text.heroEyebrow}</span>
             <BlurText
-              text="你们最近，还好吗？"
+              text={text.heroTitle}
               animateBy="letters"
               direction="top"
               delay={80}
@@ -747,10 +1283,10 @@ function App() {
             >
               <button className="entry-card solo-card" onClick={() => start("solo")}>
                 <span className="entry-icon"><MessageCircleHeart /></span>
-                <span className="entry-kicker">单人测试</span>
-                <strong>我先自己测</strong>
-                <small>适合想先理清感受，或者还没准备好邀请 TA 的时候。</small>
-                <span className="entry-action">开始单人测试 <ArrowRight size={18} /></span>
+                <span className="entry-kicker">{text.soloKicker}</span>
+                <strong>{text.soloTitle}</strong>
+                <small>{text.soloDesc}</small>
+                <span className="entry-action">{text.soloAction} <ArrowRight size={18} /></span>
               </button>
             </BorderGlow>
 
@@ -769,18 +1305,18 @@ function App() {
             >
               <button className="entry-card duo-card" onClick={() => start("duo")}>
                 <span className="entry-icon"><UsersRound /></span>
-                <span className="entry-kicker">双人测试</span>
-                <strong>邀请 TA 一起测</strong>
-                <small>双方各答一份题，看看你们在意点、委屈点和期待是否一致。</small>
-                <span className="entry-action">创建双人测试 <ArrowRight size={18} /></span>
+                <span className="entry-kicker">{text.duoKicker}</span>
+                <strong>{text.duoTitle}</strong>
+                <small>{text.duoDesc}</small>
+                <span className="entry-action">{text.duoAction} <ArrowRight size={18} /></span>
               </button>
             </BorderGlow>
           </div>
 
           <div className="quote-strip">
             <span>今日复盘卡</span>
-            <p>{reflectionPrompts[promptIndex]}</p>
-            <button onClick={() => setPromptIndex((promptIndex + 1) % reflectionPrompts.length)} aria-label="换一个问题">
+            <p>{prompts[promptIndex]}</p>
+            <button onClick={() => setPromptIndex((promptIndex + 1) % prompts.length)} aria-label={text.changePrompt}>
               <RefreshCw size={16} />
             </button>
           </div>
@@ -971,7 +1507,7 @@ function App() {
               </article>
               <article>
                 <span>最该先聊</span>
-                <strong>{dimensions[soloResult.weakest as keyof typeof dimensions]}</strong>
+                <strong>{dimensionLabels[lang][soloResult.weakest as DimensionKey]}</strong>
                 <p>先聊最软的需求，再聊谁该改变。</p>
               </article>
             </div>
@@ -1023,11 +1559,11 @@ function App() {
               <div className="compare-card">
                 <div>
                   <span>你更需要</span>
-                  <strong>{duoReport?.userNeed ?? dimensions[soloResult.weakest as keyof typeof dimensions]}</strong>
+                  <strong>{duoReport?.userNeed ?? dimensionLabels[lang][soloResult.weakest as DimensionKey]}</strong>
                 </div>
                 <div>
                   <span>TA 更需要</span>
-                  <strong>{duoReport?.partnerNeed ?? (partnerResult ? dimensions[partnerResult.weakest as keyof typeof dimensions] : "TA 的关系节奏")}</strong>
+                  <strong>{duoReport?.partnerNeed ?? (partnerResult ? dimensionLabels[lang][partnerResult.weakest as DimensionKey] : text.partnerFallback)}</strong>
                 </div>
                 <p>
                   {duoReport?.conflictCycle ?? "如果你们看到的重点不同，先不要急着解释，可以先听听彼此为什么会这样选择。"}

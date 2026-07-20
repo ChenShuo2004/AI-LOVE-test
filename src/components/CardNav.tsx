@@ -57,6 +57,8 @@ function CardNav({
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
+  const getCollapsedHeight = () => (window.matchMedia("(max-width: 480px)").matches ? 64 : 72);
+
   const calculateHeight = () => {
     const navEl = navRef.current;
     if (!navEl) return 260;
@@ -75,7 +77,7 @@ function CardNav({
         contentEl.style.position = "static";
         contentEl.style.height = "auto";
 
-        const topBar = 72;
+        const topBar = getCollapsedHeight();
         const padding = 16;
         const contentHeight = contentEl.scrollHeight;
 
@@ -94,7 +96,7 @@ function CardNav({
     const navEl = navRef.current;
     if (!navEl) return null;
 
-    gsap.set(navEl, { height: 72, overflow: "hidden" });
+    gsap.set(navEl, { height: getCollapsedHeight(), overflow: "hidden" });
     gsap.set(cardsRef.current, { y: 50, opacity: 0 });
 
     const tl = gsap.timeline({ paused: true });

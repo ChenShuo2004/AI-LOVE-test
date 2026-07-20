@@ -7,6 +7,7 @@ export type RelationshipDimension =
   | "future";
 
 export type AnswerMap = Record<string, string>;
+export type Language = "zh" | "en";
 
 export type OptionLike = {
   label: string;
@@ -100,6 +101,15 @@ const dimensionLabels: Record<RelationshipDimension, string> = {
   future: "未来感",
 };
 
+const dimensionLabelsEn: Record<RelationshipDimension, string> = {
+  security: "Security",
+  communication: "Communication",
+  companionship: "Companionship",
+  repair: "Repair",
+  intimacy: "Intimacy",
+  future: "Future",
+};
+
 export const sourceCards: Record<SourceKey, SourceCard> = {
   gottman_turning_toward: {
     key: "gottman_turning_toward",
@@ -138,6 +148,34 @@ export const sourceCards: Record<SourceKey, SourceCard> = {
   },
 };
 
+const sourceCardsEn: Record<SourceKey, SourceCard> = {
+  gottman_turning_toward: {
+    ...sourceCards.gottman_turning_toward,
+    title: "Bids for connection need to be noticed",
+    note: "Gottman relationship research emphasizes that how partners respond to daily bids for connection shapes closeness and the emotional bank account.",
+  },
+  gottman_conflict: {
+    ...sourceCards.gottman_conflict,
+    title: "Conflict is often better managed than solved",
+    note: "Many long-term differences are not erased completely, but they can be managed through warmer, repeatable ways of talking.",
+  },
+  eft_responsiveness: {
+    ...sourceCards.eft_responsiveness,
+    title: "Negative interaction cycles can be reshaped",
+    note: "Emotionally Focused Therapy focuses on attachment needs, emotional responsiveness, and recurring negative cycles between partners.",
+  },
+  partner_responsiveness: {
+    ...sourceCards.partner_responsiveness,
+    title: "Feeling responded to affects intimacy",
+    note: "Partner responsiveness research treats feeling understood, cared for, and validated as an important process in intimacy and relationship satisfaction.",
+  },
+  nvc: {
+    ...sourceCards.nvc,
+    title: "Turn blame into requests",
+    note: "Nonviolent Communication emphasizes observations, feelings, needs, and requests, helping conversations move from blame to actionable expression.",
+  },
+};
+
 const tagLibrary: Record<string, { label: string; sourceKeys: SourceKey[] }> = {
   needs_reassurance: { label: "需要确认", sourceKeys: ["partner_responsiveness", "eft_responsiveness"] },
   communication_gap: { label: "沟通错位", sourceKeys: ["nvc", "gottman_conflict"] },
@@ -147,6 +185,17 @@ const tagLibrary: Record<string, { label: string; sourceKeys: SourceKey[] }> = {
   future_alignment: { label: "方向确认", sourceKeys: ["gottman_conflict", "nvc"] },
   boundary_sensitive: { label: "边界敏感", sourceKeys: ["nvc", "eft_responsiveness"] },
   emotion_accumulated: { label: "情绪积压", sourceKeys: ["eft_responsiveness", "nvc"] },
+};
+
+const tagLabelsEn: Record<string, string> = {
+  needs_reassurance: "a need for reassurance",
+  communication_gap: "a communication mismatch",
+  daily_disconnection: "daily disconnection",
+  repair_needed: "a need for repair",
+  intimacy_distance: "emotional distance",
+  future_alignment: "future alignment",
+  boundary_sensitive: "sensitivity around boundaries",
+  emotion_accumulated: "accumulated emotion",
 };
 
 const patternTemplates: PatternTemplate[] = [
@@ -272,6 +321,97 @@ const patternTemplates: PatternTemplate[] = [
   },
 ];
 
+const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTags" | "triggerDimensions" | "sourceKeys">> = {
+  high_care_low_expression: {
+    title: "High Care, Low Expression",
+    oneLineSummary: "It is not that you do not care. A lot of care simply has not been expressed in a steady, clear way.",
+    coreNeed: "What you need is not to win the conversation, but to help each other hear why this has been hard.",
+    realMessage: "I still care. I just do not know how to say it without turning it into another argument.",
+    possibleMisread: "TA may hear your silence or defensiveness as distance.",
+    betterExpression: "I am not trying to pull away. I am afraid that once I start talking, we will hurt each other again.",
+    strength: "There is still care underneath this. If the way you speak becomes softer and clearer, the relationship has room to come closer again.",
+    actions: ["Replace \"you always\" with \"I feel\"", "Talk about one specific moment at a time", "Reflect the other person's feeling before stating your need"],
+    shareableMessage: "I am not avoiding the conversation. I just hope that when we talk, we can first hear where each of us is hurting.",
+  },
+  needs_reassurance: {
+    title: "Reassurance-Seeking",
+    oneLineSummary: "The thing that most needs care is reassurance: not repeated proof, but being clearly chosen in key moments.",
+    coreNeed: "You need steady responses, clear signals, and the feeling that you are still on the same side.",
+    realMessage: "I am not trying to force you to prove your love. I need to know you are still willing to respond to me.",
+    possibleMisread: "TA may hear your need for reassurance as pressure, questioning, or distrust.",
+    betterExpression: "When I feel unsure, one clear response from you would help me relax much more easily.",
+    strength: "Being able to name insecurity is already a sign that there is still an opening for communication.",
+    actions: ["Agree on a small reassurance signal", "Use fewer tests and more specific requests", "Turn reassurance needs into requests instead of questions"],
+    shareableMessage: "I am not asking you to prove your love again and again. When I feel unsure, I just hope to feel chosen a little more clearly.",
+  },
+  slow_repair: {
+    title: "Slow Repair",
+    oneLineSummary: "This is not a lack of feeling. It is a lack of a safe way back after conflict.",
+    coreNeed: "You need arguments to have an ending, instead of turning every disagreement into a verdict on the relationship.",
+    realMessage: "I also want to come back and talk. I just do not want us to keep hurting each other at the emotional peak.",
+    possibleMisread: "TA may read your pause as coldness, or your follow-up as pressure.",
+    betterExpression: "Let us pause for a bit. I am not disappearing. I want to come back later and finish this gently.",
+    strength: "If you can agree to come back after a pause, conflict does not have to become disconnection.",
+    actions: ["Pause for 10 minutes when emotions are high", "Name when you will come back before pausing", "Repair the tone before debating the issue"],
+    shareableMessage: "If we argue again, can we pause without disappearing, and agree to come back to finish the conversation?",
+  },
+  emotion_accumulated: {
+    title: "Accumulated Emotion",
+    oneLineSummary: "The pain you feel now did not appear suddenly. It may be made of many small disappointments that were not heard in time.",
+    coreNeed: "You need to put the hurt on the table, instead of using endurance to keep the surface peaceful.",
+    realMessage: "I am not trying to reopen old cases. I realized some hurt has never really been heard.",
+    possibleMisread: "TA may think you are keeping score, and miss that you are asking to be understood.",
+    betterExpression: "I want to talk about how this affected me, not declare you the wrong person.",
+    strength: "The fact that you can organize these emotions means you are looking for an outlet, not just an explosion.",
+    actions: ["Talk about one specific hurt at a time", "Describe the impact before assigning blame", "Turn old pain into one clear request"],
+    shareableMessage: "I am not trying to dig up old fights. I want the hurt that was never heard to finally have a place to go.",
+  },
+  daily_disconnection: {
+    title: "Daily Disconnection",
+    oneLineSummary: "What matters is not just time together, but whether you feel included in each other's daily rhythm.",
+    coreNeed: "You need to be remembered, included, and naturally brought into everyday life.",
+    realMessage: "I do not need grand plans. I want to feel that you are willing to let me be part of your life.",
+    possibleMisread: "TA may think you only want more time, while you are really asking for participation.",
+    betterExpression: "I hope we are not only meeting when there is time. I want a little more place in your everyday life.",
+    strength: "Daily connection is often repairable because it depends less on big promises and more on repeated small gestures.",
+    actions: ["Leave one real update each day", "Make time this week without rushing it", "Share small moments when they happen"],
+    shareableMessage: "I do not need many arrangements. I just want to feel that you are willing to make room for me in your life.",
+  },
+  push_pull_close: {
+    title: "Push-Pull Closeness",
+    oneLineSummary: "One of you may want immediate reassurance while the other needs room first, so closeness turns into chasing and retreating.",
+    coreNeed: "You need both reassurance and rhythm: neither being dropped nor pushed into defense.",
+    realMessage: "I want to be close to you, and I am also afraid we will hurt each other in the wrong way.",
+    possibleMisread: "TA may only see the chasing or hiding, not the insecurity underneath.",
+    betterExpression: "I want to come closer. Can we talk in a way that feels less pressured?",
+    strength: "The push-pull means there is still attachment here. The key is to give closeness a safer rhythm.",
+    actions: ["Confirm the relationship before discussing the problem", "Set a clear time limit for cooling down", "Say \"I need a little rhythm\" instead of disappearing"],
+    shareableMessage: "I want to come closer to you. I just hope we can do it in a way that feels less pressured.",
+  },
+  boundary_sensitive: {
+    title: "Boundary-Sensitive",
+    oneLineSummary: "You are not trying to push the relationship away. You want closeness that still leaves room for yourself.",
+    coreNeed: "You need respect, permission to slow down, and boundaries that are not misread as lack of love.",
+    realMessage: "I need some space, but that does not mean I do not care.",
+    possibleMisread: "TA may read your solitude, silence, or slower response as distance.",
+    betterExpression: "I want to be quiet for a while. I am not leaving you. I will come back when I am steadier.",
+    strength: "Clear boundaries can make the relationship steadier, not farther apart.",
+    actions: ["Explain that alone time is not coldness", "Make boundaries specific in time and action", "Give the other person a clear signal that you will come back"],
+    shareableMessage: "I need a little space, but I am not trying to leave you. I want to come back to you in a better state.",
+  },
+  aligned_growth: {
+    title: "Growing Side by Side",
+    oneLineSummary: "The point is not to define the whole relationship immediately, but to see whether you still want to adjust forward together.",
+    coreNeed: "You need direction, shared planning, and the feeling that you are willing to solve things together.",
+    realMessage: "I do not need every answer right away. I want to know whether we are still willing to find a way together.",
+    possibleMisread: "TA may hear future talk as pressure, rather than a search for direction.",
+    betterExpression: "I am not asking you to promise everything now. I just want to confirm the next small step with you.",
+    strength: "As long as you can still discuss the next step together, the relationship is not trapped inside emotion alone.",
+    actions: ["Set one small goal for this week", "Break worries into practical questions", "Review money, time, and plans once a week"],
+    shareableMessage: "I am not asking for every answer right away. I just want to know whether we still want to think forward together.",
+  },
+};
+
 function tagsForOption(option: OptionLike): string[] {
   const tags: string[] = [];
   const byDimension: Record<RelationshipDimension, string> = {
@@ -294,9 +434,25 @@ function tagsForOption(option: OptionLike): string[] {
   return Array.from(new Set(tags));
 }
 
-function evidenceFor(question: QuestionLike, option: OptionLike, tags: string[]) {
-  const tagText = tags.map(tag => tagLibrary[tag]?.label).filter(Boolean).join("、");
-  return `在「${question.title}」里，你选择了「${option.label}」，这更像是在表达${tagText || dimensionLabels[option.dimension]}。`;
+function getDimensionLabel(dimension: RelationshipDimension, lang: Language) {
+  return lang === "en" ? dimensionLabelsEn[dimension] : dimensionLabels[dimension];
+}
+
+function getTagLabel(tag: string, lang: Language) {
+  return lang === "en" ? tagLabelsEn[tag] : tagLibrary[tag]?.label;
+}
+
+function getTemplate(template: PatternTemplate, lang: Language) {
+  return lang === "en" ? { ...template, ...patternTemplateEn[template.key] } : template;
+}
+
+function evidenceFor(question: QuestionLike, option: OptionLike, tags: string[], lang: Language) {
+  const tagText = tags.map(tag => getTagLabel(tag, lang)).filter(Boolean).join(lang === "en" ? ", " : "、");
+  if (lang === "en") {
+    return `In "${question.title}", you chose "${option.label}", which points to ${tagText || getDimensionLabel(option.dimension, lang)}.`;
+  }
+
+  return `在「${question.title}」里，你选择了「${option.label}」，这更像是在表达${tagText || getDimensionLabel(option.dimension, lang)}。`;
 }
 
 function sourceKeysForTags(tags: string[]) {
@@ -304,7 +460,7 @@ function sourceKeysForTags(tags: string[]) {
   return Array.from(new Set(keys)) as SourceKey[];
 }
 
-function answerEvidence(questions: QuestionLike[], answers: AnswerMap): AnswerEvidence[] {
+function answerEvidence(questions: QuestionLike[], answers: AnswerMap, lang: Language): AnswerEvidence[] {
   return questions.flatMap(question => {
     const option = question.options.find(item => item.value === answers[question.id]);
     if (!option) return [];
@@ -315,7 +471,7 @@ function answerEvidence(questions: QuestionLike[], answers: AnswerMap): AnswerEv
       dimension: option.dimension,
       weight: option.weight,
       tags,
-      evidence: evidenceFor(question, option, tags),
+      evidence: evidenceFor(question, option, tags, lang),
       sourceKeys: sourceKeysForTags(tags),
     }];
   });
@@ -352,12 +508,13 @@ function pickEvidence(evidence: AnswerEvidence[]) {
     .slice(0, 3);
 }
 
-function pickSources(template: PatternTemplate, evidence: AnswerEvidence[]) {
+function pickSources(template: PatternTemplate, evidence: AnswerEvidence[], lang: Language) {
   const keys = [
     ...template.sourceKeys,
     ...evidence.flatMap(item => item.sourceKeys),
   ];
-  return Array.from(new Set(keys)).slice(0, 3).map(key => sourceCards[key]);
+  const cards = lang === "en" ? sourceCardsEn : sourceCards;
+  return Array.from(new Set(keys)).slice(0, 3).map(key => cards[key]);
 }
 
 export function buildRelationshipReport(params: {
@@ -365,9 +522,11 @@ export function buildRelationshipReport(params: {
   answers: AnswerMap;
   score: ScoreLike;
   hasPartner: boolean;
+  lang?: Language;
 }): RelationshipReport {
-  const evidence = answerEvidence(params.questions, params.answers);
-  const template = chooseTemplate(evidence, params.score);
+  const lang = params.lang ?? "zh";
+  const evidence = answerEvidence(params.questions, params.answers, lang);
+  const template = getTemplate(chooseTemplate(evidence, params.score), lang);
   const selectedEvidence = pickEvidence(evidence);
 
   return {
@@ -381,10 +540,14 @@ export function buildRelationshipReport(params: {
     actions: template.actions,
     shareableMessage: template.shareableMessage,
     evidence: selectedEvidence,
-    sources: pickSources(template, selectedEvidence),
+    sources: pickSources(template, selectedEvidence, lang),
     credibilityNote: params.hasPartner
-      ? `这份结果基于你们两个人同一组 ${params.questions.length} 道题的选择生成，只代表此刻的关系复盘快照，不作为心理诊断或关系结论。`
-      : `这份结果基于本轮随机抽取的 ${params.questions.length} 道题和你的选择生成，只代表此刻的感受快照，不作为心理诊断或关系结论。`,
+      ? lang === "en"
+        ? `This result is based on both of your answers to the same ${params.questions.length} questions. It is only a reflection snapshot for this moment, not a psychological diagnosis or relationship verdict.`
+        : `这份结果基于你们两个人同一组 ${params.questions.length} 道题的选择生成，只代表此刻的关系复盘快照，不作为心理诊断或关系结论。`
+      : lang === "en"
+        ? `This result is based on ${params.questions.length} randomly selected questions and your answers. It is only a snapshot of how things feel right now, not a psychological diagnosis or relationship verdict.`
+        : `这份结果基于本轮随机抽取的 ${params.questions.length} 道题和你的选择生成，只代表此刻的感受快照，不作为心理诊断或关系结论。`,
   };
 }
 
@@ -394,27 +557,38 @@ export function buildDuoRelationshipReport(params: {
   partnerAnswers: AnswerMap;
   score: ScoreLike;
   partnerScore: ScoreLike;
+  lang?: Language;
 }): DuoRelationshipReport {
+  const lang = params.lang ?? "zh";
   const base = buildRelationshipReport({
     questions: params.questions,
     answers: params.answers,
     score: params.score,
     hasPartner: true,
+    lang,
   });
-  const partnerEvidence = answerEvidence(params.questions, params.partnerAnswers);
+  const partnerEvidence = answerEvidence(params.questions, params.partnerAnswers, lang);
   const userTopTag = topKey(countItems(base.evidence.flatMap(item => item.tags)), "needs_reassurance");
   const partnerTopTag = topKey(countItems(partnerEvidence.flatMap(item => item.tags)), "repair_needed");
-  const userNeed = tagLibrary[userTopTag]?.label ?? dimensionLabels[params.score.weakest as RelationshipDimension] ?? "被理解";
-  const partnerNeed = tagLibrary[partnerTopTag]?.label ?? dimensionLabels[params.partnerScore.weakest as RelationshipDimension] ?? "被理解";
+  const userNeed = getTagLabel(userTopTag, lang) ?? getDimensionLabel(params.score.weakest as RelationshipDimension, lang) ?? (lang === "en" ? "to be understood" : "被理解");
+  const partnerNeed = getTagLabel(partnerTopTag, lang) ?? getDimensionLabel(params.partnerScore.weakest as RelationshipDimension, lang) ?? (lang === "en" ? "to be understood" : "被理解");
 
   return {
     ...base,
     sharedNeed: params.score.strongest === params.partnerScore.strongest
-      ? `你们都在「${dimensionLabels[params.score.strongest as RelationshipDimension] ?? "在乎彼此"}」上保留了力量，这是可以先抓住的共同点。`
-      : "你们的答案虽然不完全相同，但都在尝试给关系找到一个更清楚的入口。",
+      ? lang === "en"
+        ? `Both of you still have strength in "${getDimensionLabel(params.score.strongest as RelationshipDimension, lang) ?? "caring about each other"}". This is a shared point you can hold onto first.`
+        : `你们都在「${getDimensionLabel(params.score.strongest as RelationshipDimension, lang) ?? "在乎彼此"}」上保留了力量，这是可以先抓住的共同点。`
+      : lang === "en"
+        ? "Your answers are not exactly the same, but both of you are trying to find a clearer entrance back into the relationship."
+        : "你们的答案虽然不完全相同，但都在尝试给关系找到一个更清楚的入口。",
     userNeed,
     partnerNeed,
-    conflictCycle: `当你更想要${userNeed}时，TA 可能更需要${partnerNeed}。如果没有说清楚，一个人会觉得被推开，另一个人会觉得被逼近。`,
-    agreement: "如果我们情绪上来，可以先暂停，但要说清楚几点回来继续聊；暂停不是消失，回来也不是继续攻击。",
+    conflictCycle: lang === "en"
+      ? `When you are looking for ${userNeed}, TA may be needing ${partnerNeed}. If this is not named clearly, one person may feel pushed away while the other feels pressured.`
+      : `当你更想要${userNeed}时，TA 可能更需要${partnerNeed}。如果没有说清楚，一个人会觉得被推开，另一个人会觉得被逼近。`,
+    agreement: lang === "en"
+      ? "When emotions rise, we can pause first, but we should name when we will come back. Pausing is not disappearing, and coming back is not continuing the attack."
+      : "如果我们情绪上来，可以先暂停，但要说清楚几点回来继续聊；暂停不是消失，回来也不是继续攻击。",
   };
 }

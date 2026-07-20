@@ -274,3 +274,75 @@
     font-size: 15px;
   }
 }
+
+@media (max-width: 480px) {
+  .card-nav-container {
+    top: 0.75rem;
+    width: calc(100% - 24px);
+  }
+
+  .card-nav {
+    height: 64px;
+    border-radius: 16px;
+  }
+
+  .card-nav-top {
+    height: 64px;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .hamburger-menu {
+    width: 42px;
+    min-width: 42px;
+    gap: 6px;
+  }
+
+  .hamburger-line {
+    width: 25px;
+  }
+
+  .logo-container {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .logo-copy strong {
+    font-size: 14px;
+  }
+
+  .logo-copy small {
+    max-width: 142px;
+    overflow: hidden;
+    font-size: 10px;
+    text-overflow: ellipsis;
+  }
+
+  .card-nav-content {
+    top: 64px;
+    padding: 0.5rem;
+  }
+
+  .nav-card {
+    min-height: 58px;
+    border-radius: 12px;
+    padding: 12px 13px;
+  }
+
+  .nav-card-label {
+    font-size: 17px;
+  }
+
+  .nav-card-links {
+    gap: 5px;
+  }
+
+  .nav-card-link {
+    min-height: 28px;
+    font-size: 14px;
+  }
+}
