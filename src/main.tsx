@@ -530,7 +530,8 @@ function App() {
           <div className="quiz-folder-stage" aria-hidden="true">
             <Folder
               color="#A97A93"
-              size={1.18}
+              size={0.92}
+              defaultOpen
               items={[0, 1, 2].map((offset) => {
                 const number = currentIndex + offset + 1;
                 return number <= questions.length ? <span>{number}</span> : null;

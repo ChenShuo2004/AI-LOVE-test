@@ -6,6 +6,7 @@ type FolderProps = {
   size?: number;
   items?: ReactNode[];
   className?: string;
+  defaultOpen?: boolean;
 };
 
 type PaperOffset = {
@@ -34,12 +35,12 @@ function darkenColor(hex: string, percent: number) {
   return `#${((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1).toUpperCase()}`;
 }
 
-function Folder({ color = "#A97A93", size = 1, items = [], className = "" }: FolderProps) {
+function Folder({ color = "#A97A93", size = 1, items = [], className = "", defaultOpen = false }: FolderProps) {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
   while (papers.length < maxItems) papers.push(null);
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(defaultOpen);
   const [paperOffsets, setPaperOffsets] = useState<PaperOffset[]>(
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })),
   );
