@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import BorderGlow from "./components/BorderGlow";
 import CardNav from "./components/CardNav";
+import Folder from "./components/Folder";
 import "./styles.css";
 
 type Mode = "solo" | "duo";
@@ -526,31 +527,44 @@ function App() {
 
       {step === "quiz" && currentQuestion && (
         <section className="quiz-panel">
-          <div className="quiz-head">
-            <div>
-              <span className="eyebrow">
-                {mode === "solo" ? "单人测试" : isPartnerFlow ? "TA 已答完，现在轮到你" : "双人测试：先完成你的部分"}
-              </span>
-              <h2>{currentQuestion.title}</h2>
-              <p>{currentQuestion.hint}</p>
-            </div>
-            <div className="progress-ring">
-              <span>{currentIndex + 1}</span>
-              <small>/ {questions.length}</small>
-            </div>
+          <div className="quiz-folder-stage" aria-hidden="true">
+            <Folder
+              color="#A97A93"
+              size={1.18}
+              items={[0, 1, 2].map((offset) => {
+                const number = currentIndex + offset + 1;
+                return number <= questions.length ? <span>{number}</span> : null;
+              })}
+            />
           </div>
 
-          <div className="progress-track">
-            <span style={{ width: `${progress}%` }} />
-          </div>
+          <div className="quiz-card-frame" key={currentQuestion.id}>
+            <div className="quiz-head">
+              <div>
+                <span className="eyebrow">
+                  {mode === "solo" ? "单人测试" : isPartnerFlow ? "TA 已答完，现在轮到你" : "双人测试：先完成你的部分"}
+                </span>
+                <h2>{currentQuestion.title}</h2>
+                <p>{currentQuestion.hint}</p>
+              </div>
+              <div className="progress-ring">
+                <span>{currentIndex + 1}</span>
+                <small>/ {questions.length}</small>
+              </div>
+            </div>
 
-          <div className="option-list">
-            {currentQuestion.options.map((option) => (
-              <button key={option.value} onClick={() => chooseAnswer(option.value)}>
-                <span>{option.label}</span>
-                <ArrowRight size={18} />
-              </button>
-            ))}
+            <div className="progress-track">
+              <span style={{ width: `${progress}%` }} />
+            </div>
+
+            <div className="option-list">
+              {currentQuestion.options.map((option) => (
+                <button key={option.value} onClick={() => chooseAnswer(option.value)}>
+                  <span>{option.label}</span>
+                  <ArrowRight size={18} />
+                </button>
+              ))}
+            </div>
           </div>
         </section>
       )}
