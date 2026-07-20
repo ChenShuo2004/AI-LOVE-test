@@ -295,7 +295,7 @@ button {
 .quiz-floating-folder {
   position: absolute;
   left: max(-28px, calc((100vw - min(820px, 94vw)) / -2 + 28px));
-  bottom: 104px;
+  top: 50%;
   z-index: 8;
   width: 154px;
   height: 98px;
@@ -309,6 +309,7 @@ button {
   box-shadow: 0 18px 46px rgba(66, 76, 92, 0.22);
   animation: floating-folder-in 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .quiz-floating-folder::before {
@@ -339,12 +340,12 @@ button {
 @keyframes floating-folder-in {
   from {
     opacity: 0;
-    transform: translate(86px, -18px) scale(2.2);
+    transform: translate(86px, -50%) scale(2.2);
   }
 
   to {
     opacity: 1;
-    transform: translate(0, 0) scale(1);
+    transform: translate(0, -50%) scale(1);
   }
 }
 
@@ -710,8 +711,7 @@ button {
 
   .quiz-floating-folder {
     left: 14px;
-    top: 18px;
-    bottom: auto;
+    top: 50%;
     width: 104px;
     height: 66px;
     border-radius: 0 14px 15px 15px;
