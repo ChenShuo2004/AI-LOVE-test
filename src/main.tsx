@@ -43,6 +43,8 @@ const dimensions = {
   future: "未来感",
 };
 
+const abilityKeys = Object.keys(dimensions) as Array<keyof typeof dimensions>;
+
 const soloQuestions: Question[] = [
   {
     id: "solo_weather",
@@ -309,7 +311,7 @@ const navItems = [
     bgColor: "#EEF0F3",
     textColor: "#272E3B",
     links: [
-      { label: "关系天气", ariaLabel: "关系天气" },
+      { label: "关系能力图", ariaLabel: "关系能力图" },
       { label: "今日复盘卡", ariaLabel: "今日复盘卡" },
     ],
   },
@@ -347,6 +349,52 @@ function scoreAnswers(questions: Question[], answers: AnswerMap) {
   const weakest = Object.entries(totals).sort((a, b) => a[1] - b[1])[0]?.[0] ?? "communication";
   const strongest = Object.entries(totals).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "repair";
   return { percent, weakest, strongest, totals };
+}
+
+function scoreAbilities(questions: Question[], answers: AnswerMap) {
+  const totals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<keyof typeof dimensions, number>;
+  const maxTotals = Object.fromEntries(abilityKeys.map((key) => [key, 0])) as Record<keyof typeof dimensions, number>;
+
+  questions.forEach((question) => {
+    abilityKeys.forEach((key) => {
+      const best = Math.max(0, ...question.options.filter((option) => option.dimension === key).map((option) => option.weight));
+      maxTotals[key] += best;
+    });
+
+    const option = optionFor(question, answers[question.id]);
+    if (option) {
+      totals[option.dimension] += option.weight;
+    }
+  });
+
+  return abilityKeys.map((key) => ({
+    key,
+    label: dimensions[key],
+    value: maxTotals[key] ? Math.round((totals[key] / maxTotals[key]) * 100) : 0,
+  }));
+}
+
+function mergeAbilities(primary: ReturnType<typeof scoreAbilities>, partner?: ReturnType<typeof scoreAbilities> | null) {
+  if (!partner) return primary;
+  return primary.map((item) => {
+    const matched = partner.find((partnerItem) => partnerItem.key === item.key);
+    return {
+      ...item,
+      value: Math.round((item.value + (matched?.value ?? item.value)) / 2),
+    };
+  });
+}
+
+function radarPoint(index: number, value: number, total: number, radius = 92, center = 120) {
+  const angle = (Math.PI * 2 * index) / total - Math.PI / 2;
+  const distance = radius * (value / 100);
+  return `${center + Math.cos(angle) * distance},${center + Math.sin(angle) * distance}`;
+}
+
+function radarGridPoint(index: number, level: number, total: number, radius = 92, center = 120) {
+  const angle = (Math.PI * 2 * index) / total - Math.PI / 2;
+  const distance = radius * level;
+  return `${center + Math.cos(angle) * distance},${center + Math.sin(angle) * distance}`;
 }
 
 function resultMood(score: number) {
@@ -545,7 +593,11 @@ function App() {
   const partnerResult = partnerAnswers ? scoreAnswers(duoQuestions, partnerAnswers) : null;
   const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
   const mood = resultMood(combinedScore);
-  const MoodIcon = mood.icon;
+  const abilityScores = mergeAbilities(
+    scoreAbilities(questions, answers),
+    partnerAnswers ? scoreAbilities(duoQuestions, partnerAnswers) : null,
+  );
+  const radarPoints = abilityScores.map((item, index) => radarPoint(index, item.value, abilityScores.length)).join(" ");
   const resultInsight = makeInsight(soloResult.weakest, soloResult.strongest);
   const resultActions = makeActions(soloResult.weakest);
   const talkPrompt = makeTalkPrompt(soloResult.weakest);
@@ -784,23 +836,59 @@ function App() {
       {step === "result" && (
         <section className="result-layout result-layout-single">
           <div className="result-main">
-            <div className="weather-card">
-              <MoodIcon size={34} />
-              <span>关系天气</span>
-              <h2>{mood.weather}</h2>
-              <p>{mood.line}</p>
+            <div className="ability-card">
+              <div className="ability-copy">
+                <span>关系能力图</span>
+                <h2>当前关系指标</h2>
+                <p>六项能力来自你的答案权重，分数越高，代表这一项在当前关系里越容易被看见和使用。</p>
+              </div>
+              <div className="radar-wrap" aria-label="当前关系六项能力指标图">
+                <svg viewBox="0 0 240 240" role="img">
+                  {[0.33, 0.66, 1].map((level) => (
+                    <polygon
+                      key={level}
+                      className="radar-grid-line"
+                      points={abilityScores.map((_, index) => radarGridPoint(index, level, abilityScores.length)).join(" ")}
+                    />
+                  ))}
+                  {abilityScores.map((_, index) => (
+                    <line
+                      key={index}
+                      className="radar-axis"
+                      x1="120"
+                      y1="120"
+                      x2={radarGridPoint(index, 1, abilityScores.length).split(",")[0]}
+                      y2={radarGridPoint(index, 1, abilityScores.length).split(",")[1]}
+                    />
+                  ))}
+                  <polygon className="radar-shape" points={radarPoints} />
+                  {abilityScores.map((item, index) => {
+                    const [x, y] = radarPoint(index, item.value, abilityScores.length).split(",");
+                    return <circle key={item.key} className="radar-dot" cx={x} cy={y} r="4.5" />;
+                  })}
+                </svg>
+              </div>
+              <div className="ability-list">
+                {abilityScores.map((item) => (
+                  <div key={item.key}>
+                    <span>{item.label}</span>
+                    <strong>{item.value}</strong>
+                    <i style={{ width: `${item.value}%` }} />
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="reveal-grid">
               <article>
                 <span>关系称号</span>
                 <strong>{mood.title}</strong>
-                <p>这不是判定，是你们此刻的关系快照。</p>
+                <p>你们此刻的关系快照</p>
               </article>
               <article>
                 <span>{partnerAnswers ? "你们的共同分" : "当前清晰度"}</span>
                 <strong>{combinedScore}</strong>
-                <p>{partnerAnswers ? "分数越高，越说明修复入口更清楚。" : "不是好坏分，而是你此刻能看见多少关系线索。"}</p>
+                <p>{partnerAnswers ? "修复入口是否清楚" : "你此刻能看见多少关系线索"}</p>
               </article>
               <article>
                 <span>最该先聊</span>

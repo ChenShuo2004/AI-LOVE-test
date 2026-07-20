@@ -880,6 +880,101 @@ button {
   line-height: 1.7;
 }
 
+.ability-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(220px, 0.72fr) minmax(240px, 0.9fr);
+  align-items: center;
+  gap: 22px;
+  min-height: 330px;
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(39, 46, 59, 0.94), rgba(169, 122, 147, 0.74)),
+    var(--color-title);
+  color: white;
+  padding: 30px;
+}
+
+.ability-copy span,
+.ability-list span {
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.ability-copy h2 {
+  margin: 14px 0 10px;
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.ability-copy p {
+  max-width: 320px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.7;
+}
+
+.radar-wrap {
+  display: grid;
+  place-items: center;
+}
+
+.radar-wrap svg {
+  width: min(240px, 100%);
+  overflow: visible;
+}
+
+.radar-grid-line {
+  fill: rgba(255, 255, 255, 0.04);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.2;
+}
+
+.radar-axis {
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 1;
+}
+
+.radar-shape {
+  fill: rgba(45, 184, 230, 0.28);
+  stroke: #8DD8F0;
+  stroke-width: 2.6;
+  filter: drop-shadow(0 12px 24px rgba(45, 184, 230, 0.18));
+}
+
+.radar-dot {
+  fill: #F7EDF3;
+  stroke: #8DD8F0;
+  stroke-width: 2;
+}
+
+.ability-list {
+  display: grid;
+  gap: 12px;
+}
+
+.ability-list div {
+  display: grid;
+  grid-template-columns: 64px 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.ability-list strong {
+  color: white;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 18px;
+}
+
+.ability-list i {
+  display: block;
+  height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #F2EBF0, #8DD8F0);
+  box-shadow: 0 8px 18px rgba(45, 184, 230, 0.2);
+}
+
 .reveal-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1182,8 +1277,17 @@ button {
   .reveal-grid,
   .insight-grid,
   .action-card div,
+  .ability-card,
   .compare-card {
     grid-template-columns: 1fr;
+  }
+
+  .ability-card {
+    padding: 24px;
+  }
+
+  .ability-copy p {
+    max-width: none;
   }
 
   .compare-card p {
