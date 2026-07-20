@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
@@ -405,18 +405,11 @@ function App() {
   const [partnerAnswers] = useState<AnswerMap | null>(invitedAnswers);
   const [promptIndex, setPromptIndex] = useState(0);
   const [quizFolderOpen, setQuizFolderOpen] = useState(false);
-  const nextQuestionTimerRef = useRef<number | null>(null);
   const questions = mode === "solo" ? soloQuestions : duoQuestions;
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
   const progress = Math.round((currentIndex / questions.length) * 100);
   const isPartnerFlow = Boolean(partnerAnswers);
-
-  useEffect(() => {
-    return () => {
-      if (nextQuestionTimerRef.current) window.clearTimeout(nextQuestionTimerRef.current);
-    };
-  }, []);
 
   function start(nextMode: Mode) {
     setMode(nextMode);
@@ -430,17 +423,11 @@ function App() {
     const nextAnswers = { ...answers, [currentQuestion.id]: value };
     const isDone = Object.keys(nextAnswers).length === questions.length;
 
-    setQuizFolderOpen(false);
-    if (nextQuestionTimerRef.current) window.clearTimeout(nextQuestionTimerRef.current);
-
-    nextQuestionTimerRef.current = window.setTimeout(() => {
-      setAnswers(nextAnswers);
-      if (isDone) {
-        setStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
-      } else {
-        window.setTimeout(() => setQuizFolderOpen(true), 80);
-      }
-    }, 220);
+    setAnswers(nextAnswers);
+    setQuizFolderOpen(true);
+    if (isDone) {
+      setStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
+    }
   }
 
   function reset() {
@@ -589,9 +576,14 @@ function App() {
               ]}
             />
             {quizFolderOpen && (
-              <div className="quiz-floating-folder" aria-hidden="true">
+              <button
+                className="quiz-floating-folder"
+                type="button"
+                onClick={() => setQuizFolderOpen(false)}
+                aria-label="返回题卡夹"
+              >
                 <span>答题中</span>
-              </div>
+              </button>
             )}
           </div>
         </section>

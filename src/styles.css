@@ -302,13 +302,14 @@ button {
   display: grid;
   place-items: center;
   border-radius: 0 18px 20px 20px;
+  border: 0;
   background: #a97a93;
   color: #f6f7f9;
   font-weight: 800;
   letter-spacing: 0;
   box-shadow: 0 18px 46px rgba(66, 76, 92, 0.22);
   animation: floating-folder-in 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  pointer-events: none;
+  cursor: pointer;
   transform: translateY(-50%);
 }
 
@@ -335,6 +336,11 @@ button {
   position: relative;
   z-index: 1;
   font-size: 20px;
+}
+
+.quiz-floating-folder:focus-visible {
+  outline: 3px solid rgba(66, 76, 92, 0.38);
+  outline-offset: 4px;
 }
 
 @keyframes floating-folder-in {
