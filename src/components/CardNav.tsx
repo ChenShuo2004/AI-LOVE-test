@@ -29,6 +29,7 @@ type CardNavProps = {
   buttonBgColor?: string;
   buttonTextColor?: string;
   buttonLabel?: string;
+  showButton?: boolean;
   onButtonClick?: () => void;
 };
 
@@ -45,6 +46,7 @@ function CardNav({
   buttonBgColor = "#111",
   buttonTextColor = "white",
   buttonLabel = "Get Started",
+  showButton = true,
   onButtonClick,
 }: CardNavProps) {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
@@ -195,14 +197,18 @@ function CardNav({
             )}
           </div>
 
-          <button
-            type="button"
-            className="card-nav-cta-button"
-            style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-            onClick={onButtonClick}
-          >
-            {buttonLabel}
-          </button>
+          {showButton ? (
+            <button
+              type="button"
+              className="card-nav-cta-button"
+              style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+              onClick={onButtonClick}
+            >
+              {buttonLabel}
+            </button>
+          ) : (
+            <span className="card-nav-button-spacer" aria-hidden="true" />
+          )}
         </div>
 
         <div className="card-nav-content" aria-hidden={!isExpanded}>

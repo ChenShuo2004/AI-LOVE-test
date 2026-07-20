@@ -456,6 +456,7 @@ function App() {
         buttonBgColor="#A97A93"
         buttonTextColor="#fff"
         buttonLabel="回到首页"
+        showButton={step !== "home"}
         onButtonClick={reset}
       />
 

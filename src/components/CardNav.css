@@ -121,6 +121,12 @@
   align-items: center;
 }
 
+.card-nav-button-spacer {
+  display: block;
+  width: 86px;
+  height: 100%;
+}
+
 .card-nav-cta-button:hover {
   transform: translateY(-1px);
 }
@@ -223,7 +229,8 @@
     font-size: 11px;
   }
 
-  .card-nav-cta-button {
+  .card-nav-cta-button,
+  .card-nav-button-spacer {
     display: none;
   }
 
