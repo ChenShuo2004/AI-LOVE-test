@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
+  ArrowLeft,
   ArrowRight,
   CloudSun,
   Copy,
@@ -404,18 +405,41 @@ function App() {
   const [answers, setAnswers] = useState<AnswerMap>({});
   const [partnerAnswers] = useState<AnswerMap | null>(invitedAnswers);
   const [promptIndex, setPromptIndex] = useState(0);
-  const [quizFolderOpen, setQuizFolderOpen] = useState(false);
+  const [quizFolderOpen, setQuizFolderOpen] = useState(Boolean(invitedAnswers));
   const questions = mode === "solo" ? soloQuestions : duoQuestions;
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
   const progress = Math.round((currentIndex / questions.length) * 100);
   const isPartnerFlow = Boolean(partnerAnswers);
 
-  function start(nextMode: Mode) {
+  useEffect(() => {
+    window.history.replaceState({ step, mode }, "", window.location.href);
+
+    const handlePopState = (event: PopStateEvent) => {
+      const state = event.state as { step?: Step; mode?: Mode } | null;
+      if (!state?.step) return;
+
+      setStep(state.step);
+      if (state.mode) setMode(state.mode);
+      setQuizFolderOpen(state.step === "quiz");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  function goToStep(nextStep: Step, nextMode = mode) {
+    setStep(nextStep);
     setMode(nextMode);
+    setQuizFolderOpen(nextStep === "quiz");
+    window.history.pushState({ step: nextStep, mode: nextMode }, "", window.location.href);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function start(nextMode: Mode) {
     setAnswers({});
-    setQuizFolderOpen(false);
-    setStep("quiz");
+    goToStep("quiz", nextMode);
   }
 
   function chooseAnswer(value: string) {
@@ -426,8 +450,21 @@ function App() {
     setAnswers(nextAnswers);
     setQuizFolderOpen(true);
     if (isDone) {
-      setStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
+      goToStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
     }
+  }
+
+  function previousQuestion() {
+    if (currentIndex === 0) {
+      reset();
+      return;
+    }
+
+    const previous = questions[currentIndex - 1];
+    const nextAnswers = { ...answers };
+    delete nextAnswers[previous.id];
+    setAnswers(nextAnswers);
+    setQuizFolderOpen(true);
   }
 
   function reset() {
@@ -447,6 +484,23 @@ function App() {
     mode === "duo"
       ? `${window.location.origin}${window.location.pathname}?invite=${encodeAnswers(answers)}`
       : "";
+  const appNavItems = [
+    navItems[0],
+    {
+      ...navItems[1],
+      links: [
+        { ...navItems[1].links[0], onClick: () => start("solo") },
+        { ...navItems[1].links[1], onClick: () => start("duo") },
+      ],
+    },
+    {
+      ...navItems[2],
+      links: [
+        { ...navItems[2].links[0], onClick: () => (Object.keys(answers).length ? goToStep("result") : start("solo")) },
+        { ...navItems[2].links[1], onClick: () => setPromptIndex((promptIndex + 1) % reflectionPrompts.length) },
+      ],
+    },
+  ];
 
   return (
     <main className="app-shell">
@@ -458,7 +512,7 @@ function App() {
         logoAlt="WARMTH 有温度阅览室"
         brandTitle="WARMTH"
         brandSubtitle="情侣关系复盘小游戏"
-        items={navItems}
+        items={appNavItems}
         baseColor="rgba(238, 240, 243, 0.9)"
         menuColor="#272E3B"
         buttonBgColor="#A97A93"
@@ -533,6 +587,16 @@ function App() {
 
       {step === "quiz" && currentQuestion && (
         <section className="quiz-panel">
+          <div className="flow-bar">
+            <button type="button" onClick={previousQuestion}>
+              <ArrowLeft size={17} /> {currentIndex === 0 ? "回到选择" : "上一题"}
+            </button>
+            <div>
+              <span>{mode === "solo" ? "单人复盘" : isPartnerFlow ? "双人复盘 · 你的部分" : "双人复盘 · 创建邀请"}</span>
+              <strong>{progress}% 已完成</strong>
+            </div>
+            <button type="button" onClick={reset}>退出</button>
+          </div>
           <div className={`quiz-folder-stage ${quizFolderOpen ? "is-open" : ""}`}>
             <Folder
               key={currentQuestion.id}
@@ -605,7 +669,7 @@ function App() {
             >
               <Copy size={18} /> 复制邀请链接
             </button>
-            <button className="ghost-button" onClick={() => setStep("result")}>
+            <button className="ghost-button" onClick={() => goToStep("result")}>
               先看看我的单方结果
             </button>
           </div>

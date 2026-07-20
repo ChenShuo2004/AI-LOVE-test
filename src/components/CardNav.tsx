@@ -8,6 +8,7 @@ type CardNavLink = {
   label: string;
   ariaLabel: string;
   href?: string;
+  onClick?: () => void;
 };
 
 export type CardNavItem = {
@@ -241,6 +242,11 @@ function CardNav({
                     className="nav-card-link"
                     href={link.href || "#"}
                     aria-label={link.ariaLabel}
+                    onClick={(event) => {
+                      if (!link.href || link.onClick) event.preventDefault();
+                      link.onClick?.();
+                      if (link.onClick) toggleMenu();
+                    }}
                   >
                     <ArrowUpRight className="nav-card-link-icon" size={16} aria-hidden="true" />
                     {link.label}
