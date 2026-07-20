@@ -444,12 +444,57 @@ button {
   animation: letter-open 2600ms ease-in-out forwards;
 }
 
-.letter-paper::after {
-  content: "";
-  width: 72%;
+.letter-paper span {
   height: 8px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(169, 122, 147, 0.36), rgba(45, 184, 230, 0.28));
+  background: linear-gradient(90deg, rgba(169, 122, 147, 0.28), rgba(45, 184, 230, 0.3));
+  animation: letter-line 1600ms ease-in-out infinite;
+}
+
+.letter-paper span:nth-child(1) {
+  width: 72%;
+}
+
+.letter-paper span:nth-child(2) {
+  width: 52%;
+  animation-delay: 180ms;
+}
+
+.letter-paper span:nth-child(3) {
+  width: 64%;
+  animation-delay: 360ms;
+}
+
+.envelope-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 34px;
+  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--color-tip);
+  padding: 7px 13px;
+  font-size: 14px;
+  font-weight: 760;
+  box-shadow: 0 12px 28px rgba(66, 76, 92, 0.08);
+}
+
+.envelope-status i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-main);
+  animation: loading-dot 900ms ease-in-out infinite;
+}
+
+.envelope-status i:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.envelope-status i:nth-child(4) {
+  animation-delay: 240ms;
 }
 
 .envelope-open-button {
@@ -512,6 +557,33 @@ button {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes letter-line {
+  0%,
+  100% {
+    opacity: 0.46;
+    transform: scaleX(0.86);
+    transform-origin: left center;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes loading-dot {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-4px);
   }
 }
 

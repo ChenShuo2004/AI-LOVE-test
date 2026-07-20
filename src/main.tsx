@@ -712,7 +712,11 @@ function App() {
           <div className="envelope-card">
             <div className="envelope-stage" aria-hidden="true">
               <div className="envelope-shadow" />
-              <div className="letter-paper" />
+              <div className="letter-paper">
+                <span />
+                <span />
+                <span />
+              </div>
               <div className="envelope-body">
                 <div className="envelope-back" />
                 <div className="envelope-left" />
@@ -720,6 +724,12 @@ function App() {
                 <div className="envelope-front" />
                 <div className="envelope-flap" />
               </div>
+            </div>
+            <div className="envelope-status">
+              <span>正在整理答案</span>
+              <i />
+              <i />
+              <i />
             </div>
             <button className="primary-button envelope-open-button" type="button" onClick={openReport}>
               {mode === "duo" && !partnerAnswers ? "生成邀请卡" : "打开我的报告"} <ArrowRight size={18} />
