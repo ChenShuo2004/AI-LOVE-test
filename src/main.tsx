@@ -454,6 +454,7 @@ function App() {
   const [promptIndex, setPromptIndex] = useState(0);
   const [quizFolderOpen, setQuizFolderOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [reportReady, setReportReady] = useState(false);
   const questions = mode === "solo" ? soloQuestions : duoQuestions;
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
@@ -498,6 +499,7 @@ function App() {
     setAnswers(nextAnswers);
     setQuizFolderOpen(true);
     if (isDone) {
+      setReportReady(false);
       goToStep("loading");
     }
   }
@@ -508,6 +510,7 @@ function App() {
     setAnswers({});
     setMode("solo");
     setQuizFolderOpen(false);
+    setReportReady(false);
   }
 
   function openReport() {
@@ -520,6 +523,14 @@ function App() {
     const timer = window.setTimeout(() => setToastMessage(""), 2000);
     return () => window.clearTimeout(timer);
   }, [toastMessage]);
+
+  useEffect(() => {
+    if (step !== "loading") return;
+
+    setReportReady(false);
+    const timer = window.setTimeout(() => setReportReady(true), 2200);
+    return () => window.clearTimeout(timer);
+  }, [step]);
 
   async function copyInviteLink() {
     try {
@@ -725,15 +736,21 @@ function App() {
                 <div className="envelope-flap" />
               </div>
             </div>
-            <div className="envelope-status">
-              <span>正在整理答案</span>
-              <i />
-              <i />
-              <i />
+            <div className={`envelope-status ${reportReady ? "is-ready" : ""}`}>
+              <span>{reportReady ? "整理好了" : "正在整理答案"}</span>
+              {!reportReady && (
+                <>
+                  <i />
+                  <i />
+                  <i />
+                </>
+              )}
             </div>
-            <button className="primary-button envelope-open-button" type="button" onClick={openReport}>
-              {mode === "duo" && !partnerAnswers ? "生成邀请卡" : "打开我的报告"} <ArrowRight size={18} />
-            </button>
+            {reportReady && (
+              <button className="primary-button envelope-open-button" type="button" onClick={openReport}>
+                {mode === "duo" && !partnerAnswers ? "生成邀请卡" : "打开我的报告"} <ArrowRight size={18} />
+              </button>
+            )}
           </div>
         </section>
       )}

@@ -497,10 +497,15 @@ button {
   animation-delay: 240ms;
 }
 
+.envelope-status.is-ready {
+  color: var(--color-title);
+  background: rgba(255, 255, 255, 0.74);
+}
+
 .envelope-open-button {
   opacity: 0;
   transform: translateY(8px);
-  animation: envelope-button-in 420ms ease 1900ms forwards;
+  animation: envelope-button-in 420ms ease forwards;
 }
 
 @keyframes envelope-rise {
