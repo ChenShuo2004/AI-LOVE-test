@@ -104,7 +104,7 @@ function Folder({
   return (
     <div style={{ transform: `scale(${size})` }} className={className}>
       <div
-        className={`folder ${open ? "open" : ""} ${coverImage ? "folder--cover" : ""}`}
+        className={`folder ${open ? "open" : ""} ${coverImage ? "folder--cover folder--click" : ""}`}
         style={folderStyle}
         onClick={(event) => handleClick(event)}
         onKeyDown={(event) => {
