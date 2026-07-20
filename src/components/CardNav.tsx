@@ -31,6 +31,8 @@ type CardNavProps = {
   buttonBgColor?: string;
   buttonTextColor?: string;
   buttonLabel?: string;
+  menuOpenLabel?: string;
+  menuCloseLabel?: string;
   showButton?: boolean;
   onButtonClick?: () => void;
 };
@@ -48,6 +50,8 @@ function CardNav({
   buttonBgColor = "#111",
   buttonTextColor = "white",
   buttonLabel = "Get Started",
+  menuOpenLabel = "Open menu",
+  menuCloseLabel = "Close menu",
   showButton = true,
   onButtonClick,
 }: CardNavProps) {
@@ -182,7 +186,7 @@ function CardNav({
               }
             }}
             role="button"
-            aria-label={isExpanded ? "关闭菜单" : "打开菜单"}
+            aria-label={isExpanded ? menuCloseLabel : menuOpenLabel}
             aria-expanded={isExpanded}
             tabIndex={0}
             style={{ color: menuColor || "#000" }}

@@ -1240,6 +1240,8 @@ function App() {
         buttonBgColor="#A97A93"
         buttonTextColor="#fff"
         buttonLabel={text.homeButton}
+        menuOpenLabel={text.menuOpen}
+        menuCloseLabel={text.menuClose}
         showButton={step !== "home"}
         onButtonClick={reset}
       />
