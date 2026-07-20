@@ -332,14 +332,14 @@ button {
 }
 
 .envelope-card {
-  width: min(620px, 100%);
+  width: min(520px, 100%);
   display: grid;
   justify-items: center;
-  gap: 18px;
+  gap: 22px;
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
   border-radius: 30px;
   background: rgba(246, 247, 249, 0.84);
-  padding: 42px 38px 38px;
+  padding: 44px 38px 34px;
   text-align: center;
   box-shadow: 0 28px 80px rgba(66, 76, 92, 0.12);
   backdrop-filter: blur(18px);
@@ -422,23 +422,6 @@ button {
   animation: envelope-open 2600ms ease-in-out forwards;
 }
 
-.envelope-note {
-  position: absolute;
-  left: 50%;
-  top: 64%;
-  z-index: 7;
-  width: max-content;
-  max-width: 84%;
-  border-radius: 999px;
-  background: rgba(39, 46, 59, 0.72);
-  color: white;
-  padding: 7px 12px;
-  font-size: 13px;
-  font-weight: 760;
-  box-shadow: 0 12px 26px rgba(66, 76, 92, 0.18);
-  transform: translate(-50%, -50%);
-}
-
 .letter-paper {
   position: absolute;
   bottom: 44px;
@@ -461,21 +444,6 @@ button {
   animation: letter-open 2600ms ease-in-out forwards;
 }
 
-.letter-paper span {
-  color: var(--color-tip);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.letter-paper strong {
-  color: var(--color-title);
-  font-size: 20px;
-  line-height: 1.25;
-  text-align: left;
-}
-
 .letter-paper::after {
   content: "";
   width: 72%;
@@ -484,53 +452,7 @@ button {
   background: linear-gradient(90deg, rgba(169, 122, 147, 0.36), rgba(45, 184, 230, 0.28));
 }
 
-.envelope-card h2 {
-  max-width: 520px;
-  margin: 0;
-  color: var(--color-title);
-  font-size: clamp(30px, 4vw, 46px);
-  line-height: 1.08;
-  letter-spacing: 0;
-}
-
-.envelope-card p {
-  max-width: 460px;
-  margin: 0;
-  color: var(--color-body);
-  line-height: 1.7;
-}
-
-.envelope-steps {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.envelope-steps span {
-  min-height: 46px;
-  display: grid;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.58);
-  color: var(--color-tip);
-  font-size: 13px;
-  font-weight: 760;
-  animation: envelope-step 2600ms ease-in-out forwards;
-}
-
-.envelope-steps span:nth-child(2) {
-  animation-delay: 220ms;
-}
-
-.envelope-steps span:nth-child(3) {
-  animation-delay: 440ms;
-}
-
 .envelope-open-button {
-  margin-top: 2px;
   opacity: 0;
   transform: translateY(8px);
   animation: envelope-button-in 420ms ease 1900ms forwards;
@@ -583,19 +505,6 @@ button {
   100% {
     opacity: 0.7;
     transform: translateX(-50%) scale(1);
-  }
-}
-
-@keyframes envelope-step {
-  0%,
-  100% {
-    transform: translateY(0);
-    color: var(--color-tip);
-  }
-
-  50% {
-    transform: translateY(-2px);
-    color: var(--color-title);
   }
 }
 
@@ -1121,14 +1030,6 @@ button {
     width: 204px;
     min-height: 128px;
     padding: 17px;
-  }
-
-  .letter-paper strong {
-    font-size: 18px;
-  }
-
-  .envelope-steps {
-    grid-template-columns: 1fr;
   }
 
   .reveal-grid,

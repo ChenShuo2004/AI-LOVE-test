@@ -661,26 +661,14 @@ function App() {
           <div className="envelope-card">
             <div className="envelope-stage" aria-hidden="true">
               <div className="envelope-shadow" />
-              <div className="letter-paper">
-                <span>WARMTH</span>
-                <strong>关系报告已写好</strong>
-              </div>
+              <div className="letter-paper" />
               <div className="envelope-body">
                 <div className="envelope-back" />
-                <div className="envelope-note">给你们的一封温柔小信</div>
                 <div className="envelope-left" />
                 <div className="envelope-right" />
                 <div className="envelope-front" />
                 <div className="envelope-flap" />
               </div>
-            </div>
-            <span className="eyebrow"><CloudSun size={16} /> 正在封装关系报告</span>
-            <h2>报告正在装进信封</h2>
-            <p>马上打开这封小信，看看今天适合从哪里温柔地靠近。</p>
-            <div className="envelope-steps">
-              <span>整理答案</span>
-              <span>写入信纸</span>
-              <span>准备打开</span>
             </div>
             <button className="primary-button envelope-open-button" type="button" onClick={openReport}>
               {mode === "duo" && !partnerAnswers ? "生成邀请卡" : "打开我的报告"} <ArrowRight size={18} />
