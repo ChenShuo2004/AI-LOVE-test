@@ -748,6 +748,11 @@ button {
   padding: 54px 0;
 }
 
+.result-layout-single {
+  grid-template-columns: 1fr;
+  width: min(980px, 100%);
+}
+
 .result-main,
 .side-card {
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
@@ -778,7 +783,10 @@ button {
 .reveal-grid span,
 .message-card span,
 .side-card span,
-.compare-card span {
+.compare-card span,
+.insight-grid span,
+.action-card span,
+.talk-card span {
   color: rgba(255, 255, 255, 0.64);
   font-size: 13px;
   font-weight: 760;
@@ -804,7 +812,10 @@ button {
 
 .reveal-grid article,
 .message-card,
-.compare-card {
+.compare-card,
+.insight-grid article,
+.action-card,
+.talk-card {
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
   border-radius: 22px;
   background: rgba(246, 247, 249, 0.82);
@@ -814,7 +825,10 @@ button {
 .reveal-grid span,
 .message-card span,
 .compare-card span,
-.side-card span {
+.side-card span,
+.insight-grid span,
+.action-card span,
+.talk-card span {
   color: var(--color-tip);
 }
 
@@ -827,10 +841,66 @@ button {
 .reveal-grid p,
 .message-card p,
 .compare-card p,
-.side-card p {
+.side-card p,
+.insight-grid p,
+.action-card p,
+.talk-card p {
   margin: 10px 0 0;
   color: var(--color-body);
   line-height: 1.65;
+}
+
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.insight-grid p {
+  color: var(--color-title);
+  font-size: 18px;
+}
+
+.action-card,
+.talk-card {
+  margin-top: 12px;
+}
+
+.action-card div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.action-card p {
+  min-height: 78px;
+  margin: 0;
+  border-radius: 18px;
+  background: rgba(242, 235, 240, 0.64);
+  padding: 16px;
+  color: var(--color-title);
+  font-weight: 720;
+}
+
+.action-card strong {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: var(--color-title);
+  color: white;
+  font-size: 13px;
+}
+
+.talk-card p {
+  color: var(--color-title);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .message-card,
@@ -1033,6 +1103,8 @@ button {
   }
 
   .reveal-grid,
+  .insight-grid,
+  .action-card div,
   .compare-card {
     grid-template-columns: 1fr;
   }

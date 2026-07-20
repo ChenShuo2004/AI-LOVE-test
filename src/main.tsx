@@ -394,6 +394,54 @@ function makeMessage(weakest: string) {
   return copy[weakest] ?? copy.communication;
 }
 
+function makeInsight(weakest: string, strongest: string) {
+  const weakCopy: Record<string, string> = {
+    security: "你现在最需要被认真安放的，是关系里的确定感。不是要对方时时刻刻证明，而是希望在关键时刻能被清楚地选择。",
+    communication: "你们最容易卡住的地方，是话还没说完，彼此就已经开始防御。真正需要被修复的不是表达能力，而是对话里的安全边界。",
+    companionship: "你在意的不是陪伴的时长本身，而是对方有没有把你放进生活节奏里。被惦记，比被安排更重要。",
+    repair: "关系现在最需要的是吵完之后还能回来。你们不一定缺少感情，更可能是缺少一套不伤人的修复方式。",
+    intimacy: "你需要确认彼此还站在同一边。亲密感不只来自热烈表达，也来自一些稳定的小回应。",
+    future: "你在寻找的是方向感。不是马上做重大决定，而是想知道彼此是否还愿意一起往前看。",
+  };
+  const strongCopy: Record<string, string> = {
+    security: "你们仍然有能让彼此安心的底色。",
+    communication: "你们并不害怕沟通，只是需要更柔和的开场。",
+    companionship: "你们之间还有愿意陪伴和靠近的惯性。",
+    repair: "你们有修复的可能，只要别把每次争执都当成结论。",
+    intimacy: "你们仍然在乎彼此是否亲近。",
+    future: "你们还有一起调整方向的空间。",
+  };
+
+  return {
+    focus: weakCopy[weakest] ?? weakCopy.communication,
+    strength: strongCopy[strongest] ?? strongCopy.repair,
+  };
+}
+
+function makeActions(weakest: string) {
+  const actions: Record<string, string[]> = {
+    security: ["约定一个固定回应信号", "少用反问，多用确认", "把需要说成请求"],
+    communication: ["先复述对方的感受", "一次只聊一个问题", "把争对错换成讲影响"],
+    companionship: ["安排一次不赶时间的相处", "每天留一个真实近况", "主动把对方放进计划里"],
+    repair: ["情绪高时先暂停 10 分钟", "吵完约定回来收尾", "先道歉态度，再讨论事情"],
+    intimacy: ["多做一个小的主动靠近", "把想念说具体", "减少冷处理的时间"],
+    future: ["聊一次近期共同期待", "把担心拆成现实问题", "先定一个一周内的小目标"],
+  };
+  return actions[weakest] ?? actions.communication;
+}
+
+function makeTalkPrompt(weakest: string) {
+  const prompts: Record<string, string> = {
+    security: "当我不安的时候，你怎么回应会让我更容易相信我们还在同一边？",
+    communication: "我们下次意见不同时，能不能先各自说完感受，再讨论解决办法？",
+    companionship: "这周我们可以留出哪一段时间，只用来好好陪彼此？",
+    repair: "如果又吵起来，我们能不能约定一个暂停和回来继续聊的方式？",
+    intimacy: "最近有没有一个瞬间，你其实希望我主动靠近一点？",
+    future: "接下来一个月，我们最想一起变好的地方是什么？",
+  };
+  return prompts[weakest] ?? prompts.communication;
+}
+
 function App() {
   const invitedAnswers = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
@@ -487,6 +535,9 @@ function App() {
   const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
   const mood = resultMood(combinedScore);
   const MoodIcon = mood.icon;
+  const resultInsight = makeInsight(soloResult.weakest, soloResult.strongest);
+  const resultActions = makeActions(soloResult.weakest);
+  const talkPrompt = makeTalkPrompt(soloResult.weakest);
   const inviteUrl =
     mode === "duo"
       ? `${window.location.origin}${window.location.pathname}?invite=${encodeAnswers(answers)}`
@@ -704,7 +755,7 @@ function App() {
       )}
 
       {step === "result" && (
-        <section className="result-layout">
+        <section className="result-layout result-layout-single">
           <div className="result-main">
             <div className="weather-card">
               <MoodIcon size={34} />
@@ -729,6 +780,31 @@ function App() {
                 <strong>{dimensions[soloResult.weakest as keyof typeof dimensions]}</strong>
                 <p>先聊最软的需求，再聊谁该改变。</p>
               </article>
+            </div>
+
+            <div className="insight-grid">
+              <article>
+                <span>关系读法</span>
+                <p>{resultInsight.focus}</p>
+              </article>
+              <article>
+                <span>关系里还亮着的灯</span>
+                <p>{resultInsight.strength}</p>
+              </article>
+            </div>
+
+            <div className="action-card">
+              <span>接下来 7 天可以试试</span>
+              <div>
+                {resultActions.map((action, index) => (
+                  <p key={action}><strong>{index + 1}</strong>{action}</p>
+                ))}
+              </div>
+            </div>
+
+            <div className="talk-card">
+              <span>今晚可以从这个问题开始</span>
+              <p>“{talkPrompt}”</p>
             </div>
 
             {partnerAnswers && (
@@ -756,14 +832,6 @@ function App() {
               </button>
             </div>
           </div>
-
-          <aside className="side-card sticky-note">
-            <span>今日复盘卡</span>
-            <p>{reflectionPrompts[promptIndex]}</p>
-            <button onClick={() => setPromptIndex((promptIndex + 1) % reflectionPrompts.length)}>
-              <RefreshCw size={16} /> 换一个
-            </button>
-          </aside>
         </section>
       )}
     </main>
