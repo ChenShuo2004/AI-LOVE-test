@@ -273,13 +273,13 @@ button {
 
 .quiz-panel {
   position: relative;
-  min-height: calc(100vh - 92px);
+  min-height: calc(100vh - 172px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 18px;
-  padding: 44px 0;
+  padding: 0;
 }
 
 .quiz-folder-stage {
@@ -294,7 +294,7 @@ button {
 
 .quiz-floating-folder {
   position: absolute;
-  left: max(-28px, calc((100vw - min(820px, 94vw)) / -2 + 28px));
+  left: max(-180px, calc((100vw - min(820px, 94vw)) / -2 + 28px));
   top: 50%;
   z-index: 8;
   width: 154px;
@@ -710,7 +710,7 @@ button {
   }
 
   .quiz-floating-folder {
-    left: 14px;
+    left: 10px;
     top: 50%;
     width: 104px;
     height: 66px;

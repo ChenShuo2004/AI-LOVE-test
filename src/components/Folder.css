@@ -211,6 +211,8 @@
 
 .quiz-folder .folder.open .paper:nth-child(3) {
   z-index: 5;
+  top: 13%;
+  bottom: auto;
   width: min(760px, 92vw);
   height: auto;
   min-height: 520px;
