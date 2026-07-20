@@ -280,6 +280,115 @@ const duoQuestions: Question[] = [
   },
 ];
 
+const extraSoloQuestions: Question[] = [
+  {
+    id: "solo_response",
+    title: "当你发出一个很在意的信号后，最希望 TA 怎么回应？",
+    hint: "这题看的是你对安全回应的期待。",
+    options: [
+      { label: "马上给我一个明确反馈", value: "clear", dimension: "security", weight: 5 },
+      { label: "认真听完，不急着解释", value: "listen", dimension: "communication", weight: 4 },
+      { label: "主动问我还需要什么", value: "ask", dimension: "repair", weight: 4 },
+      { label: "用行动补上陪伴", value: "act", dimension: "companionship", weight: 4 },
+      { label: "先别催我恢复正常", value: "space", dimension: "repair", weight: 2 },
+    ],
+  },
+  {
+    id: "solo_boundary",
+    title: "你最近最想为自己保留的一点空间是？",
+    hint: "健康的靠近，也需要边界。",
+    options: [
+      { label: "不被追问到必须马上解释", value: "no_push", dimension: "repair", weight: 3 },
+      { label: "有自己的朋友和生活", value: "life", dimension: "future", weight: 4 },
+      { label: "情绪低时可以先安静", value: "quiet", dimension: "repair", weight: 4 },
+      { label: "不用一直证明我在乎", value: "trust", dimension: "security", weight: 3 },
+      { label: "可以坦白说不舒服", value: "honest", dimension: "communication", weight: 5 },
+    ],
+  },
+  {
+    id: "solo_memory",
+    title: "想到这段关系，你最舍不得的是？",
+    hint: "舍不得里通常藏着关系真正有价值的部分。",
+    options: [
+      { label: "那些自然开心的瞬间", value: "happy", dimension: "intimacy", weight: 5 },
+      { label: "TA 曾经给过我的确定", value: "certain", dimension: "security", weight: 4 },
+      { label: "我们一起熬过去的事", value: "through", dimension: "repair", weight: 5 },
+      { label: "共同计划过的未来", value: "plan", dimension: "future", weight: 4 },
+      { label: "日常里被陪着的感觉", value: "daily", dimension: "companionship", weight: 5 },
+    ],
+  },
+  {
+    id: "solo_first_step",
+    title: "如果只做一个小改变，你愿意先从哪里开始？",
+    hint: "越小的动作，越容易真的发生。",
+    options: [
+      { label: "把情绪说成感受", value: "feeling", dimension: "communication", weight: 5 },
+      { label: "少一点试探，多一点直说", value: "direct", dimension: "security", weight: 4 },
+      { label: "吵完记得回来收尾", value: "repair", dimension: "repair", weight: 5 },
+      { label: "主动安排一次相处", value: "date", dimension: "companionship", weight: 5 },
+      { label: "一起确认一个近期计划", value: "future", dimension: "future", weight: 5 },
+    ],
+  },
+];
+
+const extraDuoQuestions: Question[] = [
+  {
+    id: "duo_signal",
+    title: "你最希望对方读懂你的哪个信号？",
+    hint: "不是让对方猜心，是把信号翻译得更清楚。",
+    options: [
+      { label: "我沉默时其实是在难过", value: "silent_sad", dimension: "communication", weight: 2 },
+      { label: "我反复问是因为不安", value: "repeat", dimension: "security", weight: 2 },
+      { label: "我想独处不代表不爱", value: "alone", dimension: "repair", weight: 3 },
+      { label: "我分享小事是在邀请你参与", value: "share", dimension: "companionship", weight: 4 },
+      { label: "我撒娇时是在确认亲近", value: "close", dimension: "intimacy", weight: 4 },
+    ],
+  },
+  {
+    id: "duo_restore",
+    title: "冲突后，哪件事最能让你重新靠近？",
+    hint: "修复不是翻篇，而是让心慢慢回到同一边。",
+    options: [
+      { label: "听到一句真诚道歉", value: "sorry", dimension: "repair", weight: 5 },
+      { label: "对方解释时不推责任", value: "own", dimension: "communication", weight: 4 },
+      { label: "有一个拥抱或靠近", value: "hug", dimension: "intimacy", weight: 4 },
+      { label: "明确下次怎么避免", value: "avoid", dimension: "future", weight: 5 },
+      { label: "先确认彼此还在乎", value: "care", dimension: "security", weight: 5 },
+    ],
+  },
+  {
+    id: "duo_daily",
+    title: "你最想一起恢复的日常感是？",
+    hint: "很多关系不是坏在大事，而是松在日常。",
+    options: [
+      { label: "睡前好好说几句话", value: "night", dimension: "companionship", weight: 5 },
+      { label: "看见好玩的会分享", value: "share", dimension: "intimacy", weight: 5 },
+      { label: "忙的时候也有交代", value: "busy", dimension: "security", weight: 4 },
+      { label: "见面时少看手机", value: "phone", dimension: "companionship", weight: 4 },
+      { label: "有矛盾当天尽量收尾", value: "same_day", dimension: "repair", weight: 5 },
+    ],
+  },
+  {
+    id: "duo_future_tiny",
+    title: "关于未来，你现在最需要确认的是？",
+    hint: "先确认一个小方向，不急着给所有答案。",
+    options: [
+      { label: "我们还愿意一起努力吗", value: "try", dimension: "future", weight: 5 },
+      { label: "现实压力怎么一起分担", value: "pressure", dimension: "future", weight: 4 },
+      { label: "彼此底线能不能被尊重", value: "boundary", dimension: "repair", weight: 4 },
+      { label: "我们怎么安排相处时间", value: "time", dimension: "companionship", weight: 4 },
+      { label: "遇到不安时怎么互相确认", value: "confirm", dimension: "security", weight: 5 },
+    ],
+  },
+];
+
+const questionBanks: Record<Mode, Question[]> = {
+  solo: [...soloQuestions, ...extraSoloQuestions],
+  duo: [...duoQuestions, ...extraDuoQuestions],
+};
+
+const QUESTIONS_PER_ROUND = 8;
+
 const reflectionPrompts = [
   "最近一次让你觉得被爱的细节是什么？",
   "哪句话你其实听了会安心很多？",
@@ -331,6 +440,41 @@ function decodeAnswers(value: string | null): AnswerMap | null {
   }
 }
 
+function encodeQuestionIds(ids: string[]) {
+  return btoa(encodeURIComponent(JSON.stringify(ids)));
+}
+
+function decodeQuestionIds(value: string | null): string[] | null {
+  if (!value) return null;
+  try {
+    const parsed = JSON.parse(decodeURIComponent(atob(value)));
+    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : null;
+  } catch {
+    return null;
+  }
+}
+
+function shuffleQuestions(questions: Question[]) {
+  const next = [...questions];
+  for (let index = next.length - 1; index > 0; index -= 1) {
+    const random = crypto.getRandomValues(new Uint32Array(1))[0] / 2 ** 32;
+    const swapIndex = Math.floor(random * (index + 1));
+    [next[index], next[swapIndex]] = [next[swapIndex], next[index]];
+  }
+  return next;
+}
+
+function selectQuestionIds(mode: Mode) {
+  return shuffleQuestions(questionBanks[mode]).slice(0, QUESTIONS_PER_ROUND).map((question) => question.id);
+}
+
+function questionsFromIds(mode: Mode, ids: string[]) {
+  const bank = questionBanks[mode];
+  const byId = new Map(bank.map((question) => [question.id, question]));
+  const selected = ids.map((id) => byId.get(id)).filter((question): question is Question => Boolean(question));
+  return selected.length ? selected : bank.slice(0, QUESTIONS_PER_ROUND);
+}
+
 function optionFor(question: Question, value?: string) {
   return question.options.find((option) => option.value === value);
 }
@@ -346,7 +490,7 @@ function scoreAnswers(questions: Question[], answers: AnswerMap) {
     }
   });
   const max = questions.length * 5;
-  const percent = Math.round((score / max) * 100);
+  const percent = max ? Math.round((score / max) * 100) : 0;
   const weakest = Object.entries(totals).sort((a, b) => a[1] - b[1])[0]?.[0] ?? "communication";
   const strongest = Object.entries(totals).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "repair";
   return { percent, weakest, strongest, totals };
@@ -448,7 +592,7 @@ function makeInsight(weakest: string, strongest: string) {
     security: "你现在最需要被认真安放的，是关系里的确定感。不是要对方时时刻刻证明，而是希望在关键时刻能被清楚地选择。",
     communication: "你们最容易卡住的地方，是话还没说完，彼此就已经开始防御。真正需要被修复的不是表达能力，而是对话里的安全边界。",
     companionship: "你在意的不是陪伴的时长本身，而是对方有没有把你放进生活节奏里。被惦记，比被安排更重要。",
-    repair: "关系现在最需要的是吵完之后还能回来。你们不一定缺少感情，更可能是缺少一套不伤人的修复方式。",
+    repair: "关系现在最需要的，是冲突之后还能回到同一张桌子前。你们不一定缺少感情，更可能是缺少一套不伤人的修复方式：先让情绪降下来，再确认彼此还在乎，最后才讨论具体事情。只要能把“吵完就断开”改成“暂停后回来收尾”，关系会更容易重新靠近。",
     intimacy: "你需要确认彼此还站在同一边。亲密感不只来自热烈表达，也来自一些稳定的小回应。",
     future: "你在寻找的是方向感。不是马上做重大决定，而是想知道彼此是否还愿意一起往前看。",
   };
@@ -491,20 +635,32 @@ function makeTalkPrompt(weakest: string) {
   return prompts[weakest] ?? prompts.communication;
 }
 
+function makeCredibilityNote(questionCount: number, hasPartner: boolean) {
+  return hasPartner
+    ? `这份结果基于你们两个人同一组 ${questionCount} 道题的选择生成，只代表此刻的关系快照，不作为心理诊断或关系结论。`
+    : `这份结果基于本轮随机抽取的 ${questionCount} 道题和你的选择生成，只代表此刻的感受快照，不作为心理诊断或关系结论。`;
+}
+
 function App() {
-  const invitedAnswers = useMemo(() => {
+  const inviteData = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    return decodeAnswers(params.get("invite"));
+    return {
+      answers: decodeAnswers(params.get("invite")),
+      questionIds: decodeQuestionIds(params.get("questions")),
+    };
   }, []);
-  const [mode, setMode] = useState<Mode>(invitedAnswers ? "duo" : "solo");
-  const [step, setStep] = useState<Step>(invitedAnswers ? "quiz" : "home");
+  const [mode, setMode] = useState<Mode>(inviteData.answers ? "duo" : "solo");
+  const [step, setStep] = useState<Step>(inviteData.answers ? "quiz" : "home");
   const [answers, setAnswers] = useState<AnswerMap>({});
-  const [partnerAnswers] = useState<AnswerMap | null>(invitedAnswers);
+  const [partnerAnswers] = useState<AnswerMap | null>(inviteData.answers);
+  const [questionIds, setQuestionIds] = useState<string[]>(
+    inviteData.questionIds ?? (inviteData.answers ? Object.keys(inviteData.answers) : selectQuestionIds("solo")),
+  );
   const [promptIndex, setPromptIndex] = useState(0);
   const [quizFolderOpen, setQuizFolderOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [reportReady, setReportReady] = useState(false);
-  const questions = mode === "solo" ? soloQuestions : duoQuestions;
+  const questions = useMemo(() => questionsFromIds(mode, questionIds), [mode, questionIds]);
   const currentIndex = Object.keys(answers).length;
   const currentQuestion = questions[currentIndex];
   const progress = Math.round((currentIndex / questions.length) * 100);
@@ -537,6 +693,7 @@ function App() {
 
   function start(nextMode: Mode) {
     setAnswers({});
+    setQuestionIds(selectQuestionIds(nextMode));
     goToStep("quiz", nextMode, false);
   }
 
@@ -558,6 +715,7 @@ function App() {
     setStep("home");
     setAnswers({});
     setMode("solo");
+    setQuestionIds(selectQuestionIds("solo"));
     setQuizFolderOpen(false);
     setReportReady(false);
   }
@@ -591,20 +749,21 @@ function App() {
   }
 
   const soloResult = scoreAnswers(questions, answers);
-  const partnerResult = partnerAnswers ? scoreAnswers(duoQuestions, partnerAnswers) : null;
+  const partnerResult = partnerAnswers ? scoreAnswers(questions, partnerAnswers) : null;
   const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
   const mood = resultMood(combinedScore);
   const abilityScores = mergeAbilities(
     scoreAbilities(questions, answers),
-    partnerAnswers ? scoreAbilities(duoQuestions, partnerAnswers) : null,
+    partnerAnswers ? scoreAbilities(questions, partnerAnswers) : null,
   );
   const radarPoints = abilityScores.map((item, index) => radarPoint(index, item.value, abilityScores.length)).join(" ");
   const resultInsight = makeInsight(soloResult.weakest, soloResult.strongest);
   const resultActions = makeActions(soloResult.weakest);
   const talkPrompt = makeTalkPrompt(soloResult.weakest);
+  const credibilityNote = makeCredibilityNote(questions.length, Boolean(partnerAnswers));
   const inviteUrl =
     mode === "duo"
-      ? `${window.location.origin}${window.location.pathname}?invite=${encodeAnswers(answers)}`
+      ? `${window.location.origin}${window.location.pathname}?invite=${encodeAnswers(answers)}&questions=${encodeQuestionIds(questions.map((question) => question.id))}`
       : "";
   const appNavItems = [
     navItems[0],
@@ -848,7 +1007,10 @@ function App() {
               <div className="ability-copy">
                 <span>关系能力图</span>
                 <h2>当前关系指标</h2>
-                <p>六项能力来自你的答案权重，分数越高，代表这一项在当前关系里越容易被看见和使用。</p>
+                <p>
+                  <span>六项能力来自你的答案权重。</span>
+                  <span>分数越高，代表这一项在当前关系里越容易被看见和使用。</span>
+                </p>
               </div>
               <div className="radar-wrap" aria-label="当前关系六项能力指标图">
                 <svg viewBox="0 0 240 240" role="img">
@@ -891,7 +1053,7 @@ function App() {
               <article>
                 <span>关系称号</span>
                 <strong>{mood.title}</strong>
-                <p>你们此刻的关系快照</p>
+                <p>{mood.line}</p>
               </article>
               <article>
                 <span>{partnerAnswers ? "你们的共同分" : "当前清晰度"}</span>
@@ -903,6 +1065,11 @@ function App() {
                 <strong>{dimensions[soloResult.weakest as keyof typeof dimensions]}</strong>
                 <p>先聊最软的需求，再聊谁该改变。</p>
               </article>
+            </div>
+
+            <div className="credibility-card">
+              <span>结果说明</span>
+              <p>{credibilityNote}</p>
             </div>
 
             <div className="insight-grid">

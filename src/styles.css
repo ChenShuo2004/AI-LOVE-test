@@ -871,7 +871,8 @@ button {
 .compare-card span,
 .insight-grid span,
 .action-card span,
-.talk-card span {
+.talk-card span,
+.credibility-card span {
   color: rgba(255, 255, 255, 0.64);
   font-size: 13px;
   font-weight: 760;
@@ -911,7 +912,7 @@ button {
 
 .ability-copy h2 {
   margin: 14px 0 10px;
-  font-size: clamp(34px, 5vw, 56px);
+  font-size: clamp(34px, 4vw, 45px);
   line-height: 1;
   letter-spacing: 0;
 }
@@ -921,6 +922,10 @@ button {
   margin: 0;
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.7;
+}
+
+.ability-copy p span {
+  display: block;
 }
 
 .radar-wrap {
@@ -995,7 +1000,8 @@ button {
 .compare-card,
 .insight-grid article,
 .action-card,
-.talk-card {
+.talk-card,
+.credibility-card {
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
   border-radius: 22px;
   background: rgba(246, 247, 249, 0.82);
@@ -1008,7 +1014,8 @@ button {
 .side-card span,
 .insight-grid span,
 .action-card span,
-.talk-card span {
+.talk-card span,
+.credibility-card span {
   color: var(--color-tip);
 }
 
@@ -1024,10 +1031,21 @@ button {
 .side-card p,
 .insight-grid p,
 .action-card p,
-.talk-card p {
+.talk-card p,
+.credibility-card p {
   margin: 10px 0 0;
   color: var(--color-body);
   line-height: 1.65;
+}
+
+.credibility-card {
+  margin-top: 12px;
+  background: rgba(238, 240, 243, 0.72);
+}
+
+.credibility-card p {
+  margin-top: 8px;
+  font-size: 14px;
 }
 
 .insight-grid {
