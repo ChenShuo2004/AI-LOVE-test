@@ -134,12 +134,16 @@
 
 .folder--cover .folder__front:not(.right)::before {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
   z-index: 0;
+  width: 100%;
+  height: 190%;
   background-image: linear-gradient(rgba(39, 46, 59, 0.08), rgba(39, 46, 59, 0.38)), var(--folder-cover-image);
-  background-position: center 42%;
+  background-position: center 46%;
   background-size: cover;
   content: "";
+  transform: translate(-50%, -50%) rotate(-90deg) scale(1.08);
 }
 
 .folder--cover .folder__label {
@@ -181,16 +185,21 @@
 }
 
 .quiz-folder .folder__back {
-  width: min(560px, 86vw);
-  height: 330px;
+  width: min(680px, 88vw);
+  height: 390px;
   border-radius: 0 28px 32px 32px;
   box-shadow: 0 28px 80px rgba(66, 76, 92, 0.18);
 }
 
 .quiz-folder .folder__back::after {
-  width: 178px;
-  height: 48px;
+  width: 218px;
+  height: 56px;
   border-radius: 18px 18px 0 0;
+}
+
+.quiz-folder .folder--cover .folder__back,
+.quiz-folder .folder--cover .folder__back::after {
+  background: #9cc7e7;
 }
 
 .quiz-folder .folder__front {
