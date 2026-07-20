@@ -314,53 +314,6 @@ button {
   padding: 0;
 }
 
-.flow-bar {
-  width: min(820px, 94vw);
-  display: grid;
-  grid-template-columns: 130px minmax(0, 1fr) 90px;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
-  border-radius: 20px;
-  background: rgba(246, 247, 249, 0.82);
-  padding: 10px;
-  box-shadow: 0 18px 50px rgba(66, 76, 92, 0.08);
-  backdrop-filter: blur(18px);
-}
-
-.flow-bar button {
-  min-height: 42px;
-  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.62);
-  color: var(--color-title);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  font-weight: 720;
-}
-
-.flow-bar div {
-  min-width: 0;
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  text-align: center;
-}
-
-.flow-bar span {
-  color: var(--color-tip);
-  font-size: 12px;
-  font-weight: 760;
-}
-
-.flow-bar strong {
-  color: var(--color-title);
-  font-size: 15px;
-}
-
 .quiz-folder-stage {
   position: relative;
   z-index: 3;
@@ -972,20 +925,6 @@ button {
     align-self: center;
     width: 100%;
     min-height: 700px;
-  }
-
-  .flow-bar {
-    width: 100%;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .flow-bar div {
-    grid-column: 1 / -1;
-    grid-row: 1;
-  }
-
-  .flow-bar button {
-    grid-row: 2;
   }
 
   .quiz-folder-stage.is-open {

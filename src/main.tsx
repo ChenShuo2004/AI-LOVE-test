@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
-  ArrowLeft,
   ArrowRight,
   CloudSun,
   Copy,
@@ -455,19 +454,6 @@ function App() {
     }
   }
 
-  function previousQuestion() {
-    if (currentIndex === 0) {
-      reset();
-      return;
-    }
-
-    const previous = questions[currentIndex - 1];
-    const nextAnswers = { ...answers };
-    delete nextAnswers[previous.id];
-    setAnswers(nextAnswers);
-    setQuizFolderOpen(true);
-  }
-
   function reset() {
     window.history.replaceState({}, "", window.location.pathname);
     setStep("home");
@@ -620,16 +606,6 @@ function App() {
 
       {step === "quiz" && currentQuestion && (
         <section className="quiz-panel">
-          <div className="flow-bar">
-            <button type="button" onClick={previousQuestion}>
-              <ArrowLeft size={17} /> {currentIndex === 0 ? "回到选择" : "上一题"}
-            </button>
-            <div>
-              <span>{mode === "solo" ? "单人复盘" : isPartnerFlow ? "双人复盘 · 你的部分" : "双人复盘 · 创建邀请"}</span>
-              <strong>{progress}% 已完成</strong>
-            </div>
-            <button type="button" onClick={reset}>退出</button>
-          </div>
           <div className={`quiz-folder-stage ${quizFolderOpen ? "is-open" : ""}`}>
             <Folder
               key={currentQuestion.id}
