@@ -527,45 +527,46 @@ function App() {
 
       {step === "quiz" && currentQuestion && (
         <section className="quiz-panel">
-          <div className="quiz-folder-stage" aria-hidden="true">
+          <div className="quiz-folder-stage">
             <Folder
+              key={currentQuestion.id}
+              className="quiz-folder"
               color="#A97A93"
-              size={0.92}
+              size={1}
               defaultOpen
-              items={[0, 1, 2].map((offset) => {
-                const number = currentIndex + offset + 1;
-                return number <= questions.length ? <span>{number}</span> : null;
-              })}
+              items={[
+                currentIndex + 2 <= questions.length ? <span>{currentIndex + 2}</span> : null,
+                currentIndex + 3 <= questions.length ? <span>{currentIndex + 3}</span> : null,
+                <div className="quiz-pop-card" onClick={(event) => event.stopPropagation()}>
+                  <div className="quiz-pop-head">
+                    <div>
+                      <span className="eyebrow">
+                        {mode === "solo" ? "单人测试" : isPartnerFlow ? "TA 已答完，现在轮到你" : "双人测试：先完成你的部分"}
+                      </span>
+                      <h2>{currentQuestion.title}</h2>
+                      <p>{currentQuestion.hint}</p>
+                    </div>
+                    <div className="progress-ring">
+                      <span>{currentIndex + 1}</span>
+                      <small>/ {questions.length}</small>
+                    </div>
+                  </div>
+
+                  <div className="progress-track">
+                    <span style={{ width: `${progress}%` }} />
+                  </div>
+
+                  <div className="quiz-pop-options">
+                    {currentQuestion.options.map((option) => (
+                      <button key={option.value} onClick={() => chooseAnswer(option.value)}>
+                        <span>{option.label}</span>
+                        <ArrowRight size={18} />
+                      </button>
+                    ))}
+                  </div>
+                </div>,
+              ]}
             />
-          </div>
-
-          <div className="quiz-card-frame" key={currentQuestion.id}>
-            <div className="quiz-head">
-              <div>
-                <span className="eyebrow">
-                  {mode === "solo" ? "单人测试" : isPartnerFlow ? "TA 已答完，现在轮到你" : "双人测试：先完成你的部分"}
-                </span>
-                <h2>{currentQuestion.title}</h2>
-                <p>{currentQuestion.hint}</p>
-              </div>
-              <div className="progress-ring">
-                <span>{currentIndex + 1}</span>
-                <small>/ {questions.length}</small>
-              </div>
-            </div>
-
-            <div className="progress-track">
-              <span style={{ width: `${progress}%` }} />
-            </div>
-
-            <div className="option-list">
-              {currentQuestion.options.map((option) => (
-                <button key={option.value} onClick={() => chooseAnswer(option.value)}>
-                  <span>{option.label}</span>
-                  <ArrowRight size={18} />
-                </button>
-              ))}
-            </div>
           </div>
         </section>
       )}

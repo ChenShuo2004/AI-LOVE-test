@@ -53,7 +53,8 @@ function Folder({ color = "#A97A93", size = 1, items = [], className = "", defau
     "--paper-3": "#ffffff",
   } as React.CSSProperties & Record<`--${string}`, string>;
 
-  const handleClick = () => {
+  const handleClick = (event?: React.MouseEvent<HTMLDivElement>) => {
+    if (event?.target instanceof HTMLElement && event.target.closest(".paper")) return;
     setOpen((previous) => !previous);
     if (open) setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
   };
@@ -87,7 +88,7 @@ function Folder({ color = "#A97A93", size = 1, items = [], className = "", defau
       <div
         className={`folder ${open ? "open" : ""}`}
         style={folderStyle}
-        onClick={handleClick}
+        onClick={(event) => handleClick(event)}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
