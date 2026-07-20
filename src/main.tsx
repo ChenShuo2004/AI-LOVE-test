@@ -1314,7 +1314,7 @@ function App() {
           </div>
 
           <div className="quote-strip">
-            <span>今日复盘卡</span>
+            <span>{text.reviewCard}</span>
             <p>{prompts[promptIndex]}</p>
             <button onClick={() => setPromptIndex((promptIndex + 1) % prompts.length)} aria-label={text.changePrompt}>
               <RefreshCw size={16} />
@@ -1333,7 +1333,7 @@ function App() {
               coverImage="/covers/quiz-folder-cover.jpg"
               size={1}
               open={quizFolderOpen}
-              label={quizFolderOpen ? "答题中" : currentIndex === 0 ? "开始测试" : "下一题"}
+              label={quizFolderOpen ? text.folderAnswering : currentIndex === 0 ? text.folderStart : text.folderNext}
               onOpenChange={setQuizFolderOpen}
               items={[
                 null,
@@ -1342,14 +1342,14 @@ function App() {
                   <div className="quiz-pop-head">
                     <div>
                       <span className="eyebrow">
-                        {mode === "solo" ? "单人测试" : isPartnerFlow ? "TA 已答完，现在轮到你" : "双人测试：先完成你的部分"}
+                        {mode === "solo" ? text.soloMode : isPartnerFlow ? text.partnerMode : text.duoMode}
                       </span>
                       <h2>{currentQuestion.title}</h2>
                       <p>{currentQuestion.hint}</p>
                     </div>
                     <div className="progress-ring">
                       <span>{currentIndex + 1} / {questions.length}</span>
-                      <small>题目进度</small>
+                      <small>{text.progress}</small>
                     </div>
                   </div>
 
@@ -1373,9 +1373,9 @@ function App() {
                 className="quiz-floating-folder"
                 type="button"
                 onClick={() => setQuizFolderOpen(false)}
-                aria-label="返回题卡夹"
+                aria-label={text.backToCard}
               >
-                <span>答题中</span>
+                <span>{text.folderAnswering}</span>
               </button>
             )}
           </div>
@@ -1401,7 +1401,7 @@ function App() {
               </div>
             </div>
             <div className={`envelope-status ${reportReady ? "is-ready" : ""}`}>
-              <span>{reportReady ? "整理好了" : "正在整理答案"}</span>
+              <span>{reportReady ? text.sortingDone : text.sorting}</span>
               {!reportReady && (
                 <>
                   <i />
@@ -1412,7 +1412,7 @@ function App() {
             </div>
             {reportReady && (
               <button className="primary-button envelope-open-button" type="button" onClick={openReport}>
-                {mode === "duo" && !partnerAnswers ? "生成邀请卡" : "打开我的报告"} <ArrowRight size={18} />
+                {mode === "duo" && !partnerAnswers ? text.generateInvite : text.openReport} <ArrowRight size={18} />
               </button>
             )}
           </div>
@@ -1422,25 +1422,25 @@ function App() {
       {step === "invite" && (
         <section className="result-layout">
           <div className="result-main invite-panel">
-            <span className="eyebrow"><UsersRound size={16} /> 你的部分完成了</span>
-            <h2>把这张小纸条递给 TA。</h2>
+            <span className="eyebrow"><UsersRound size={16} /> {text.inviteDone}</span>
+            <h2>{text.inviteTitle}</h2>
             <p>
-              TA 打开链接答完同一组问题，就会生成你们的双人关系复盘。这个 demo 会把你的答案放在链接里，不需要登录。
+              {text.inviteDesc}
             </p>
             <div className="invite-box">{inviteUrl}</div>
             <button
               className="primary-button"
               onClick={copyInviteLink}
             >
-              <Copy size={18} /> 复制邀请链接
+              <Copy size={18} /> {text.copyInvite}
             </button>
             <button className="ghost-button" onClick={() => goToStep("result")}>
-              先看看我的单方结果
+              {text.soloPreview}
             </button>
           </div>
           <aside className="side-card">
-            <span>小巧思</span>
-            <p>真实上线时可以把链接做成一张可保存的邀请卡：一句话、一个二维码、一句“别急着吵，先一起看看”。</p>
+            <span>{text.tipTitle}</span>
+            <p>{text.tipDesc}</p>
           </aside>
         </section>
       )}
@@ -1450,14 +1450,14 @@ function App() {
           <div className="result-main">
             <div className="ability-card">
               <div className="ability-copy">
-                <span>关系能力图</span>
-                <h2>当前关系指标</h2>
+                <span>{text.abilityLabel}</span>
+                <h2>{text.abilityTitle}</h2>
                 <p>
-                  <span>六项能力来自你的答案权重。</span>
-                  <span>分数越高，代表这一项在当前关系里越容易被看见和使用。</span>
+                  <span>{text.abilityDesc1}</span>
+                  <span>{text.abilityDesc2}</span>
                 </p>
               </div>
-              <div className="radar-wrap" aria-label="当前关系六项能力指标图">
+              <div className="radar-wrap" aria-label={text.radarLabel}>
                 <svg viewBox="0 0 240 240" role="img">
                   {[0.33, 0.66, 1].map((level) => (
                     <polygon
@@ -1496,24 +1496,24 @@ function App() {
 
             <div className="reveal-grid">
               <article>
-                <span>关系主线</span>
+                <span>{text.mainLine}</span>
                 <strong>{report.patternTitle}</strong>
                 <p>{report.oneLineSummary}</p>
               </article>
               <article>
-                <span>{partnerAnswers ? "你们的共同分" : "当前清晰度"}</span>
+                <span>{partnerAnswers ? text.jointScore : text.clarity}</span>
                 <strong>{combinedScore}</strong>
-                <p>{partnerAnswers ? "修复入口是否清楚" : "你此刻能看见多少关系线索"}</p>
+                <p>{partnerAnswers ? text.repairEntry : text.clues}</p>
               </article>
               <article>
-                <span>最该先聊</span>
+                <span>{text.talkFirst}</span>
                 <strong>{dimensionLabels[lang][soloResult.weakest as DimensionKey]}</strong>
-                <p>先聊最软的需求，再聊谁该改变。</p>
+                <p>{text.talkFirstDesc}</p>
               </article>
             </div>
 
             <div className="evidence-card">
-              <span>为什么这样判断</span>
+              <span>{text.evidenceTitle}</span>
               <div>
                 {report.evidence.map((item) => (
                   <p key={`${item.questionTitle}-${item.answerLabel}`}>{item.evidence}</p>
@@ -1523,26 +1523,26 @@ function App() {
 
             <div className="insight-grid">
               <article>
-                <span>你真正需要被看见的部分</span>
+                <span>{text.coreNeed}</span>
                 <p>{report.coreNeed}</p>
               </article>
               <article>
-                <span>关系里还亮着的灯</span>
+                <span>{text.strength}</span>
                 <p>{report.strength}</p>
               </article>
             </div>
 
             <div className="misread-card">
-              <span>最容易被误解的地方</span>
+              <span>{text.misreadTitle}</span>
               <div>
-                <p><strong>你想表达：</strong>{report.realMessage}</p>
-                <p><strong>TA 可能听成：</strong>{report.possibleMisread}</p>
-                <p><strong>更适合换成：</strong>{report.betterExpression}</p>
+                <p><strong>{text.realMessage}</strong>{report.realMessage}</p>
+                <p><strong>{text.possibleMisread}</strong>{report.possibleMisread}</p>
+                <p><strong>{text.betterExpression}</strong>{report.betterExpression}</p>
               </div>
             </div>
 
             <div className="action-card">
-              <span>接下来 7 天可以试试</span>
+              <span>{text.actionsTitle}</span>
               <div>
                 {report.actions.map((action, index) => (
                   <p key={action}><strong>{index + 1}</strong>{action}</p>
@@ -1551,31 +1551,31 @@ function App() {
             </div>
 
             <div className="talk-card">
-              <span>今晚可以从这个问题开始</span>
+              <span>{text.tonightTitle}</span>
               <p>“{report.betterExpression}”</p>
             </div>
 
             {partnerAnswers && (
               <div className="compare-card">
                 <div>
-                  <span>你更需要</span>
+                  <span>{text.yourNeed}</span>
                   <strong>{duoReport?.userNeed ?? dimensionLabels[lang][soloResult.weakest as DimensionKey]}</strong>
                 </div>
                 <div>
-                  <span>TA 更需要</span>
+                  <span>{text.partnerNeed}</span>
                   <strong>{duoReport?.partnerNeed ?? (partnerResult ? dimensionLabels[lang][partnerResult.weakest as DimensionKey] : text.partnerFallback)}</strong>
                 </div>
                 <p>
-                  {duoReport?.conflictCycle ?? "如果你们看到的重点不同，先不要急着解释，可以先听听彼此为什么会这样选择。"}
+                  {duoReport?.conflictCycle ?? (lang === "en" ? "If you notice different things, do not rush to explain. Listen first to why each person chose this." : "如果你们看到的重点不同，先不要急着解释，可以先听听彼此为什么会这样选择。")}
                 </p>
                 <p>
-                  <strong>建议约定：</strong>{duoReport?.agreement ?? "先听完，再讨论下一步。"}
+                  <strong>{text.agreement}</strong>{duoReport?.agreement ?? (lang === "en" ? "Listen first, then discuss the next step." : "先听完，再讨论下一步。")}
                 </p>
               </div>
             )}
 
             <div className="source-card">
-              <span>资料依据</span>
+              <span>{text.sources}</span>
               <div>
                 {report.sources.map((source) => (
                   <a key={source.key} href={source.url} target="_blank" rel="noreferrer">
@@ -1588,16 +1588,16 @@ function App() {
             </div>
 
             <div className="message-card">
-              <span>可以发给 TA 的一句话</span>
+              <span>{text.shareTitle}</span>
               <p>“{report.shareableMessage}”</p>
               <button onClick={() => navigator.clipboard?.writeText(report.shareableMessage)}>
-                <Copy size={16} /> 复制这句话
+                <Copy size={16} /> {text.copySentence}
               </button>
             </div>
           </div>
 
-          <div className="credibility-card" aria-label="结果说明">
-            <span>结果说明</span>
+          <div className="credibility-card" aria-label={text.resultNote}>
+            <span>{text.resultNote}</span>
             <p>{report.credibilityNote}</p>
           </div>
         </section>
