@@ -12,6 +12,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import BorderGlow from "./components/BorderGlow";
+import BlurText from "./components/BlurText";
 import CardNav from "./components/CardNav";
 import Folder from "./components/Folder";
 import "./styles.css";
@@ -652,7 +653,14 @@ function App() {
         <section className="hero">
           <div className="hero-copy">
             <span className="eyebrow"><Moon size={16} /> 5 分钟，把没说出口的话看清楚</span>
-            <h1>你们最近，还好吗？</h1>
+            <BlurText
+              text="你们最近，还好吗？"
+              animateBy="letters"
+              direction="top"
+              delay={80}
+              stepDuration={0.38}
+              className="hero-title"
+            />
           </div>
 
           <div className="entry-grid">

@@ -9,6 +9,7 @@
     "@vitejs/plugin-react": "latest",
     "gsap": "^3.15.0",
     "lucide-react": "latest",
+    "motion": "^12.42.2",
     "react": "latest",
     "react-dom": "latest",
     "typescript": "latest",
