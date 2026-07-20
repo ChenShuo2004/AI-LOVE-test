@@ -18,7 +18,7 @@ import Folder from "./components/Folder";
 import "./styles.css";
 
 type Mode = "solo" | "duo";
-type Step = "home" | "quiz" | "invite" | "result";
+type Step = "home" | "quiz" | "loading" | "invite" | "result";
 type AnswerMap = Record<string, string>;
 
 type Option = {
@@ -450,7 +450,7 @@ function App() {
     setAnswers(nextAnswers);
     setQuizFolderOpen(true);
     if (isDone) {
-      goToStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
+      goToStep("loading");
     }
   }
 
@@ -474,6 +474,17 @@ function App() {
     setMode("solo");
     setQuizFolderOpen(false);
   }
+
+  useEffect(() => {
+    if (step !== "loading") return;
+
+    const targetStep: Step = mode === "duo" && !partnerAnswers ? "invite" : "result";
+    const timer = window.setTimeout(() => {
+      goToStep(targetStep);
+    }, 1800);
+
+    return () => window.clearTimeout(timer);
+  }, [step, mode, partnerAnswers]);
 
   const soloResult = scoreAnswers(questions, answers);
   const partnerResult = partnerAnswers ? scoreAnswers(duoQuestions, partnerAnswers) : null;
@@ -620,8 +631,8 @@ function App() {
                       <p>{currentQuestion.hint}</p>
                     </div>
                     <div className="progress-ring">
-                      <span>{currentIndex + 1}</span>
-                      <small>/ {questions.length}</small>
+                      <span>{currentIndex + 1} / {questions.length}</span>
+                      <small>题目进度</small>
                     </div>
                   </div>
 
@@ -650,6 +661,26 @@ function App() {
                 <span>答题中</span>
               </button>
             )}
+          </div>
+        </section>
+      )}
+
+      {step === "loading" && (
+        <section className="loading-panel" aria-live="polite">
+          <div className="analysis-card">
+            <div className="analysis-orbit" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+            <span className="eyebrow"><CloudSun size={16} /> 正在整理关系天气</span>
+            <h2>正在把你的答案轻轻摊开</h2>
+            <p>我们会先看见感受，再看见期待，最后给出一个不评判的沟通入口。</p>
+            <div className="analysis-steps">
+              <span>读取最近的在乎</span>
+              <span>校准修复入口</span>
+              <span>生成今日复盘卡</span>
+            </div>
           </div>
         </section>
       )}

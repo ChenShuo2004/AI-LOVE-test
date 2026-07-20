@@ -90,6 +90,7 @@ button {
 
 .hero,
 .quiz-panel,
+.loading-panel,
 .result-layout {
   position: relative;
   z-index: 1;
@@ -340,6 +341,169 @@ button {
   pointer-events: auto;
 }
 
+.loading-panel {
+  min-height: calc(100vh - 172px);
+  display: grid;
+  place-items: center;
+  padding: 34px 0;
+}
+
+.analysis-card {
+  width: min(620px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
+  border-radius: 30px;
+  background: rgba(246, 247, 249, 0.84);
+  padding: 38px;
+  text-align: center;
+  box-shadow: 0 28px 80px rgba(66, 76, 92, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.analysis-orbit {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  border: 1px solid color-mix(in srgb, var(--color-main) 24%, transparent);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(169, 122, 147, 0.18), transparent 42%),
+    rgba(242, 235, 240, 0.62);
+  animation: analysis-breathe 1800ms ease-in-out infinite;
+}
+
+.analysis-orbit::before {
+  position: absolute;
+  inset: 33px;
+  content: "";
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 14px 34px rgba(66, 76, 92, 0.12);
+  transform: rotate(-8deg);
+}
+
+.analysis-orbit::after {
+  position: absolute;
+  inset: 39px 34px 27px;
+  content: "";
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(169, 122, 147, 0.88), rgba(45, 184, 230, 0.64));
+  transform: rotate(8deg);
+}
+
+.analysis-orbit span {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--color-main);
+  box-shadow: 0 8px 20px rgba(169, 122, 147, 0.24);
+  animation: analysis-dot 1200ms ease-in-out infinite;
+}
+
+.analysis-orbit span:nth-child(1) {
+  left: 14px;
+  top: 34px;
+}
+
+.analysis-orbit span:nth-child(2) {
+  right: 15px;
+  top: 24px;
+  background: #2db8e6;
+  animation-delay: 160ms;
+}
+
+.analysis-orbit span:nth-child(3) {
+  left: 52px;
+  bottom: 12px;
+  background: #C7A6B7;
+  animation-delay: 320ms;
+}
+
+.analysis-card h2 {
+  max-width: 520px;
+  margin: 0;
+  color: var(--color-title);
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.analysis-card p {
+  max-width: 460px;
+  margin: 0;
+  color: var(--color-body);
+  line-height: 1.7;
+}
+
+.analysis-steps {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.analysis-steps span {
+  min-height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--color-tip);
+  font-size: 13px;
+  font-weight: 760;
+  animation: analysis-step 1800ms ease-in-out infinite;
+}
+
+.analysis-steps span:nth-child(2) {
+  animation-delay: 180ms;
+}
+
+.analysis-steps span:nth-child(3) {
+  animation-delay: 360ms;
+}
+
+@keyframes analysis-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@keyframes analysis-dot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.72;
+  }
+
+  50% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+@keyframes analysis-step {
+  0%,
+  100% {
+    transform: translateY(0);
+    color: var(--color-tip);
+  }
+
+  50% {
+    transform: translateY(-2px);
+    color: var(--color-title);
+  }
+}
+
 .quiz-floating-folder {
   position: absolute;
   left: max(-180px, calc((100vw - min(820px, 94vw)) / -2 + 28px));
@@ -450,24 +614,33 @@ button {
 
 .progress-ring {
   display: grid;
+  gap: 2px;
   place-items: center;
   flex: 0 0 auto;
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  background: var(--color-title);
-  color: white;
-  box-shadow: 0 18px 45px rgba(39, 46, 59, 0.22);
+  min-width: 118px;
+  min-height: 58px;
+  padding: 10px 16px;
+  border: 1px solid color-mix(in srgb, #2db8e6 46%, transparent);
+  border-radius: 18px;
+  background: rgba(246, 247, 249, 0.82);
+  color: var(--color-title);
+  box-shadow: 0 16px 36px rgba(39, 46, 59, 0.12);
+  backdrop-filter: blur(14px);
 }
 
 .progress-ring span {
-  font-size: 26px;
-  font-weight: 800;
+  color: #2db8e6;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .progress-ring small {
-  margin-top: -18px;
-  color: rgba(255, 255, 255, 0.62);
+  color: var(--color-body);
+  font-size: 12px;
+  font-weight: 760;
+  line-height: 1.2;
 }
 
 .progress-track {
@@ -812,8 +985,17 @@ button {
   }
 
   .progress-ring {
-    width: 74px;
-    height: 74px;
+    min-width: 104px;
+    min-height: 52px;
+    padding: 9px 14px;
+  }
+
+  .analysis-card {
+    padding: 28px 18px;
+  }
+
+  .analysis-steps {
+    grid-template-columns: 1fr;
   }
 
   .reveal-grid,
