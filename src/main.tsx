@@ -8,10 +8,10 @@ import {
   MessageCircleHeart,
   Moon,
   RefreshCw,
-  Sparkles,
   SunMedium,
   UsersRound,
 } from "lucide-react";
+import CardNav from "./components/CardNav";
 import "./styles.css";
 
 type Mode = "solo" | "duo";
@@ -283,6 +283,36 @@ const reflectionPrompts = [
   "如果今天只靠近 1%，我们可以怎么做？",
 ];
 
+const navItems = [
+  {
+    label: "WARMTH",
+    bgColor: "#211f27",
+    textColor: "#fff",
+    links: [
+      { label: "有温度阅览室", ariaLabel: "WARMTH 品牌" },
+      { label: "安静、克制、陪伴", ariaLabel: "WARMTH 氛围" },
+    ],
+  },
+  {
+    label: "Test",
+    bgColor: "#f1e4d6",
+    textColor: "#211f27",
+    links: [
+      { label: "单人关系复盘", ariaLabel: "单人关系复盘" },
+      { label: "双人邀请测试", ariaLabel: "双人邀请测试" },
+    ],
+  },
+  {
+    label: "Review",
+    bgColor: "#dfe8ee",
+    textColor: "#211f27",
+    links: [
+      { label: "关系天气", ariaLabel: "关系天气" },
+      { label: "今日复盘卡", ariaLabel: "今日复盘卡" },
+    ],
+  },
+];
+
 function encodeAnswers(answers: AnswerMap) {
   return btoa(encodeURIComponent(JSON.stringify(answers)));
 }
@@ -415,18 +445,17 @@ function App() {
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
-      <nav className="topbar">
-        <button className="brand" onClick={reset} aria-label="回到首页">
-          <span className="brand-mark image-mark">
-            <img src="/brand/warmth-logo.png" alt="" />
-          </span>
-          <span>
-            <strong>WARMTH</strong>
-            <small>有温度阅览室</small>
-          </span>
-        </button>
-        <span className="soft-pill">情侣关系复盘小游戏</span>
-      </nav>
+      <CardNav
+        logo="/brand/warmth-logo.png"
+        logoAlt="WARMTH 有温度阅览室"
+        items={navItems}
+        baseColor="rgba(255, 252, 247, 0.86)"
+        menuColor="#211f27"
+        buttonBgColor="#211f27"
+        buttonTextColor="#fff"
+        buttonLabel="回到首页"
+        onButtonClick={reset}
+      />
 
       {step === "home" && (
         <section className="hero">

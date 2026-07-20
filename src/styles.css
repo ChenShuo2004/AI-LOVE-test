@@ -26,7 +26,7 @@ button {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  padding: 24px;
+  padding: 124px 24px 24px;
   background:
     radial-gradient(circle at 22% 18%, rgba(255, 222, 206, 0.72), transparent 34%),
     radial-gradient(circle at 82% 12%, rgba(199, 224, 255, 0.68), transparent 32%),
@@ -58,7 +58,6 @@ button {
   transform: rotate(18deg);
 }
 
-.topbar,
 .hero,
 .quiz-panel,
 .result-layout {
@@ -68,14 +67,6 @@ button {
   margin: 0 auto;
 }
 
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.brand,
 .soft-pill,
 .eyebrow,
 .entry-action,
@@ -89,28 +80,6 @@ button {
   gap: 8px;
 }
 
-.brand {
-  border: 0;
-  background: transparent;
-  color: #211f27;
-  font-weight: 760;
-  cursor: pointer;
-  text-align: left;
-}
-
-.brand strong,
-.brand small {
-  display: block;
-}
-
-.brand small {
-  margin-top: 2px;
-  color: #8a817a;
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.brand-mark,
 .entry-icon {
   display: grid;
   place-items: center;
@@ -119,18 +88,6 @@ button {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.74);
   box-shadow: 0 10px 30px rgba(77, 61, 72, 0.12);
-}
-
-.image-mark {
-  overflow: hidden;
-  background: #f8efe6;
-}
-
-.image-mark img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.9);
 }
 
 .soft-pill,
@@ -149,8 +106,8 @@ button {
   grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.05fr);
   align-items: center;
   gap: 44px;
-  min-height: calc(100vh - 92px);
-  padding: 48px 0 36px;
+  min-height: calc(100vh - 148px);
+  padding: 32px 0 36px;
 }
 
 .hero-copy h1 {
@@ -546,7 +503,7 @@ button {
 
 @media (max-width: 860px) {
   .app-shell {
-    padding: 16px;
+    padding: 104px 16px 16px;
   }
 
   .soft-pill {
