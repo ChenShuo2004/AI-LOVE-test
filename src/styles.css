@@ -161,6 +161,17 @@ button {
   gap: 18px;
 }
 
+.entry-glow,
+.entry-glow .border-glow-inner {
+  min-height: 250px;
+}
+
+.entry-glow .entry-card {
+  height: 100%;
+  border-color: transparent;
+  box-shadow: none;
+}
+
 .entry-card {
   width: 100%;
   min-height: 250px;
@@ -178,8 +189,8 @@ button {
 
 .entry-card:hover {
   transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--color-main) 40%, transparent);
-  box-shadow: 0 34px 90px rgba(169, 122, 147, 0.18);
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .entry-kicker {

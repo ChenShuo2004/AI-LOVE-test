@@ -11,6 +11,7 @@ import {
   SunMedium,
   UsersRound,
 } from "lucide-react";
+import BorderGlow from "./components/BorderGlow";
 import CardNav from "./components/CardNav";
 import "./styles.css";
 
@@ -468,21 +469,49 @@ function App() {
           </div>
 
           <div className="entry-grid">
-            <button className="entry-card solo-card" onClick={() => start("solo")}>
-              <span className="entry-icon"><MessageCircleHeart /></span>
-              <span className="entry-kicker">单人测试</span>
-              <strong>我先自己测</strong>
-              <small>适合想先理清感受，或者还没准备好邀请 TA 的时候。</small>
-              <span className="entry-action">开始单人测试 <ArrowRight size={18} /></span>
-            </button>
+            <BorderGlow
+              className="entry-glow"
+              edgeSensitivity={24}
+              glowColor="330 28 58"
+              backgroundColor="#F2EBF0"
+              borderRadius={28}
+              glowRadius={38}
+              glowIntensity={0.85}
+              coneSpread={24}
+              animated
+              colors={["#A97A93", "#E2D8DF", "#EEF0F3"]}
+              fillOpacity={0.28}
+            >
+              <button className="entry-card solo-card" onClick={() => start("solo")}>
+                <span className="entry-icon"><MessageCircleHeart /></span>
+                <span className="entry-kicker">单人测试</span>
+                <strong>我先自己测</strong>
+                <small>适合想先理清感受，或者还没准备好邀请 TA 的时候。</small>
+                <span className="entry-action">开始单人测试 <ArrowRight size={18} /></span>
+              </button>
+            </BorderGlow>
 
-            <button className="entry-card duo-card" onClick={() => start("duo")}>
-              <span className="entry-icon"><UsersRound /></span>
-              <span className="entry-kicker">双人测试</span>
-              <strong>邀请 TA 一起测</strong>
-              <small>双方各答一份题，看看你们在意点、委屈点和期待是否一致。</small>
-              <span className="entry-action">创建双人测试 <ArrowRight size={18} /></span>
-            </button>
+            <BorderGlow
+              className="entry-glow"
+              edgeSensitivity={24}
+              glowColor="216 22 54"
+              backgroundColor="#EEF0F3"
+              borderRadius={28}
+              glowRadius={38}
+              glowIntensity={0.8}
+              coneSpread={24}
+              animated
+              colors={["#EEF0F3", "#A97A93", "#424C5C"]}
+              fillOpacity={0.24}
+            >
+              <button className="entry-card duo-card" onClick={() => start("duo")}>
+                <span className="entry-icon"><UsersRound /></span>
+                <span className="entry-kicker">双人测试</span>
+                <strong>邀请 TA 一起测</strong>
+                <small>双方各答一份题，看看你们在意点、委屈点和期待是否一致。</small>
+                <span className="entry-action">创建双人测试 <ArrowRight size={18} /></span>
+              </button>
+            </BorderGlow>
           </div>
 
           <div className="quote-strip">
