@@ -192,6 +192,18 @@
   transform: translateX(-50%);
 }
 
+.quiz-folder.quiz-folder-active .folder__back {
+  background: transparent;
+  box-shadow: none;
+}
+
+.quiz-folder.quiz-folder-active .folder__back::after,
+.quiz-folder.quiz-folder-active .folder__front,
+.quiz-folder.quiz-folder-active .folder__label {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .quiz-folder .paper:nth-child(1),
 .quiz-folder .paper:nth-child(2) {
   display: none;

@@ -546,10 +546,10 @@ function App() {
 
       {step === "quiz" && currentQuestion && (
         <section className="quiz-panel">
-          <div className="quiz-folder-stage">
+          <div className={`quiz-folder-stage ${quizFolderOpen ? "is-open" : ""}`}>
             <Folder
               key={currentQuestion.id}
-              className="quiz-folder"
+              className={`quiz-folder ${quizFolderOpen ? "quiz-folder-active" : ""}`}
               color="#A97A93"
               size={1}
               open={quizFolderOpen}
@@ -588,6 +588,11 @@ function App() {
                 </div>,
               ]}
             />
+            {quizFolderOpen && (
+              <div className="quiz-floating-folder" aria-hidden="true">
+                <span>答题中</span>
+              </div>
+            )}
           </div>
         </section>
       )}
