@@ -976,11 +976,6 @@ function App() {
               </article>
             </div>
 
-            <div className="credibility-card">
-              <span>结果说明</span>
-              <p>{report.credibilityNote}</p>
-            </div>
-
             <div className="evidence-card">
               <span>为什么这样判断</span>
               <div>
@@ -1063,6 +1058,11 @@ function App() {
                 <Copy size={16} /> 复制这句话
               </button>
             </div>
+          </div>
+
+          <div className="credibility-card" aria-label="结果说明">
+            <span>结果说明</span>
+            <p>{report.credibilityNote}</p>
           </div>
         </section>
       )}

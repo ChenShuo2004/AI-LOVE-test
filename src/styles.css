@@ -1050,8 +1050,14 @@ button {
 }
 
 .credibility-card {
-  margin-top: 12px;
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 90;
+  width: min(360px, calc(100vw - 36px));
   background: rgba(238, 240, 243, 0.72);
+  box-shadow: 0 18px 46px rgba(66, 76, 92, 0.14);
+  backdrop-filter: blur(18px);
 }
 
 .credibility-card p {
@@ -1642,7 +1648,6 @@ button {
   .insight-grid article,
   .action-card,
   .talk-card,
-  .credibility-card,
   .evidence-card,
   .misread-card,
   .source-card {
@@ -1688,6 +1693,14 @@ button {
     width: 100%;
     justify-content: center;
     min-height: 46px;
+  }
+
+  .credibility-card {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+    border-radius: 18px;
+    padding: 14px;
   }
 }
 
