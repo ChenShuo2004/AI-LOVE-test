@@ -291,7 +291,7 @@ const navItems = [
     bgColor: "#272E3B",
     textColor: "#fff",
     links: [
-      { label: "有温度阅览室", ariaLabel: "WARMTH 品牌" },
+      { label: "有温度阅览室", ariaLabel: "WARMTH 品牌", href: "https://flowus.cn/c712040f-ef98-44b9-b37d-dd187d92fc4d" },
       { label: "安静、克制、陪伴", ariaLabel: "WARMTH 氛围" },
     ],
   },
