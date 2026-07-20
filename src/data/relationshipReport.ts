@@ -1,0 +1,420 @@
+export type RelationshipDimension =
+  | "security"
+  | "communication"
+  | "companionship"
+  | "repair"
+  | "intimacy"
+  | "future";
+
+export type AnswerMap = Record<string, string>;
+
+export type OptionLike = {
+  label: string;
+  value: string;
+  dimension: RelationshipDimension;
+  weight: number;
+};
+
+export type QuestionLike = {
+  id: string;
+  title: string;
+  options: OptionLike[];
+};
+
+export type ScoreLike = {
+  percent: number;
+  weakest: string;
+  strongest: string;
+};
+
+export type SourceKey =
+  | "gottman_turning_toward"
+  | "gottman_conflict"
+  | "eft_responsiveness"
+  | "partner_responsiveness"
+  | "nvc";
+
+export type SourceCard = {
+  key: SourceKey;
+  title: string;
+  source: string;
+  url: string;
+  note: string;
+};
+
+export type AnswerEvidence = {
+  questionTitle: string;
+  answerLabel: string;
+  dimension: RelationshipDimension;
+  weight: number;
+  tags: string[];
+  evidence: string;
+  sourceKeys: SourceKey[];
+};
+
+export type RelationshipReport = {
+  patternTitle: string;
+  oneLineSummary: string;
+  coreNeed: string;
+  realMessage: string;
+  possibleMisread: string;
+  betterExpression: string;
+  strength: string;
+  actions: string[];
+  shareableMessage: string;
+  evidence: AnswerEvidence[];
+  sources: SourceCard[];
+  credibilityNote: string;
+};
+
+export type DuoRelationshipReport = RelationshipReport & {
+  sharedNeed: string;
+  userNeed: string;
+  partnerNeed: string;
+  conflictCycle: string;
+  agreement: string;
+};
+
+type PatternTemplate = {
+  key: string;
+  triggerTags: string[];
+  triggerDimensions: RelationshipDimension[];
+  title: string;
+  oneLineSummary: string;
+  coreNeed: string;
+  realMessage: string;
+  possibleMisread: string;
+  betterExpression: string;
+  strength: string;
+  actions: string[];
+  shareableMessage: string;
+  sourceKeys: SourceKey[];
+};
+
+const dimensionLabels: Record<RelationshipDimension, string> = {
+  security: "安全感",
+  communication: "沟通感",
+  companionship: "陪伴感",
+  repair: "修复力",
+  intimacy: "亲密感",
+  future: "未来感",
+};
+
+export const sourceCards: Record<SourceKey, SourceCard> = {
+  gottman_turning_toward: {
+    key: "gottman_turning_toward",
+    title: "连接请求需要被看见",
+    source: "The Gottman Institute",
+    url: "https://www.gottman.com/blog/turn-toward-instead-of-away/",
+    note: "Gottman 的关系研究强调，伴侣对日常连接请求的回应，会影响关系里的亲近感和情绪账户。",
+  },
+  gottman_conflict: {
+    key: "gottman_conflict",
+    title: "冲突更适合被管理",
+    source: "The Gottman Institute",
+    url: "https://www.gottman.com/blog/managing-vs-resolving-conflict-relationships/",
+    note: "很多长期分歧不一定能被彻底消除，但可以通过更温和、可重复的方式被管理。",
+  },
+  eft_responsiveness: {
+    key: "eft_responsiveness",
+    title: "负向互动循环可以被重组",
+    source: "ICEEFT",
+    url: "https://iceeft.com/eft-research/",
+    note: "情绪取向伴侣治疗关注依恋需求、情绪回应和伴侣之间反复出现的负向互动循环。",
+  },
+  partner_responsiveness: {
+    key: "partner_responsiveness",
+    title: "被回应会影响亲密感",
+    source: "NIH / PMC",
+    url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC5922804/",
+    note: "伴侣回应性研究把被理解、被关心、被确认视为影响亲密和关系满意度的重要过程。",
+  },
+  nvc: {
+    key: "nvc",
+    title: "把指责换成请求",
+    source: "Center for Nonviolent Communication",
+    url: "https://www.cnvc.org/about/purpose-of-nvc/",
+    note: "非暴力沟通强调观察、感受、需要和请求，能帮助对话从责备转向可执行的表达。",
+  },
+};
+
+const tagLibrary: Record<string, { label: string; sourceKeys: SourceKey[] }> = {
+  needs_reassurance: { label: "需要确认", sourceKeys: ["partner_responsiveness", "eft_responsiveness"] },
+  communication_gap: { label: "沟通错位", sourceKeys: ["nvc", "gottman_conflict"] },
+  daily_disconnection: { label: "日常失联", sourceKeys: ["gottman_turning_toward", "partner_responsiveness"] },
+  repair_needed: { label: "需要修复", sourceKeys: ["gottman_conflict", "eft_responsiveness"] },
+  intimacy_distance: { label: "亲密变远", sourceKeys: ["gottman_turning_toward", "partner_responsiveness"] },
+  future_alignment: { label: "方向确认", sourceKeys: ["gottman_conflict", "nvc"] },
+  boundary_sensitive: { label: "边界敏感", sourceKeys: ["nvc", "eft_responsiveness"] },
+  emotion_accumulated: { label: "情绪积压", sourceKeys: ["eft_responsiveness", "nvc"] },
+};
+
+const patternTemplates: PatternTemplate[] = [
+  {
+    key: "high_care_low_expression",
+    triggerTags: ["communication_gap", "intimacy_distance"],
+    triggerDimensions: ["communication", "intimacy"],
+    title: "高在乎低表达型",
+    oneLineSummary: "你不是不在乎，而是很多在乎没有被稳定、清楚地说出来。",
+    coreNeed: "你需要的不是赢过对方，而是让彼此真正听见“我为什么难过”。",
+    realMessage: "我其实还在乎，只是不知道怎么说才不会又吵起来。",
+    possibleMisread: "TA 可能会把你的沉默或别扭听成冷淡。",
+    betterExpression: "我不是不想靠近，只是有些话我怕一开口就变成争吵。",
+    strength: "你们还有在乎作为底色，只要表达方式变柔和，关系就有重新靠近的空间。",
+    actions: ["把“你总是”换成“我感受到”", "一次只聊一个具体场景", "先复述对方感受，再表达自己的需要"],
+    shareableMessage: "我不是不想说，我只是希望我们说的时候，都能先听见彼此真正难过的地方。",
+    sourceKeys: ["nvc", "partner_responsiveness"],
+  },
+  {
+    key: "needs_reassurance",
+    triggerTags: ["needs_reassurance"],
+    triggerDimensions: ["security"],
+    title: "需要确认型",
+    oneLineSummary: "你最需要被接住的是确定感：不是反复证明，而是关键时刻被清楚选择。",
+    coreNeed: "你需要稳定回应、明确态度和一种“我们还在同一边”的感觉。",
+    realMessage: "我不是想逼你证明爱我，我只是需要知道你还愿意回应我。",
+    possibleMisread: "TA 可能会把你的确认需求听成压力、质问或不信任。",
+    betterExpression: "当我不安的时候，如果你能明确回应一句，我会更容易放松下来。",
+    strength: "你能说出不安，本身就是关系还有沟通入口的信号。",
+    actions: ["约定一个固定回应信号", "少用试探，多说具体需要", "把确认需求说成请求，而不是反问"],
+    shareableMessage: "我不是想反复确认你爱不爱我，我只是希望不安的时候，能多一点被选择的感觉。",
+    sourceKeys: ["partner_responsiveness", "eft_responsiveness"],
+  },
+  {
+    key: "slow_repair",
+    triggerTags: ["repair_needed"],
+    triggerDimensions: ["repair"],
+    title: "慢速修复型",
+    oneLineSummary: "你们不是没有感情，而是冲突之后缺少一套不伤人的回来方式。",
+    coreNeed: "你真正需要的是吵完之后还能收尾，而不是把每次争执都变成关系结论。",
+    realMessage: "我也想回来好好说，只是不想在情绪最高的时候继续互相伤害。",
+    possibleMisread: "TA 可能把你的暂停理解成冷处理，或把你的追问理解成逼迫。",
+    betterExpression: "我们先暂停一下，但我不是不管了，我想晚一点回来把话说完。",
+    strength: "只要你们愿意约定“暂停后回来”，冲突就不会轻易变成断联。",
+    actions: ["情绪高时暂停 10 分钟", "暂停前说清楚几点回来聊", "先修复态度，再讨论事情"],
+    shareableMessage: "如果我们又吵起来，可以先暂停，但不要消失，我们约好回来把话说完。",
+    sourceKeys: ["gottman_conflict", "eft_responsiveness"],
+  },
+  {
+    key: "emotion_accumulated",
+    triggerTags: ["emotion_accumulated"],
+    triggerDimensions: ["repair", "security"],
+    title: "情绪积压型",
+    oneLineSummary: "你现在的难受不是突然出现的，而是很多小失望没有被及时看见。",
+    coreNeed: "你需要的是把委屈放到桌面上，而不是继续靠忍耐维持表面和平。",
+    realMessage: "我不是想翻旧账，我只是发现有些难受一直没有被好好听见。",
+    possibleMisread: "TA 可能会觉得你在算账，没听见你其实是在求理解。",
+    betterExpression: "我想说的是这件事对我的影响，不是要把你判成错的人。",
+    strength: "你还能整理这些情绪，说明你不是只想爆发，而是想找一个出口。",
+    actions: ["一次只说一件具体委屈", "先讲影响，不急着追责", "把旧账整理成一个可讨论的请求"],
+    shareableMessage: "我不是想翻旧账，我只是想让那些一直没被听见的难受，终于有一个出口。",
+    sourceKeys: ["nvc", "eft_responsiveness"],
+  },
+  {
+    key: "daily_disconnection",
+    triggerTags: ["daily_disconnection"],
+    triggerDimensions: ["companionship"],
+    title: "日常失联型",
+    oneLineSummary: "你在意的不是陪伴时长本身，而是有没有被放进对方的生活节奏里。",
+    coreNeed: "你需要被惦记、被分享、被自然地纳入日常。",
+    realMessage: "我想要的不是很多安排，而是能感觉到你愿意让我参与你的生活。",
+    possibleMisread: "TA 可能会以为你只是嫌陪伴不够，没听见你在要参与感。",
+    betterExpression: "我希望我们不只是有空才见面，也能在日常里多一点彼此的位置。",
+    strength: "日常是最容易修复的部分，因为它不靠大承诺，只靠小动作重复出现。",
+    actions: ["每天留一个真实近况", "本周安排一次不赶时间的相处", "看到小事时主动分享给对方"],
+    shareableMessage: "我想要的不是很多安排，而是能感觉到你愿意把我放进你的生活里。",
+    sourceKeys: ["gottman_turning_toward", "partner_responsiveness"],
+  },
+  {
+    key: "push_pull_close",
+    triggerTags: ["needs_reassurance", "boundary_sensitive"],
+    triggerDimensions: ["security", "repair"],
+    title: "拉扯靠近型",
+    oneLineSummary: "你们可能一个更想马上确认，一个更需要先缓一缓，于是靠近变成拉扯。",
+    coreNeed: "你需要既有确认，也有节奏；既不被丢下，也不被逼到防御。",
+    realMessage: "我想靠近你，但我也怕我们用错方式又互相伤害。",
+    possibleMisread: "TA 可能只看到你的追或躲，却没看见背后的不安。",
+    betterExpression: "我想靠近，但我们能不能用一个没那么紧绷的方式来聊？",
+    strength: "拉扯说明关系里还有牵引力，关键是给靠近设一个更安全的节奏。",
+    actions: ["先确认关系，再讨论问题", "给冷静设定明确时间", "用“我需要一点节奏”替代突然消失"],
+    shareableMessage: "我想靠近你，但希望我们能用一种不那么紧绷的方式靠近。",
+    sourceKeys: ["eft_responsiveness", "gottman_conflict"],
+  },
+  {
+    key: "boundary_sensitive",
+    triggerTags: ["boundary_sensitive"],
+    triggerDimensions: ["repair", "future"],
+    title: "边界敏感型",
+    oneLineSummary: "你并不是想推开关系，而是希望靠近的时候也能保留自己的空间。",
+    coreNeed: "你需要被尊重、被允许慢一点，也需要关系里的边界不被误读成不爱。",
+    realMessage: "我需要一点空间，但这不代表我不在乎。",
+    possibleMisread: "TA 可能会把你的独处、沉默或慢回应理解成疏远。",
+    betterExpression: "我想先安静一下，不是要离开你，我会在状态好一点后回来聊。",
+    strength: "能把边界说清楚，会让关系更稳定，而不是更远。",
+    actions: ["提前说明独处不是冷处理", "把边界说成时间和动作", "同时给对方一个确定的回来信号"],
+    shareableMessage: "我需要一点空间，但不是想离开你；我只是想用更好的状态回来靠近你。",
+    sourceKeys: ["nvc", "eft_responsiveness"],
+  },
+  {
+    key: "aligned_growth",
+    triggerTags: ["future_alignment"],
+    triggerDimensions: ["future"],
+    title: "并肩调整型",
+    oneLineSummary: "你们的重点不是立刻给关系定性，而是确认还愿不愿意一起往前调整。",
+    coreNeed: "你需要方向感、共同计划和一种“我们愿意一起解决”的确定。",
+    realMessage: "我不需要马上得到所有答案，但我想知道我们是不是还愿意一起想办法。",
+    possibleMisread: "TA 可能把你谈未来听成压力，而不是听见你在寻找方向。",
+    betterExpression: "我不是要你马上承诺所有事情，我只是想和你一起确认下一小步。",
+    strength: "只要还能一起讨论下一步，关系就不只停留在情绪里。",
+    actions: ["先定一个一周内的小目标", "把担心拆成现实问题", "每周复盘一次钱、时间和计划"],
+    shareableMessage: "我不是要马上得到所有答案，只是希望知道我们还愿意一起往前想一想。",
+    sourceKeys: ["gottman_conflict", "nvc"],
+  },
+];
+
+function tagsForOption(option: OptionLike): string[] {
+  const tags: string[] = [];
+  const byDimension: Record<RelationshipDimension, string> = {
+    security: "needs_reassurance",
+    communication: "communication_gap",
+    companionship: "daily_disconnection",
+    repair: "repair_needed",
+    intimacy: "intimacy_distance",
+    future: "future_alignment",
+  };
+
+  tags.push(byDimension[option.dimension]);
+
+  if (["space", "no_push", "quiet", "alone", "boundary"].includes(option.value)) tags.push("boundary_sensitive");
+  if (["tired", "exhausted", "bury", "hurt", "emotion", "love_tired"].includes(option.value)) tags.push("emotion_accumulated");
+  if (["care_less", "uncertain", "certainty", "confirm", "repeat"].includes(option.value)) tags.push("needs_reassurance");
+  if (["time", "company", "daily", "night", "life", "date"].includes(option.value)) tags.push("daily_disconnection");
+  if (["go_on", "better", "try", "plan", "future"].includes(option.value)) tags.push("future_alignment");
+
+  return Array.from(new Set(tags));
+}
+
+function evidenceFor(question: QuestionLike, option: OptionLike, tags: string[]) {
+  const tagText = tags.map(tag => tagLibrary[tag]?.label).filter(Boolean).join("、");
+  return `在「${question.title}」里，你选择了「${option.label}」，这更像是在表达${tagText || dimensionLabels[option.dimension]}。`;
+}
+
+function sourceKeysForTags(tags: string[]) {
+  const keys = tags.flatMap(tag => tagLibrary[tag]?.sourceKeys ?? []);
+  return Array.from(new Set(keys)) as SourceKey[];
+}
+
+function answerEvidence(questions: QuestionLike[], answers: AnswerMap): AnswerEvidence[] {
+  return questions.flatMap(question => {
+    const option = question.options.find(item => item.value === answers[question.id]);
+    if (!option) return [];
+    const tags = tagsForOption(option);
+    return [{
+      questionTitle: question.title,
+      answerLabel: option.label,
+      dimension: option.dimension,
+      weight: option.weight,
+      tags,
+      evidence: evidenceFor(question, option, tags),
+      sourceKeys: sourceKeysForTags(tags),
+    }];
+  });
+}
+
+function countItems(items: string[]) {
+  return items.reduce<Record<string, number>>((acc, item) => {
+    acc[item] = (acc[item] ?? 0) + 1;
+    return acc;
+  }, {});
+}
+
+function topKey(counts: Record<string, number>, fallback: string) {
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? fallback;
+}
+
+function chooseTemplate(evidence: AnswerEvidence[], score: ScoreLike) {
+  const tagCounts = countItems(evidence.flatMap(item => item.tags));
+  const dimensionCounts = countItems(evidence.map(item => item.dimension));
+
+  return patternTemplates
+    .map(template => {
+      const tagScore = template.triggerTags.reduce((sum, tag) => sum + (tagCounts[tag] ?? 0) * 3, 0);
+      const dimensionScore = template.triggerDimensions.reduce((sum, dimension) => sum + (dimensionCounts[dimension] ?? 0), 0);
+      const weakestBonus = template.triggerDimensions.includes(score.weakest as RelationshipDimension) ? 2 : 0;
+      return { template, score: tagScore + dimensionScore + weakestBonus };
+    })
+    .sort((a, b) => b.score - a.score)[0]?.template ?? patternTemplates[0];
+}
+
+function pickEvidence(evidence: AnswerEvidence[]) {
+  return [...evidence]
+    .sort((a, b) => b.weight - a.weight)
+    .slice(0, 3);
+}
+
+function pickSources(template: PatternTemplate, evidence: AnswerEvidence[]) {
+  const keys = [
+    ...template.sourceKeys,
+    ...evidence.flatMap(item => item.sourceKeys),
+  ];
+  return Array.from(new Set(keys)).slice(0, 3).map(key => sourceCards[key]);
+}
+
+export function buildRelationshipReport(params: {
+  questions: QuestionLike[];
+  answers: AnswerMap;
+  score: ScoreLike;
+  hasPartner: boolean;
+}): RelationshipReport {
+  const evidence = answerEvidence(params.questions, params.answers);
+  const template = chooseTemplate(evidence, params.score);
+  const selectedEvidence = pickEvidence(evidence);
+
+  return {
+    patternTitle: template.title,
+    oneLineSummary: template.oneLineSummary,
+    coreNeed: template.coreNeed,
+    realMessage: template.realMessage,
+    possibleMisread: template.possibleMisread,
+    betterExpression: template.betterExpression,
+    strength: template.strength,
+    actions: template.actions,
+    shareableMessage: template.shareableMessage,
+    evidence: selectedEvidence,
+    sources: pickSources(template, selectedEvidence),
+    credibilityNote: params.hasPartner
+      ? `这份结果基于你们两个人同一组 ${params.questions.length} 道题的选择生成，只代表此刻的关系复盘快照，不作为心理诊断或关系结论。`
+      : `这份结果基于本轮随机抽取的 ${params.questions.length} 道题和你的选择生成，只代表此刻的感受快照，不作为心理诊断或关系结论。`,
+  };
+}
+
+export function buildDuoRelationshipReport(params: {
+  questions: QuestionLike[];
+  answers: AnswerMap;
+  partnerAnswers: AnswerMap;
+  score: ScoreLike;
+  partnerScore: ScoreLike;
+}): DuoRelationshipReport {
+  const base = buildRelationshipReport({
+    questions: params.questions,
+    answers: params.answers,
+    score: params.score,
+    hasPartner: true,
+  });
+  const partnerEvidence = answerEvidence(params.questions, params.partnerAnswers);
+  const userTopTag = topKey(countItems(base.evidence.flatMap(item => item.tags)), "needs_reassurance");
+  const partnerTopTag = topKey(countItems(partnerEvidence.flatMap(item => item.tags)), "repair_needed");
+  const userNeed = tagLibrary[userTopTag]?.label ?? dimensionLabels[params.score.weakest as RelationshipDimension] ?? "被理解";
+  const partnerNeed = tagLibrary[partnerTopTag]?.label ?? dimensionLabels[params.partnerScore.weakest as RelationshipDimension] ?? "被理解";
+
+  return {
+    ...base,
+    sharedNeed: params.score.strongest === params.partnerScore.strongest
+      ? `你们都在「${dimensionLabels[params.score.strongest as RelationshipDimension] ?? "在乎彼此"}」上保留了力量，这是可以先抓住的共同点。`
+      : "你们的答案虽然不完全相同，但都在尝试给关系找到一个更清楚的入口。",
+    userNeed,
+    partnerNeed,
+    conflictCycle: `当你更想要${userNeed}时，TA 可能更需要${partnerNeed}。如果没有说清楚，一个人会觉得被推开，另一个人会觉得被逼近。`,
+    agreement: "如果我们情绪上来，可以先暂停，但要说清楚几点回来继续聊；暂停不是消失，回来也不是继续攻击。",
+  };
+}

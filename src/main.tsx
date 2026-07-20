@@ -2,19 +2,17 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
-  CloudSun,
   Copy,
-  HeartHandshake,
   MessageCircleHeart,
   Moon,
   RefreshCw,
-  SunMedium,
   UsersRound,
 } from "lucide-react";
 import BorderGlow from "./components/BorderGlow";
 import BlurText from "./components/BlurText";
 import CardNav from "./components/CardNav";
 import Folder from "./components/Folder";
+import { buildDuoRelationshipReport, buildRelationshipReport, type DuoRelationshipReport } from "./data/relationshipReport";
 import "./styles.css";
 
 type Mode = "solo" | "duo";
@@ -160,14 +158,14 @@ const soloQuestions: Question[] = [
 const duoQuestions: Question[] = [
   {
     id: "duo_weather",
-    title: "最近你觉得你们的关系天气更像？",
-    hint: "同一片天空，两个人可能看到不同的光。",
+    title: "最近你觉得你们的整体关系状态更像？",
+    hint: "同一段关系，两个人可能会看见不同重点。",
     options: [
-      { label: "晴天：稳定舒服", value: "sunny", dimension: "security", weight: 5 },
-      { label: "多云：有些话没说开", value: "cloudy", dimension: "communication", weight: 3 },
-      { label: "小雨：有点委屈", value: "rain", dimension: "security", weight: 2 },
-      { label: "雾天：互相猜不透", value: "fog", dimension: "communication", weight: 1 },
-      { label: "雷阵雨：容易爆发冲突", value: "storm", dimension: "repair", weight: 0 },
+      { label: "稳定舒服，很多事不用反复确认", value: "sunny", dimension: "security", weight: 5 },
+      { label: "还在乎，但有些话没说开", value: "cloudy", dimension: "communication", weight: 3 },
+      { label: "有点委屈，希望被认真看见", value: "rain", dimension: "security", weight: 2 },
+      { label: "互相猜不透，容易误会对方意思", value: "fog", dimension: "communication", weight: 1 },
+      { label: "容易爆发冲突，需要先学会暂停", value: "storm", dimension: "repair", weight: 0 },
     ],
   },
   {
@@ -542,105 +540,6 @@ function radarGridPoint(index: number, level: number, total: number, radius = 92
   return `${center + Math.cos(angle) * distance},${center + Math.sin(angle) * distance}`;
 }
 
-function resultMood(score: number) {
-  if (score >= 78) {
-    return {
-      weather: "晴间微风",
-      title: "并肩成长型",
-      line: "你们的底色是稳定的，适合把爱从感觉变成更具体的日常动作。",
-      icon: SunMedium,
-    };
-  }
-  if (score >= 58) {
-    return {
-      weather: "多云转晴",
-      title: "嘴硬心软型",
-      line: "关系里还有很多在乎，只是表达方式有时绕了远路。",
-      icon: CloudSun,
-    };
-  }
-  if (score >= 38) {
-    return {
-      weather: "细雨暂停",
-      title: "需要翻译器型",
-      line: "你们不是没有感情，而是容易把需求说成情绪，把靠近听成压力。",
-      icon: Moon,
-    };
-  }
-  return {
-    weather: "雾中靠岸",
-    title: "慢速修复型",
-    line: "现在更适合先降温、先说感受，再讨论解决方案。",
-    icon: HeartHandshake,
-  };
-}
-
-function makeMessage(weakest: string) {
-  const copy: Record<string, string> = {
-    security: "我不是想反复确认你爱不爱我，我只是希望在不安的时候，能多一点被选择的感觉。",
-    communication: "我不是想赢过你，我只是希望我们说话的时候，都能先听见彼此真正难过的地方。",
-    companionship: "我想要的不是很多安排，而是能感觉到你愿意把我放进你的生活里。",
-    repair: "吵架后我也会害怕靠近，如果可以，我们下次能不能先暂停一下，再一起回来把话说完。",
-    intimacy: "我有时候看起来别扭，其实是想确认我们还亲近、还在同一边。",
-    future: "我不是要马上得到所有答案，只是希望知道我们还愿意一起往前想一想。",
-  };
-  return copy[weakest] ?? copy.communication;
-}
-
-function makeInsight(weakest: string, strongest: string) {
-  const weakCopy: Record<string, string> = {
-    security: "你现在最需要被认真安放的，是关系里的确定感。不是要对方时时刻刻证明，而是希望在关键时刻能被清楚地选择。",
-    communication: "你们最容易卡住的地方，是话还没说完，彼此就已经开始防御。真正需要被修复的不是表达能力，而是对话里的安全边界。",
-    companionship: "你在意的不是陪伴的时长本身，而是对方有没有把你放进生活节奏里。被惦记，比被安排更重要。",
-    repair: "关系现在最需要的，是冲突之后还能回到同一张桌子前。你们不一定缺少感情，更可能是缺少一套不伤人的修复方式：先让情绪降下来，再确认彼此还在乎，最后才讨论具体事情。只要能把“吵完就断开”改成“暂停后回来收尾”，关系会更容易重新靠近。",
-    intimacy: "你需要确认彼此还站在同一边。亲密感不只来自热烈表达，也来自一些稳定的小回应。",
-    future: "你在寻找的是方向感。不是马上做重大决定，而是想知道彼此是否还愿意一起往前看。",
-  };
-  const strongCopy: Record<string, string> = {
-    security: "你们仍然有能让彼此安心的底色。",
-    communication: "你们并不害怕沟通，只是需要更柔和的开场。",
-    companionship: "你们之间还有愿意陪伴和靠近的惯性。",
-    repair: "你们有修复的可能，只要别把每次争执都当成结论。",
-    intimacy: "你们仍然在乎彼此是否亲近。",
-    future: "你们还有一起调整方向的空间。",
-  };
-
-  return {
-    focus: weakCopy[weakest] ?? weakCopy.communication,
-    strength: strongCopy[strongest] ?? strongCopy.repair,
-  };
-}
-
-function makeActions(weakest: string) {
-  const actions: Record<string, string[]> = {
-    security: ["约定一个固定回应信号", "少用反问，多用确认", "把需要说成请求"],
-    communication: ["先复述对方的感受", "一次只聊一个问题", "把争对错换成讲影响"],
-    companionship: ["安排一次不赶时间的相处", "每天留一个真实近况", "主动把对方放进计划里"],
-    repair: ["情绪高时先暂停 10 分钟", "吵完约定回来收尾", "先道歉态度，再讨论事情"],
-    intimacy: ["多做一个小的主动靠近", "把想念说具体", "减少冷处理的时间"],
-    future: ["聊一次近期共同期待", "把担心拆成现实问题", "先定一个一周内的小目标"],
-  };
-  return actions[weakest] ?? actions.communication;
-}
-
-function makeTalkPrompt(weakest: string) {
-  const prompts: Record<string, string> = {
-    security: "当我不安的时候，你怎么回应会让我更容易相信我们还在同一边？",
-    communication: "我们下次意见不同时，能不能先各自说完感受，再讨论解决办法？",
-    companionship: "这周我们可以留出哪一段时间，只用来好好陪彼此？",
-    repair: "如果又吵起来，我们能不能约定一个暂停和回来继续聊的方式？",
-    intimacy: "最近有没有一个瞬间，你其实希望我主动靠近一点？",
-    future: "接下来一个月，我们最想一起变好的地方是什么？",
-  };
-  return prompts[weakest] ?? prompts.communication;
-}
-
-function makeCredibilityNote(questionCount: number, hasPartner: boolean) {
-  return hasPartner
-    ? `这份结果基于你们两个人同一组 ${questionCount} 道题的选择生成，只代表此刻的关系快照，不作为心理诊断或关系结论。`
-    : `这份结果基于本轮随机抽取的 ${questionCount} 道题和你的选择生成，只代表此刻的感受快照，不作为心理诊断或关系结论。`;
-}
-
 function App() {
   const inviteData = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
@@ -751,16 +650,26 @@ function App() {
   const soloResult = scoreAnswers(questions, answers);
   const partnerResult = partnerAnswers ? scoreAnswers(questions, partnerAnswers) : null;
   const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
-  const mood = resultMood(combinedScore);
   const abilityScores = mergeAbilities(
     scoreAbilities(questions, answers),
     partnerAnswers ? scoreAbilities(questions, partnerAnswers) : null,
   );
   const radarPoints = abilityScores.map((item, index) => radarPoint(index, item.value, abilityScores.length)).join(" ");
-  const resultInsight = makeInsight(soloResult.weakest, soloResult.strongest);
-  const resultActions = makeActions(soloResult.weakest);
-  const talkPrompt = makeTalkPrompt(soloResult.weakest);
-  const credibilityNote = makeCredibilityNote(questions.length, Boolean(partnerAnswers));
+  const report = partnerAnswers && partnerResult
+    ? buildDuoRelationshipReport({
+        questions,
+        answers,
+        partnerAnswers,
+        score: soloResult,
+        partnerScore: partnerResult,
+      })
+    : buildRelationshipReport({
+        questions,
+        answers,
+        score: soloResult,
+        hasPartner: false,
+      });
+  const duoReport: DuoRelationshipReport | null = partnerAnswers && partnerResult ? report as DuoRelationshipReport : null;
   const inviteUrl =
     mode === "duo"
       ? `${window.location.origin}${window.location.pathname}?invite=${encodeAnswers(answers)}&questions=${encodeQuestionIds(questions.map((question) => question.id))}`
@@ -1051,9 +960,9 @@ function App() {
 
             <div className="reveal-grid">
               <article>
-                <span>关系称号</span>
-                <strong>{mood.title}</strong>
-                <p>{mood.line}</p>
+                <span>关系主线</span>
+                <strong>{report.patternTitle}</strong>
+                <p>{report.oneLineSummary}</p>
               </article>
               <article>
                 <span>{partnerAnswers ? "你们的共同分" : "当前清晰度"}</span>
@@ -1069,24 +978,42 @@ function App() {
 
             <div className="credibility-card">
               <span>结果说明</span>
-              <p>{credibilityNote}</p>
+              <p>{report.credibilityNote}</p>
+            </div>
+
+            <div className="evidence-card">
+              <span>为什么这样判断</span>
+              <div>
+                {report.evidence.map((item) => (
+                  <p key={`${item.questionTitle}-${item.answerLabel}`}>{item.evidence}</p>
+                ))}
+              </div>
             </div>
 
             <div className="insight-grid">
               <article>
-                <span>关系读法</span>
-                <p>{resultInsight.focus}</p>
+                <span>你真正需要被看见的部分</span>
+                <p>{report.coreNeed}</p>
               </article>
               <article>
                 <span>关系里还亮着的灯</span>
-                <p>{resultInsight.strength}</p>
+                <p>{report.strength}</p>
               </article>
+            </div>
+
+            <div className="misread-card">
+              <span>最容易被误解的地方</span>
+              <div>
+                <p><strong>你想表达：</strong>{report.realMessage}</p>
+                <p><strong>TA 可能听成：</strong>{report.possibleMisread}</p>
+                <p><strong>更适合换成：</strong>{report.betterExpression}</p>
+              </div>
             </div>
 
             <div className="action-card">
               <span>接下来 7 天可以试试</span>
               <div>
-                {resultActions.map((action, index) => (
+                {report.actions.map((action, index) => (
                   <p key={action}><strong>{index + 1}</strong>{action}</p>
                 ))}
               </div>
@@ -1094,30 +1021,45 @@ function App() {
 
             <div className="talk-card">
               <span>今晚可以从这个问题开始</span>
-              <p>“{talkPrompt}”</p>
+              <p>“{report.betterExpression}”</p>
             </div>
 
             {partnerAnswers && (
               <div className="compare-card">
                 <div>
-                  <span>你的关系天气</span>
-                  <strong>{resultMood(soloResult.percent).weather}</strong>
+                  <span>你更需要</span>
+                  <strong>{duoReport?.userNeed ?? dimensions[soloResult.weakest as keyof typeof dimensions]}</strong>
                 </div>
                 <div>
-                  <span>TA 的关系天气</span>
-                  <strong>{resultMood(partnerResult?.percent ?? 0).weather}</strong>
+                  <span>TA 更需要</span>
+                  <strong>{duoReport?.partnerNeed ?? (partnerResult ? dimensions[partnerResult.weakest as keyof typeof dimensions] : "TA 的关系节奏")}</strong>
                 </div>
                 <p>
-                  如果你们天气不同，先不要急着解释。可以从这句开始：
-                  “我想听听，你为什么会看到那样的天气。”
+                  {duoReport?.conflictCycle ?? "如果你们看到的重点不同，先不要急着解释，可以先听听彼此为什么会这样选择。"}
+                </p>
+                <p>
+                  <strong>建议约定：</strong>{duoReport?.agreement ?? "先听完，再讨论下一步。"}
                 </p>
               </div>
             )}
 
+            <div className="source-card">
+              <span>资料依据</span>
+              <div>
+                {report.sources.map((source) => (
+                  <a key={source.key} href={source.url} target="_blank" rel="noreferrer">
+                    <strong>{source.title}</strong>
+                    <small>{source.source}</small>
+                    <p>{source.note}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <div className="message-card">
               <span>可以发给 TA 的一句话</span>
-              <p>“{makeMessage(soloResult.weakest)}”</p>
-              <button onClick={() => navigator.clipboard?.writeText(makeMessage(soloResult.weakest))}>
+              <p>“{report.shareableMessage}”</p>
+              <button onClick={() => navigator.clipboard?.writeText(report.shareableMessage)}>
                 <Copy size={16} /> 复制这句话
               </button>
             </div>

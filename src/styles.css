@@ -25,10 +25,12 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 button {
   font: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app-shell {
@@ -1001,7 +1003,10 @@ button {
 .insight-grid article,
 .action-card,
 .talk-card,
-.credibility-card {
+.credibility-card,
+.evidence-card,
+.misread-card,
+.source-card {
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
   border-radius: 22px;
   background: rgba(246, 247, 249, 0.82);
@@ -1015,7 +1020,10 @@ button {
 .insight-grid span,
 .action-card span,
 .talk-card span,
-.credibility-card span {
+.credibility-card span,
+.evidence-card span,
+.misread-card span,
+.source-card span {
   color: var(--color-tip);
 }
 
@@ -1032,7 +1040,10 @@ button {
 .insight-grid p,
 .action-card p,
 .talk-card p,
-.credibility-card p {
+.credibility-card p,
+.evidence-card p,
+.misread-card p,
+.source-card p {
   margin: 10px 0 0;
   color: var(--color-body);
   line-height: 1.65;
@@ -1045,6 +1056,78 @@ button {
 
 .credibility-card p {
   margin-top: 8px;
+  font-size: 14px;
+}
+
+.evidence-card,
+.misread-card,
+.source-card {
+  margin-top: 12px;
+}
+
+.evidence-card div,
+.misread-card div {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.evidence-card p,
+.misread-card p {
+  margin: 0;
+  border-radius: 16px;
+  background: rgba(242, 235, 240, 0.58);
+  padding: 14px 16px;
+  color: var(--color-title);
+}
+
+.misread-card strong {
+  color: var(--color-tip);
+  margin-right: 4px;
+}
+
+.source-card div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.source-card a {
+  display: block;
+  min-height: 148px;
+  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
+  border-radius: 18px;
+  background: rgba(238, 240, 243, 0.62);
+  color: inherit;
+  padding: 16px;
+  text-decoration: none;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.source-card a:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.source-card strong,
+.source-card small {
+  display: block;
+}
+
+.source-card strong {
+  color: var(--color-title);
+  font-size: 17px;
+}
+
+.source-card small {
+  margin-top: 6px;
+  color: var(--color-tip);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.source-card p {
   font-size: 14px;
 }
 
@@ -1181,7 +1264,8 @@ button {
 
 @media (max-width: 860px) {
   .app-shell {
-    padding: 104px 16px 16px;
+    overflow-x: hidden;
+    padding: 96px 16px 16px;
   }
 
   .app-shell::before {
@@ -1204,15 +1288,29 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .result-layout {
+    gap: 14px;
+  }
+
   .hero {
     gap: 24px;
     align-items: start;
     min-height: auto;
-    padding-top: 44px;
+    padding-top: 28px;
   }
 
   .entry-grid {
     grid-template-columns: 1fr;
+  }
+
+  .entry-glow,
+  .entry-glow .border-glow-inner,
+  .entry-card {
+    min-height: auto;
+  }
+
+  .entry-card {
+    padding: 22px;
   }
 
   .hero-title {
@@ -1234,11 +1332,11 @@ button {
     position: relative;
     align-self: center;
     width: 100%;
-    min-height: 700px;
+    min-height: 650px;
   }
 
   .quiz-folder-stage.is-open {
-    padding-top: 42px;
+    padding-top: 18px;
   }
 
   .quiz-floating-folder {
@@ -1259,7 +1357,7 @@ button {
   }
 
   .quiz-pop-card {
-    min-height: 560px;
+    min-height: 0;
     padding: 24px;
   }
 
@@ -1304,7 +1402,8 @@ button {
   .insight-grid,
   .action-card div,
   .ability-card,
-  .compare-card {
+  .compare-card,
+  .source-card div {
     grid-template-columns: 1fr;
   }
 
@@ -1322,5 +1421,284 @@ button {
 
   .ghost-button {
     margin: 10px 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell {
+    min-height: 100svh;
+    padding: 86px 12px 14px;
+  }
+
+  .toast-notice {
+    top: 82px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+    justify-content: center;
+    border-radius: 18px;
+  }
+
+  .ambient {
+    display: none;
+  }
+
+  .eyebrow {
+    width: 100%;
+    justify-content: center;
+    border-radius: 18px;
+    padding: 8px 11px;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .hero {
+    gap: 18px;
+    padding: 18px 0;
+  }
+
+  .hero-title {
+    margin: 16px 0 10px;
+    font-size: 34px;
+  }
+
+  .entry-grid {
+    gap: 12px;
+  }
+
+  .entry-card {
+    border-radius: 22px;
+    padding: 18px;
+  }
+
+  .entry-card strong {
+    font-size: 23px;
+    line-height: 1.2;
+  }
+
+  .entry-card small {
+    margin: 10px 0 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .entry-action {
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .quote-strip {
+    gap: 10px;
+    border-radius: 18px;
+    padding: 14px;
+  }
+
+  .quote-strip p {
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .quiz-panel {
+    min-height: calc(100svh - 112px);
+    justify-content: start;
+  }
+
+  .quiz-folder-stage,
+  .quiz-folder-stage.is-open {
+    min-height: calc(100svh - 112px);
+    padding-top: 0;
+  }
+
+  .quiz-floating-folder {
+    left: 8px;
+    top: auto;
+    bottom: 8px;
+    width: 88px;
+    height: 56px;
+    transform: none;
+    animation: floating-folder-mobile-in 300ms ease both;
+  }
+
+  .quiz-floating-folder span {
+    padding: 2px 8px;
+    font-size: 13px;
+  }
+
+  .quiz-pop-card {
+    gap: 13px;
+    padding: 18px 14px 16px;
+  }
+
+  .quiz-pop-head {
+    gap: 12px;
+  }
+
+  .quiz-pop-head h2 {
+    margin: 12px 0 8px;
+    font-size: 24px;
+    line-height: 1.18;
+  }
+
+  .quiz-pop-head p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .progress-ring {
+    width: 100%;
+    min-height: 44px;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    border-radius: 16px;
+  }
+
+  .progress-ring span {
+    font-size: 19px;
+  }
+
+  .quiz-pop-options {
+    gap: 9px;
+  }
+
+  .quiz-pop-options button {
+    min-height: 54px;
+    border-radius: 16px;
+    padding: 13px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .loading-panel {
+    min-height: calc(100svh - 112px);
+    padding: 18px 0;
+  }
+
+  .envelope-card {
+    border-radius: 24px;
+    padding: 26px 16px 24px;
+  }
+
+  .result-layout {
+    padding: 18px 0 0;
+  }
+
+  .result-main,
+  .side-card {
+    border-radius: 22px;
+  }
+
+  .result-main,
+  .invite-panel {
+    padding: 16px;
+  }
+
+  .result-main h2,
+  .invite-panel h2 {
+    font-size: 28px;
+    line-height: 1.12;
+  }
+
+  .ability-card {
+    gap: 18px;
+    min-height: 0;
+    border-radius: 20px;
+    padding: 20px 16px;
+  }
+
+  .ability-copy h2 {
+    font-size: 30px;
+  }
+
+  .ability-copy p,
+  .invite-panel p,
+  .reveal-grid p,
+  .message-card p,
+  .compare-card p,
+  .side-card p,
+  .insight-grid p,
+  .action-card p,
+  .talk-card p,
+  .credibility-card p,
+  .evidence-card p,
+  .misread-card p,
+  .source-card p {
+    line-height: 1.58;
+  }
+
+  .radar-wrap svg {
+    width: min(220px, 84vw);
+  }
+
+  .ability-list div {
+    grid-template-columns: 58px 34px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .reveal-grid article,
+  .message-card,
+  .compare-card,
+  .insight-grid article,
+  .action-card,
+  .talk-card,
+  .credibility-card,
+  .evidence-card,
+  .misread-card,
+  .source-card {
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .reveal-grid strong {
+    font-size: 22px;
+  }
+
+  .insight-grid p,
+  .message-card p {
+    font-size: 18px;
+  }
+
+  .talk-card p {
+    font-size: 20px;
+  }
+
+  .action-card div {
+    gap: 8px;
+  }
+
+  .action-card p {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .source-card a {
+    min-height: 0;
+  }
+
+  .invite-box {
+    margin: 18px 0 12px;
+    border-radius: 16px;
+    font-size: 13px;
+  }
+
+  .primary-button,
+  .ghost-button,
+  .message-card button {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+  }
+}
+
+@keyframes floating-folder-mobile-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(1.12);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
