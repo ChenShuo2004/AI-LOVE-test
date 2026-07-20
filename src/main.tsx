@@ -1576,8 +1576,11 @@ function App() {
               </div>
             )}
 
-            <div className="source-card">
-              <span>{text.sources}</span>
+            <details className="source-card">
+              <summary>
+                <span>{text.sources}</span>
+                <small>{lang === "en" ? "Click to view references" : "点击展开引用资料"}</small>
+              </summary>
               <div>
                 {report.sources.map((source) => (
                   <a key={source.key} href={source.url} target="_blank" rel="noreferrer">
@@ -1587,7 +1590,7 @@ function App() {
                   </a>
                 ))}
               </div>
-            </div>
+            </details>
 
             <div className="message-card">
               <span>{text.shareTitle}</span>
