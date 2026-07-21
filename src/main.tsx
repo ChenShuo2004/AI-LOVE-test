@@ -1509,7 +1509,12 @@ function App() {
             </div>
 
             <div className="role-card">
-              <div className="role-symbol" aria-hidden="true">{report.roleSymbol}</div>
+              <div
+                className="role-avatar"
+                role="img"
+                aria-label={report.roleImageAlt}
+                style={{ backgroundPosition: report.roleImagePosition }}
+              />
               <div>
                 <span>{text.relationshipRole}</span>
                 <strong>{report.roleTitle}</strong>
