@@ -1020,22 +1020,54 @@ button {
 
 .role-card {
   display: grid;
-  grid-template-columns: 116px minmax(0, 1fr);
+  grid-template-columns: minmax(280px, 0.95fr) 132px minmax(0, 1fr);
   align-items: center;
-  gap: 18px;
-  margin-top: 12px;
+  gap: 22px;
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
-  border-radius: 22px;
+  border-radius: 24px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(242, 235, 240, 0.86)),
-    rgba(246, 247, 249, 0.86);
-  padding: 22px;
-  box-shadow: 0 18px 46px rgba(66, 76, 92, 0.1);
+    linear-gradient(145deg, rgba(39, 46, 59, 0.94), rgba(169, 122, 147, 0.76)),
+    var(--color-title);
+  padding: 26px;
+  color: white;
+  box-shadow: 0 22px 56px rgba(66, 76, 92, 0.16);
+}
+
+.role-metrics {
+  display: grid;
+  grid-template-columns: minmax(138px, 0.86fr) minmax(180px, 1fr);
+  align-items: center;
+  gap: 14px;
+}
+
+.role-metrics > span {
+  grid-column: 1 / -1;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 13px;
+  font-weight: 760;
+}
+
+.role-metrics .radar-wrap svg {
+  width: min(178px, 100%);
+}
+
+.role-metrics .ability-list {
+  gap: 9px;
+}
+
+.role-metrics .ability-list div {
+  grid-template-columns: 58px 34px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.role-metrics .ability-list strong {
+  color: white;
+  font-size: 16px;
 }
 
 .role-avatar {
-  width: 96px;
-  height: 116px;
+  width: 118px;
+  height: 142px;
   justify-self: center;
   border: 1px solid rgba(169, 122, 147, 0.28);
   border-radius: 22px;
@@ -1050,29 +1082,30 @@ button {
     0 14px 28px rgba(66, 76, 92, 0.12);
 }
 
-.role-card span {
-  color: var(--color-tip);
+.role-copy span {
+  color: rgba(255, 255, 255, 0.64);
   font-size: 14px;
   font-weight: 760;
 }
 
-.role-card strong {
+.role-copy strong {
   display: block;
   margin-top: 8px;
-  color: var(--color-title);
-  font-size: 30px;
+  color: white;
+  font-size: clamp(30px, 4vw, 44px);
   line-height: 1.15;
 }
 
-.role-card p {
-  margin: 10px 0 0;
-  color: var(--color-body);
-  line-height: 1.6;
+.role-copy p {
+  max-width: 360px;
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.7;
 }
 
-.role-card b {
+.role-copy b {
   margin-right: 6px;
-  color: var(--color-tip);
+  color: rgba(255, 255, 255, 0.64);
 }
 
 .reveal-grid {
@@ -1204,6 +1237,85 @@ button {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+.letter-dossier {
+  margin-top: 46px;
+}
+
+.letter-dossier summary {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 118px;
+  overflow: visible;
+  border: 1px solid rgba(169, 122, 147, 0.26);
+  border-radius: 0 22px 22px 22px;
+  background:
+    linear-gradient(145deg, rgba(248, 229, 186, 0.96), rgba(210, 168, 105, 0.72)),
+    #ead0a3;
+  color: #4f3828;
+  padding: 28px 30px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
+    0 18px 42px rgba(100, 72, 44, 0.14);
+  cursor: pointer;
+  list-style: none;
+}
+
+.letter-dossier summary::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  bottom: 100%;
+  width: 168px;
+  height: 42px;
+  border-radius: 18px 18px 0 0;
+  background: #ead0a3;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.letter-dossier summary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(119, 72, 34, 0.12), transparent 12%, transparent 88%, rgba(119, 72, 34, 0.1)),
+    radial-gradient(circle at 22% 32%, rgba(255, 255, 255, 0.34), transparent 22%);
+  pointer-events: none;
+}
+
+.letter-dossier summary::-webkit-details-marker {
+  display: none;
+}
+
+.letter-dossier summary span,
+.letter-dossier summary strong {
+  position: relative;
+  z-index: 1;
+}
+
+.letter-dossier summary span {
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 850;
+  line-height: 1.18;
+}
+
+.letter-dossier summary strong {
+  justify-self: end;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  color: #5c432e;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 820;
+}
+
+.letter-dossier[open] summary {
+  border-radius: 0 20px 20px 20px;
+  transform: translateY(-2px);
 }
 
 .full-reading-card {
@@ -1908,14 +2020,59 @@ button {
     padding: 16px;
   }
 
+  .role-metrics {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(116px, 0.76fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .role-metrics .radar-wrap svg {
+    width: min(132px, 100%);
+  }
+
+  .role-metrics .ability-list {
+    gap: 7px;
+  }
+
+  .role-metrics .ability-list div {
+    grid-template-columns: 52px 30px minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .role-metrics .ability-list strong {
+    font-size: 14px;
+  }
+
   .role-avatar {
     width: 72px;
     height: 88px;
     border-radius: 16px;
   }
 
-  .role-card strong {
+  .role-copy strong {
     font-size: 22px;
+  }
+
+  .letter-dossier {
+    margin-top: 34px;
+  }
+
+  .letter-dossier summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    min-height: 104px;
+    border-radius: 0 18px 18px 18px;
+    padding: 22px 18px;
+  }
+
+  .letter-dossier summary::before {
+    width: 126px;
+    height: 32px;
+    border-radius: 14px 14px 0 0;
+  }
+
+  .letter-dossier summary strong {
+    justify-self: start;
   }
 
   .credibility-card {

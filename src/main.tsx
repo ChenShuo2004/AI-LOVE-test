@@ -472,6 +472,7 @@ const uiText = {
     talkFirstDesc: "先聊最软的需求，再聊谁该改变。",
     evidenceTitle: "为什么这样判断",
     fullReading: "一封写给你的关系来信",
+    openDossier: "点击打开卷宗",
     coreNeed: "你真正需要被看见的部分",
     strength: "关系里还亮着的灯",
     misreadTitle: "最容易被误解的地方",
@@ -544,6 +545,7 @@ const uiText = {
     talkFirstDesc: "Start with the softest need, then discuss what could change.",
     evidenceTitle: "Why this result",
     fullReading: "A letter for this relationship",
+    openDossier: "Open dossier",
     coreNeed: "What truly needs to be seen",
     strength: "What is still lit in the relationship",
     misreadTitle: "Most likely misunderstanding",
@@ -1184,7 +1186,6 @@ function App() {
 
   const soloResult = scoreAnswers(questions, answers);
   const partnerResult = partnerAnswers ? scoreAnswers(questions, partnerAnswers) : null;
-  const combinedScore = partnerResult ? Math.round((soloResult.percent + partnerResult.percent) / 2) : soloResult.percent;
   const abilityScores = mergeAbilities(
     scoreAbilities(questions, answers, lang),
     partnerAnswers ? scoreAbilities(questions, partnerAnswers, lang) : null,
@@ -1462,60 +1463,52 @@ function App() {
       {step === "result" && (
         <section className="result-layout result-layout-single">
           <div className="result-main">
-            <div className="ability-card">
-              <div className="ability-copy">
-                <span>{text.abilityLabel}</span>
-                <h2>{text.abilityTitle}</h2>
-                <p>
-                  <span>{text.abilityDesc1}</span>
-                  <span>{text.abilityDesc2}</span>
-                </p>
-              </div>
-              <div className="radar-wrap" aria-label={text.radarLabel}>
-                <svg viewBox="0 0 240 240" role="img">
-                  {[0.33, 0.66, 1].map((level) => (
-                    <polygon
-                      key={level}
-                      className="radar-grid-line"
-                      points={abilityScores.map((_, index) => radarGridPoint(index, level, abilityScores.length)).join(" ")}
-                    />
-                  ))}
-                  {abilityScores.map((_, index) => (
-                    <line
-                      key={index}
-                      className="radar-axis"
-                      x1="120"
-                      y1="120"
-                      x2={radarGridPoint(index, 1, abilityScores.length).split(",")[0]}
-                      y2={radarGridPoint(index, 1, abilityScores.length).split(",")[1]}
-                    />
-                  ))}
-                  <polygon className="radar-shape" points={radarPoints} />
-                  {abilityScores.map((item, index) => {
-                    const [x, y] = radarPoint(index, item.value, abilityScores.length).split(",");
-                    return <circle key={item.key} className="radar-dot" cx={x} cy={y} r="4.5" />;
-                  })}
-                </svg>
-              </div>
-              <div className="ability-list">
-                {abilityScores.map((item) => (
-                  <div key={item.key}>
-                    <span>{item.label}</span>
-                    <strong>{item.value}</strong>
-                    <i style={{ width: `${item.value}%` }} />
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <div className="role-card">
+              <div className="role-metrics">
+                <span>{text.abilityLabel}</span>
+                <div className="radar-wrap" aria-label={text.radarLabel}>
+                  <svg viewBox="0 0 240 240" role="img">
+                    {[0.33, 0.66, 1].map((level) => (
+                      <polygon
+                        key={level}
+                        className="radar-grid-line"
+                        points={abilityScores.map((_, index) => radarGridPoint(index, level, abilityScores.length)).join(" ")}
+                      />
+                    ))}
+                    {abilityScores.map((_, index) => (
+                      <line
+                        key={index}
+                        className="radar-axis"
+                        x1="120"
+                        y1="120"
+                        x2={radarGridPoint(index, 1, abilityScores.length).split(",")[0]}
+                        y2={radarGridPoint(index, 1, abilityScores.length).split(",")[1]}
+                      />
+                    ))}
+                    <polygon className="radar-shape" points={radarPoints} />
+                    {abilityScores.map((item, index) => {
+                      const [x, y] = radarPoint(index, item.value, abilityScores.length).split(",");
+                      return <circle key={item.key} className="radar-dot" cx={x} cy={y} r="4.5" />;
+                    })}
+                  </svg>
+                </div>
+                <div className="ability-list">
+                  {abilityScores.map((item) => (
+                    <div key={item.key}>
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                      <i style={{ width: `${item.value}%` }} />
+                    </div>
+                  ))}
+                </div>
+              </div>
               <div
                 className="role-avatar"
                 role="img"
                 aria-label={report.roleImageAlt}
                 style={{ backgroundPosition: report.roleImagePosition }}
               />
-              <div>
+              <div className="role-copy">
                 <span>{text.relationshipRole}</span>
                 <strong>{report.roleTitle}</strong>
                 <p><b>{text.roleType}</b>{report.roleName} · {report.patternTitle}</p>
@@ -1540,15 +1533,21 @@ function App() {
               )}
             </div>
 
-            <div className="full-reading-card">
-              <span>{text.fullReading}</span>
-              <strong>{report.longFormHighlight}</strong>
-              <div className="letter-body">
-                {report.longFormInsight.split("\n\n").map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
+            <details className="letter-dossier">
+              <summary>
+                <span>{text.fullReading}</span>
+                <strong>{text.openDossier}</strong>
+              </summary>
+              <div className="full-reading-card">
+                <span>{text.fullReading}</span>
+                <strong>{report.longFormHighlight}</strong>
+                <div className="letter-body">
+                  {report.longFormInsight.split("\n\n").map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
               </div>
-            </div>
+            </details>
 
             <details className="evidence-card">
               <summary>
