@@ -1502,16 +1502,11 @@ function App() {
                   ))}
                 </div>
               </div>
-              <div
-                className="role-avatar"
-                role="img"
-                aria-label={report.roleImageAlt}
-                style={{ backgroundPosition: report.roleImagePosition }}
-              />
+              <img className="role-avatar" src={report.roleImageSrc} alt={report.roleImageAlt} />
               <div className="role-copy">
                 <span>{text.relationshipRole}</span>
-                <strong>{report.roleTitle}</strong>
                 <p><b>{text.roleType}</b>{report.roleName} · {report.patternTitle}</p>
+                <strong>{report.roleTitle}</strong>
               </div>
             </div>
 

@@ -57,7 +57,7 @@ export type RelationshipReport = {
   roleTitle: string;
   roleName: string;
   roleSymbol: string;
-  roleImagePosition: string;
+  roleImageSrc: string;
   roleImageAlt: string;
   patternTitle: string;
   oneLineSummary: string;
@@ -90,7 +90,7 @@ type PatternTemplate = {
   roleTitle: string;
   roleName: string;
   roleSymbol: string;
-  roleImagePosition: string;
+  roleImageSrc: string;
   roleImageAlt: string;
   title: string;
   oneLineSummary: string;
@@ -218,7 +218,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "想把话说明白的人",
     roleName: "老师型",
     roleSymbol: "✦",
-    roleImagePosition: "40% 0%",
+    roleImageSrc: "/roles/cutouts/teacher.png",
     roleImageAlt: "老师型角色形象",
     title: "高在乎低表达型",
     oneLineSummary: "你不是不在乎，而是很多在乎没有被稳定、清楚地说出来。",
@@ -238,7 +238,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "等一句确定的人",
     roleName: "观察者型",
     roleSymbol: "◇",
-    roleImagePosition: "0% 0%",
+    roleImageSrc: "/roles/cutouts/observer.png",
     roleImageAlt: "观察者型角色形象",
     title: "需要确认型",
     oneLineSummary: "你最需要被接住的是确定感：不是反复证明，而是关键时刻被清楚选择。",
@@ -258,7 +258,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "希望吵完还能回来的人",
     roleName: "医护者型",
     roleSymbol: "＋",
-    roleImagePosition: "60% 50%",
+    roleImageSrc: "/roles/cutouts/caregiver.png",
     roleImageAlt: "医护者型角色形象",
     title: "慢速修复型",
     oneLineSummary: "你们不是没有感情，而是冲突之后缺少一套不伤人的回来方式。",
@@ -278,7 +278,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "还有委屈没被听见的人",
     roleName: "学者型",
     roleSymbol: "※",
-    roleImagePosition: "40% 50%",
+    roleImageSrc: "/roles/cutouts/scholar.png",
     roleImageAlt: "学者型角色形象",
     title: "情绪积压型",
     oneLineSummary: "你现在的难受不是突然出现的，而是很多小失望没有被及时看见。",
@@ -298,7 +298,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "想被放进日常的人",
     roleName: "旅人型",
     roleSymbol: "⌁",
-    roleImagePosition: "20% 50%",
+    roleImageSrc: "/roles/cutouts/traveler.png",
     roleImageAlt: "旅人型角色形象",
     title: "日常失联型",
     oneLineSummary: "你在意的不是陪伴时长本身，而是有没有被放进对方的生活节奏里。",
@@ -318,7 +318,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "想靠近又怕受伤的人",
     roleName: "守护者型",
     roleSymbol: "◌",
-    roleImagePosition: "80% 100%",
+    roleImageSrc: "/roles/cutouts/guardian.png",
     roleImageAlt: "守护者型角色形象",
     title: "拉扯靠近型",
     oneLineSummary: "你们可能一个更想马上确认，一个更需要先缓一缓，于是靠近变成拉扯。",
@@ -338,7 +338,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "需要空间也需要被懂的人",
     roleName: "骑士型",
     roleSymbol: "□",
-    roleImagePosition: "0% 50%",
+    roleImageSrc: "/roles/cutouts/knight.png",
     roleImageAlt: "骑士型角色形象",
     title: "边界敏感型",
     oneLineSummary: "你并不是想推开关系，而是希望靠近的时候也能保留自己的空间。",
@@ -358,7 +358,7 @@ const patternTemplates: PatternTemplate[] = [
     roleTitle: "想知道是否还同路的人",
     roleName: "导师型",
     roleSymbol: "⌖",
-    roleImagePosition: "80% 0%",
+    roleImageSrc: "/roles/cutouts/guide.png",
     roleImageAlt: "导师型角色形象",
     title: "并肩调整型",
     oneLineSummary: "你们的重点不是立刻给关系定性，而是确认还愿不愿意一起往前调整。",
@@ -373,7 +373,7 @@ const patternTemplates: PatternTemplate[] = [
   },
 ];
 
-const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTags" | "triggerDimensions" | "sourceKeys" | "roleSymbol" | "roleImagePosition">> = {
+const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTags" | "triggerDimensions" | "sourceKeys" | "roleSymbol" | "roleImageSrc">> = {
   high_care_low_expression: {
     roleTitle: "The one trying to make things clear",
     roleName: "Teacher Type",
@@ -663,7 +663,7 @@ export function buildRelationshipReport(params: {
     roleTitle: template.roleTitle,
     roleName: template.roleName,
     roleSymbol: template.roleSymbol,
-    roleImagePosition: template.roleImagePosition,
+    roleImageSrc: template.roleImageSrc,
     roleImageAlt: template.roleImageAlt,
     patternTitle: template.title,
     oneLineSummary: template.oneLineSummary,
