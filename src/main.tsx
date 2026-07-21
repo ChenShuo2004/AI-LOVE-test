@@ -15,6 +15,7 @@ import {
 import BorderGlow from "./components/BorderGlow";
 import BlurText from "./components/BlurText";
 import CardNav from "./components/CardNav";
+import CursorGrid from "./components/CursorGrid";
 import Folder from "./components/Folder";
 import { buildDuoRelationshipReport, buildRelationshipReport, type DuoRelationshipReport, type Language } from "./data/relationshipReport";
 import "./styles.css";
@@ -1457,6 +1458,22 @@ function App() {
       {step === "quiz" && currentQuestion && (
         <section className="quiz-panel">
           <div className={`quiz-folder-stage ${quizFolderOpen ? "is-open" : ""}`}>
+            <CursorGrid
+              className="quiz-cursor-grid"
+              cellSize={64}
+              color="#A97A93"
+              radius={150}
+              falloff="smooth"
+              holdTime={360}
+              fadeDuration={900}
+              lineWidth={1.15}
+              maxOpacity={0.62}
+              fillOpacity={0.04}
+              gridOpacity={0.018}
+              cellRadius={14}
+              clickPulse
+              pulseSpeed={620}
+            />
             <Folder
               key={currentQuestion.id}
               className={`quiz-folder ${quizFolderOpen ? "quiz-folder-active" : ""}`}

@@ -173,6 +173,7 @@
 
 .quiz-folder {
   position: relative;
+  z-index: 1;
   width: min(820px, 94vw);
   height: 680px;
 }

@@ -380,6 +380,15 @@ button {
   pointer-events: auto;
 }
 
+.quiz-cursor-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 34px;
+  opacity: 0.72;
+  mix-blend-mode: multiply;
+}
+
 .loading-panel {
   min-height: calc(100vh - 172px);
   display: grid;
