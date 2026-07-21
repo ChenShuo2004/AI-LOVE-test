@@ -84,20 +84,15 @@ button {
 }
 
 .language-toggle {
-  position: fixed;
-  top: 106px;
-  right: 28px;
-  z-index: 110;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  flex: 0 0 auto;
   border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
   border-radius: 999px;
-  background: rgba(246, 247, 249, 0.84);
+  background: rgba(246, 247, 249, 0.68);
   color: var(--color-body);
   padding: 4px;
-  box-shadow: 0 14px 38px rgba(66, 76, 92, 0.12);
-  backdrop-filter: blur(16px);
   cursor: pointer;
 }
 
@@ -1596,16 +1591,6 @@ button {
     max-width: none;
     justify-content: center;
     border-radius: 18px;
-  }
-
-  .language-toggle {
-    top: 76px;
-    right: 12px;
-  }
-
-  .language-toggle span {
-    min-width: 36px;
-    padding: 6px 8px;
   }
 
   .ambient {

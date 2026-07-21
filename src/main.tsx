@@ -1246,16 +1246,18 @@ function App() {
         menuCloseLabel={text.menuClose}
         showButton={step !== "home"}
         onButtonClick={reset}
+        rightSlot={(
+          <button
+            className="language-toggle"
+            type="button"
+            onClick={() => setLang(lang === "zh" ? "en" : "zh")}
+            aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
+          >
+            <span className={lang === "zh" ? "is-active" : ""}>中文</span>
+            <span className={lang === "en" ? "is-active" : ""}>EN</span>
+          </button>
+        )}
       />
-      <button
-        className="language-toggle"
-        type="button"
-        onClick={() => setLang(lang === "zh" ? "en" : "zh")}
-        aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
-      >
-        <span className={lang === "zh" ? "is-active" : ""}>中文</span>
-        <span className={lang === "en" ? "is-active" : ""}>EN</span>
-      </button>
 
       {step === "home" && (
         <section className="hero">

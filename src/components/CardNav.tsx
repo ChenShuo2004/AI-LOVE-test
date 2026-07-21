@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { type ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ArrowUpRight } from "lucide-react";
 import BorderGlow from "./BorderGlow";
@@ -35,6 +35,7 @@ type CardNavProps = {
   menuCloseLabel?: string;
   showButton?: boolean;
   onButtonClick?: () => void;
+  rightSlot?: ReactNode;
 };
 
 function CardNav({
@@ -54,6 +55,7 @@ function CardNav({
   menuCloseLabel = "Close menu",
   showButton = true,
   onButtonClick,
+  rightSlot,
 }: CardNavProps) {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -205,31 +207,34 @@ function CardNav({
             )}
           </div>
 
-          {showButton ? (
-            <BorderGlow
-              className="card-nav-button-glow"
-              edgeSensitivity={26}
-              glowColor="330 28 58"
-              backgroundColor={buttonBgColor}
-              borderRadius={13}
-              glowRadius={22}
-              glowIntensity={0.78}
-              coneSpread={24}
-              colors={["#A97A93", "#E2D8DF", "#EEF0F3"]}
-              fillOpacity={0.22}
-            >
-              <button
-                type="button"
-                className="card-nav-cta-button"
-                style={{ backgroundColor: "transparent", color: buttonTextColor }}
-                onClick={onButtonClick}
+          <div className="card-nav-actions">
+            {showButton ? (
+              <BorderGlow
+                className="card-nav-button-glow"
+                edgeSensitivity={26}
+                glowColor="330 28 58"
+                backgroundColor={buttonBgColor}
+                borderRadius={13}
+                glowRadius={22}
+                glowIntensity={0.78}
+                coneSpread={24}
+                colors={["#A97A93", "#E2D8DF", "#EEF0F3"]}
+                fillOpacity={0.22}
               >
-                {buttonLabel}
-              </button>
-            </BorderGlow>
-          ) : (
-            <span className="card-nav-button-spacer" aria-hidden="true" />
-          )}
+                <button
+                  type="button"
+                  className="card-nav-cta-button"
+                  style={{ backgroundColor: "transparent", color: buttonTextColor }}
+                  onClick={onButtonClick}
+                >
+                  {buttonLabel}
+                </button>
+              </BorderGlow>
+            ) : (
+              <span className="card-nav-button-spacer" aria-hidden="true" />
+            )}
+            {rightSlot}
+          </div>
         </div>
 
         <div className="card-nav-content" aria-hidden={!isExpanded}>
