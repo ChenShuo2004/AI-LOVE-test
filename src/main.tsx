@@ -1522,24 +1522,6 @@ function App() {
               </div>
             </div>
 
-            <div className="reveal-grid">
-              <article>
-                <span>{text.mainLine}</span>
-                <strong>{report.patternTitle}</strong>
-                <p>{report.oneLineSummary}</p>
-              </article>
-              <article>
-                <span>{partnerAnswers ? text.jointScore : text.clarity}</span>
-                <strong>{combinedScore}</strong>
-                <p>{partnerAnswers ? text.repairEntry : text.clues}</p>
-              </article>
-              <article>
-                <span>{text.talkFirst}</span>
-                <strong>{dimensionLabels[lang][soloResult.weakest as DimensionKey]}</strong>
-                <p>{text.talkFirstDesc}</p>
-              </article>
-            </div>
-
             <div className={`credibility-card ${showResultNote ? "is-open" : ""}`}>
               <button
                 className="credibility-toggle"
