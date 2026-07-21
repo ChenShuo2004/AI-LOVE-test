@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
@@ -8,6 +8,8 @@ import {
   Moon,
   RefreshCw,
   UsersRound,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import BorderGlow from "./components/BorderGlow";
 import BlurText from "./components/BlurText";
@@ -423,6 +425,8 @@ const uiText = {
     homeButton: "回到首页",
     menuClose: "关闭菜单",
     menuOpen: "打开菜单",
+    soundOn: "关闭声音",
+    soundOff: "打开声音",
     heroEyebrow: "5 分钟，把没说出口的话看清楚",
     heroTitle: "你们最近，还好吗？",
     soloKicker: "单人测试",
@@ -496,6 +500,8 @@ const uiText = {
     homeButton: "Home",
     menuClose: "Close menu",
     menuOpen: "Open menu",
+    soundOn: "Mute sound",
+    soundOff: "Turn sound on",
     heroEyebrow: "5 minutes to see what has not been said",
     heroTitle: "How are you two, lately?",
     soloKicker: "Solo test",
@@ -1087,6 +1093,9 @@ function App() {
   const [toastMessage, setToastMessage] = useState("");
   const [reportReady, setReportReady] = useState(false);
   const [showResultNote, setShowResultNote] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(() => localStorage.getItem("warmth-sound") !== "off");
+  const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
+  const buttonAudioRef = useRef<HTMLAudioElement | null>(null);
   const text = uiText[lang];
   const prompts = reflectionPrompts[lang];
   const questions = useMemo(() => questionsFromIds(mode, questionIds).map((question) => localizeQuestion(question, lang)), [mode, questionIds, lang]);
@@ -1116,6 +1125,65 @@ function App() {
     localStorage.setItem("warmth-lang", lang);
     document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
   }, [lang]);
+
+  useEffect(() => {
+    const backgroundAudio = new Audio("/audio/background.mp3");
+    backgroundAudio.loop = true;
+    backgroundAudio.volume = 0.18;
+    backgroundAudio.preload = "auto";
+    backgroundAudioRef.current = backgroundAudio;
+
+    const buttonAudio = new Audio("/audio/button-click.mp4");
+    buttonAudio.volume = 0.38;
+    buttonAudio.preload = "auto";
+    buttonAudioRef.current = buttonAudio;
+
+    return () => {
+      backgroundAudio.pause();
+      buttonAudio.pause();
+      backgroundAudioRef.current = null;
+      buttonAudioRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("warmth-sound", soundEnabled ? "on" : "off");
+    const backgroundAudio = backgroundAudioRef.current;
+    if (!backgroundAudio) return;
+    if (!soundEnabled) {
+      backgroundAudio.pause();
+      return;
+    }
+    if (backgroundAudio.dataset.started === "true") {
+      void backgroundAudio.play().catch(() => undefined);
+    }
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    const handlePlayableClick = (event: MouseEvent) => {
+      if (!soundEnabled) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (!target) return;
+
+      const isInteractive = Boolean(target.closest("button, a, summary, [role='button']"));
+      if (!isInteractive) return;
+
+      const backgroundAudio = backgroundAudioRef.current;
+      if (backgroundAudio && backgroundAudio.dataset.started !== "true") {
+        backgroundAudio.dataset.started = "true";
+        void backgroundAudio.play().catch(() => undefined);
+      }
+
+      const buttonAudio = buttonAudioRef.current;
+      if (buttonAudio) {
+        buttonAudio.currentTime = 0;
+        void buttonAudio.play().catch(() => undefined);
+      }
+    };
+
+    document.addEventListener("click", handlePlayableClick, true);
+    return () => document.removeEventListener("click", handlePlayableClick, true);
+  }, [soundEnabled]);
 
   function goToStep(nextStep: Step, nextMode = mode, nextFolderOpen = nextStep === "quiz") {
     setStep(nextStep);
@@ -1158,6 +1226,20 @@ function App() {
 
   function openReport() {
     goToStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
+  }
+
+  function toggleSound() {
+    setSoundEnabled((current) => {
+      const next = !current;
+      if (next) {
+        const backgroundAudio = backgroundAudioRef.current;
+        if (backgroundAudio) {
+          backgroundAudio.dataset.started = "true";
+          void backgroundAudio.play().catch(() => undefined);
+        }
+      }
+      return next;
+    });
   }
 
   useEffect(() => {
@@ -1256,15 +1338,26 @@ function App() {
         showButton={step !== "home"}
         onButtonClick={reset}
         rightSlot={(
-          <button
-            className="language-toggle"
-            type="button"
-            onClick={() => setLang(lang === "zh" ? "en" : "zh")}
-            aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
-          >
-            <span className={lang === "zh" ? "is-active" : ""}>中文</span>
-            <span className={lang === "en" ? "is-active" : ""}>EN</span>
-          </button>
+          <>
+            <button
+              className="sound-toggle"
+              type="button"
+              onClick={toggleSound}
+              aria-label={soundEnabled ? text.soundOn : text.soundOff}
+              title={soundEnabled ? text.soundOn : text.soundOff}
+            >
+              {soundEnabled ? <Volume2 size={16} aria-hidden="true" /> : <VolumeX size={16} aria-hidden="true" />}
+            </button>
+            <button
+              className="language-toggle"
+              type="button"
+              onClick={() => setLang(lang === "zh" ? "en" : "zh")}
+              aria-label={lang === "zh" ? "Switch to English" : "切换到中文"}
+            >
+              <span className={lang === "zh" ? "is-active" : ""}>中文</span>
+              <span className={lang === "en" ? "is-active" : ""}>EN</span>
+            </button>
+          </>
         )}
       />
 
