@@ -185,6 +185,12 @@
   transform: translateX(-50%);
 }
 
+.quiz-folder .folder.folder--cover:not(.open) {
+  top: 47%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+}
+
 .quiz-folder .folder__back {
   width: min(680px, 88vw);
   height: 390px;
@@ -296,6 +302,10 @@
     height: 650px;
   }
 
+  .quiz-folder .folder.folder--cover:not(.open) {
+    top: 45%;
+  }
+
   .quiz-folder .folder__back {
     width: min(360px, 86vw);
     height: 245px;
@@ -321,6 +331,10 @@
 
   .quiz-folder .folder {
     bottom: 34px;
+  }
+
+  .quiz-folder .folder.folder--cover:not(.open) {
+    top: 44%;
   }
 
   .quiz-folder.quiz-folder-active .folder {
