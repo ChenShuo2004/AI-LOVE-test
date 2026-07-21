@@ -54,6 +54,9 @@ export type AnswerEvidence = {
 };
 
 export type RelationshipReport = {
+  roleTitle: string;
+  roleName: string;
+  roleSymbol: string;
   patternTitle: string;
   oneLineSummary: string;
   longFormInsight: string;
@@ -82,6 +85,9 @@ type PatternTemplate = {
   key: string;
   triggerTags: string[];
   triggerDimensions: RelationshipDimension[];
+  roleTitle: string;
+  roleName: string;
+  roleSymbol: string;
   title: string;
   oneLineSummary: string;
   coreNeed: string;
@@ -205,6 +211,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "high_care_low_expression",
     triggerTags: ["communication_gap", "intimacy_distance"],
     triggerDimensions: ["communication", "intimacy"],
+    roleTitle: "想把话说明白的人",
+    roleName: "老师型",
+    roleSymbol: "✦",
     title: "高在乎低表达型",
     oneLineSummary: "你不是不在乎，而是很多在乎没有被稳定、清楚地说出来。",
     coreNeed: "你需要的不是赢过对方，而是让彼此真正听见“我为什么难过”。",
@@ -220,6 +229,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "needs_reassurance",
     triggerTags: ["needs_reassurance"],
     triggerDimensions: ["security"],
+    roleTitle: "等一句确定的人",
+    roleName: "守灯人型",
+    roleSymbol: "◇",
     title: "需要确认型",
     oneLineSummary: "你最需要被接住的是确定感：不是反复证明，而是关键时刻被清楚选择。",
     coreNeed: "你需要稳定回应、明确态度和一种“我们还在同一边”的感觉。",
@@ -235,6 +247,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "slow_repair",
     triggerTags: ["repair_needed"],
     triggerDimensions: ["repair"],
+    roleTitle: "希望吵完还能回来的人",
+    roleName: "医护者型",
+    roleSymbol: "＋",
     title: "慢速修复型",
     oneLineSummary: "你们不是没有感情，而是冲突之后缺少一套不伤人的回来方式。",
     coreNeed: "你真正需要的是吵完之后还能收尾，而不是把每次争执都变成关系结论。",
@@ -250,6 +265,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "emotion_accumulated",
     triggerTags: ["emotion_accumulated"],
     triggerDimensions: ["repair", "security"],
+    roleTitle: "还有委屈没被听见的人",
+    roleName: "学者型",
+    roleSymbol: "※",
     title: "情绪积压型",
     oneLineSummary: "你现在的难受不是突然出现的，而是很多小失望没有被及时看见。",
     coreNeed: "你需要的是把委屈放到桌面上，而不是继续靠忍耐维持表面和平。",
@@ -265,6 +283,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "daily_disconnection",
     triggerTags: ["daily_disconnection"],
     triggerDimensions: ["companionship"],
+    roleTitle: "想被放进日常的人",
+    roleName: "旅人型",
+    roleSymbol: "⌁",
     title: "日常失联型",
     oneLineSummary: "你在意的不是陪伴时长本身，而是有没有被放进对方的生活节奏里。",
     coreNeed: "你需要被惦记、被分享、被自然地纳入日常。",
@@ -280,6 +301,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "push_pull_close",
     triggerTags: ["needs_reassurance", "boundary_sensitive"],
     triggerDimensions: ["security", "repair"],
+    roleTitle: "想靠近又怕受伤的人",
+    roleName: "守护者型",
+    roleSymbol: "◌",
     title: "拉扯靠近型",
     oneLineSummary: "你们可能一个更想马上确认，一个更需要先缓一缓，于是靠近变成拉扯。",
     coreNeed: "你需要既有确认，也有节奏；既不被丢下，也不被逼到防御。",
@@ -295,6 +319,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "boundary_sensitive",
     triggerTags: ["boundary_sensitive"],
     triggerDimensions: ["repair", "future"],
+    roleTitle: "需要空间也需要被懂的人",
+    roleName: "边界守门人型",
+    roleSymbol: "□",
     title: "边界敏感型",
     oneLineSummary: "你并不是想推开关系，而是希望靠近的时候也能保留自己的空间。",
     coreNeed: "你需要被尊重、被允许慢一点，也需要关系里的边界不被误读成不爱。",
@@ -310,6 +337,9 @@ const patternTemplates: PatternTemplate[] = [
     key: "aligned_growth",
     triggerTags: ["future_alignment"],
     triggerDimensions: ["future"],
+    roleTitle: "想知道是否还同路的人",
+    roleName: "导师型",
+    roleSymbol: "⌖",
     title: "并肩调整型",
     oneLineSummary: "你们的重点不是立刻给关系定性，而是确认还愿不愿意一起往前调整。",
     coreNeed: "你需要方向感、共同计划和一种“我们愿意一起解决”的确定。",
@@ -323,8 +353,10 @@ const patternTemplates: PatternTemplate[] = [
   },
 ];
 
-const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTags" | "triggerDimensions" | "sourceKeys">> = {
+const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTags" | "triggerDimensions" | "sourceKeys" | "roleSymbol">> = {
   high_care_low_expression: {
+    roleTitle: "The one trying to make things clear",
+    roleName: "Teacher Type",
     title: "High Care, Low Expression",
     oneLineSummary: "It is not that you do not care. A lot of care simply has not been expressed in a steady, clear way.",
     coreNeed: "What you need is not to win the conversation, but to help each other hear why this has been hard.",
@@ -336,6 +368,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "I am not avoiding the conversation. I just hope that when we talk, we can first hear where each of us is hurting.",
   },
   needs_reassurance: {
+    roleTitle: "The one waiting for a clear yes",
+    roleName: "Light Keeper Type",
     title: "Reassurance-Seeking",
     oneLineSummary: "The thing that most needs care is reassurance: not repeated proof, but being clearly chosen in key moments.",
     coreNeed: "You need steady responses, clear signals, and the feeling that you are still on the same side.",
@@ -347,6 +381,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "I am not asking you to prove your love again and again. When I feel unsure, I just hope to feel chosen a little more clearly.",
   },
   slow_repair: {
+    roleTitle: "The one hoping conflict can still come back",
+    roleName: "Caregiver Type",
     title: "Slow Repair",
     oneLineSummary: "This is not a lack of feeling. It is a lack of a safe way back after conflict.",
     coreNeed: "You need arguments to have an ending, instead of turning every disagreement into a verdict on the relationship.",
@@ -358,6 +394,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "If we argue again, can we pause without disappearing, and agree to come back to finish the conversation?",
   },
   emotion_accumulated: {
+    roleTitle: "The one whose hurt has not been heard",
+    roleName: "Scholar Type",
     title: "Accumulated Emotion",
     oneLineSummary: "The pain you feel now did not appear suddenly. It may be made of many small disappointments that were not heard in time.",
     coreNeed: "You need to put the hurt on the table, instead of using endurance to keep the surface peaceful.",
@@ -369,6 +407,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "I am not trying to dig up old fights. I want the hurt that was never heard to finally have a place to go.",
   },
   daily_disconnection: {
+    roleTitle: "The one wanting to be included in everyday life",
+    roleName: "Traveler Type",
     title: "Daily Disconnection",
     oneLineSummary: "What matters is not just time together, but whether you feel included in each other's daily rhythm.",
     coreNeed: "You need to be remembered, included, and naturally brought into everyday life.",
@@ -380,6 +420,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "I do not need many arrangements. I just want to feel that you are willing to make room for me in your life.",
   },
   push_pull_close: {
+    roleTitle: "The one wanting closeness without more hurt",
+    roleName: "Guardian Type",
     title: "Push-Pull Closeness",
     oneLineSummary: "One of you may want immediate reassurance while the other needs room first, so closeness turns into chasing and retreating.",
     coreNeed: "You need both reassurance and rhythm: neither being dropped nor pushed into defense.",
@@ -391,6 +433,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "I want to come closer to you. I just hope we can do it in a way that feels less pressured.",
   },
   boundary_sensitive: {
+    roleTitle: "The one needing both space and understanding",
+    roleName: "Boundary Keeper Type",
     title: "Boundary-Sensitive",
     oneLineSummary: "You are not trying to push the relationship away. You want closeness that still leaves room for yourself.",
     coreNeed: "You need respect, permission to slow down, and boundaries that are not misread as lack of love.",
@@ -402,6 +446,8 @@ const patternTemplateEn: Record<string, Omit<PatternTemplate, "key" | "triggerTa
     shareableMessage: "I need a little space, but I am not trying to leave you. I want to come back to you in a better state.",
   },
   aligned_growth: {
+    roleTitle: "The one asking whether you are still on the same road",
+    roleName: "Guide Type",
     title: "Growing Side by Side",
     oneLineSummary: "The point is not to define the whole relationship immediately, but to see whether you still want to adjust forward together.",
     coreNeed: "You need direction, shared planning, and the feeling that you are willing to solve things together.",
@@ -586,6 +632,9 @@ export function buildRelationshipReport(params: {
   const sources = pickSources(template, selectedEvidence, lang);
 
   return {
+    roleTitle: template.roleTitle,
+    roleName: template.roleName,
+    roleSymbol: template.roleSymbol,
     patternTitle: template.title,
     oneLineSummary: template.oneLineSummary,
     longFormInsight: buildLongFormInsight({

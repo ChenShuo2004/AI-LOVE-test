@@ -1018,6 +1018,60 @@ button {
   box-shadow: 0 8px 18px rgba(45, 184, 230, 0.2);
 }
 
+.role-card {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  margin-top: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(242, 235, 240, 0.86)),
+    rgba(246, 247, 249, 0.86);
+  padding: 22px;
+  box-shadow: 0 18px 46px rgba(66, 76, 92, 0.1);
+}
+
+.role-symbol {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid rgba(169, 122, 147, 0.28);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.84), transparent 36%),
+    linear-gradient(145deg, rgba(169, 122, 147, 0.22), rgba(238, 240, 243, 0.72));
+  color: var(--color-accent);
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.role-card span {
+  color: var(--color-tip);
+  font-size: 14px;
+  font-weight: 760;
+}
+
+.role-card strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--color-title);
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.role-card p {
+  margin: 10px 0 0;
+  color: var(--color-body);
+  line-height: 1.6;
+}
+
+.role-card b {
+  margin-right: 6px;
+  color: var(--color-tip);
+}
+
 .reveal-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1789,6 +1843,22 @@ button {
   .ability-list div {
     grid-template-columns: 58px 34px minmax(0, 1fr);
     gap: 8px;
+  }
+
+  .role-card {
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 14px;
+    border-radius: 18px;
+    padding: 16px;
+  }
+
+  .role-symbol {
+    border-radius: 16px;
+    font-size: 28px;
+  }
+
+  .role-card strong {
+    font-size: 22px;
   }
 
   .reveal-grid article,

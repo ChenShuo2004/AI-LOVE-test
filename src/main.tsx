@@ -461,6 +461,8 @@ const uiText = {
     abilityDesc2: "分数越高，代表这一项在当前关系里越容易被看见和使用。",
     radarLabel: "当前关系六项能力指标图",
     mainLine: "关系主线",
+    relationshipRole: "你的关系角色",
+    roleType: "角色类型",
     jointScore: "你们的共同分",
     clarity: "当前清晰度",
     repairEntry: "修复入口是否清晰",
@@ -531,6 +533,8 @@ const uiText = {
     abilityDesc2: "A higher score means this ability is easier to notice and use in the current relationship.",
     radarLabel: "Six relationship ability radar chart",
     mainLine: "Relationship pattern",
+    relationshipRole: "Your relationship role",
+    roleType: "Role type",
     jointScore: "Shared score",
     clarity: "Current clarity",
     repairEntry: "How clear the repair entry feels",
@@ -1500,6 +1504,15 @@ function App() {
               </div>
             </div>
 
+            <div className="role-card">
+              <div className="role-symbol" aria-hidden="true">{report.roleSymbol}</div>
+              <div>
+                <span>{text.relationshipRole}</span>
+                <strong>{report.roleTitle}</strong>
+                <p><b>{text.roleType}</b>{report.roleName} · {report.patternTitle}</p>
+              </div>
+            </div>
+
             <div className="reveal-grid">
               <article>
                 <span>{text.mainLine}</span>
@@ -1545,40 +1558,6 @@ function App() {
               </div>
             </details>
 
-            <div className="insight-grid">
-              <article>
-                <span>{text.coreNeed}</span>
-                <p>{report.coreNeed}</p>
-              </article>
-              <article>
-                <span>{text.strength}</span>
-                <p>{report.strength}</p>
-              </article>
-            </div>
-
-            <div className="misread-card">
-              <span>{text.misreadTitle}</span>
-              <div>
-                <p><strong>{text.realMessage}</strong>{report.realMessage}</p>
-                <p><strong>{text.possibleMisread}</strong>{report.possibleMisread}</p>
-                <p><strong>{text.betterExpression}</strong>{report.betterExpression}</p>
-              </div>
-            </div>
-
-            <div className="action-card">
-              <span>{text.actionsTitle}</span>
-              <div>
-                {report.actions.map((action, index) => (
-                  <p key={action}><strong>{index + 1}</strong>{action}</p>
-                ))}
-              </div>
-            </div>
-
-            <div className="talk-card">
-              <span>{text.tonightTitle}</span>
-              <p>“{report.betterExpression}”</p>
-            </div>
-
             {partnerAnswers && (
               <div className="compare-card">
                 <div>
@@ -1613,14 +1592,6 @@ function App() {
                 ))}
               </div>
             </details>
-
-            <div className="message-card">
-              <span>{text.shareTitle}</span>
-              <p>“{report.shareableMessage}”</p>
-              <button onClick={() => navigator.clipboard?.writeText(report.shareableMessage)}>
-                <Copy size={16} /> {text.copySentence}
-              </button>
-            </div>
           </div>
         </section>
       )}
