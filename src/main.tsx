@@ -1523,17 +1523,21 @@ function App() {
 
             <div className="full-reading-card">
               <span>{text.fullReading}</span>
+              <strong>{report.longFormHighlight}</strong>
               <p>{report.longFormInsight}</p>
             </div>
 
-            <div className="evidence-card">
-              <span>{text.evidenceTitle}</span>
+            <details className="evidence-card">
+              <summary>
+                <span>{text.evidenceTitle}</span>
+                <small>{lang === "en" ? "Click to view answer evidence" : "点击展开回答依据"}</small>
+              </summary>
               <div>
                 {report.evidence.map((item) => (
                   <p key={`${item.questionTitle}-${item.answerLabel}`}>{item.evidence}</p>
                 ))}
               </div>
-            </div>
+            </details>
 
             <div className="insight-grid">
               <article>

@@ -1114,6 +1114,14 @@ button {
   line-height: 1.82;
 }
 
+.full-reading-card strong {
+  display: block;
+  margin-top: 14px;
+  color: var(--color-title);
+  font-size: 20px;
+  line-height: 1.55;
+}
+
 .evidence-card,
 .misread-card,
 .source-card {
@@ -1148,6 +1156,7 @@ button {
   margin-top: 14px;
 }
 
+.evidence-card summary,
 .source-card summary {
   display: flex;
   align-items: center;
@@ -1157,10 +1166,12 @@ button {
   list-style: none;
 }
 
+.evidence-card summary::-webkit-details-marker,
 .source-card summary::-webkit-details-marker {
   display: none;
 }
 
+.evidence-card summary small,
 .source-card summary small {
   display: inline-flex;
   align-items: center;
@@ -1170,6 +1181,7 @@ button {
   font-weight: 760;
 }
 
+.evidence-card summary small::after,
 .source-card summary small::after {
   content: "";
   width: 8px;
@@ -1180,6 +1192,7 @@ button {
   transition: transform 160ms ease;
 }
 
+.evidence-card[open] summary small::after,
 .source-card[open] summary small::after {
   transform: rotate(225deg) translateY(-2px);
 }
@@ -1768,6 +1781,11 @@ button {
   .full-reading-card p {
     font-size: 16px;
     line-height: 1.72;
+  }
+
+  .full-reading-card strong {
+    font-size: 17px;
+    line-height: 1.5;
   }
 
   .action-card div {

@@ -57,6 +57,7 @@ export type RelationshipReport = {
   patternTitle: string;
   oneLineSummary: string;
   longFormInsight: string;
+  longFormHighlight: string;
   coreNeed: string;
   realMessage: string;
   possibleMisread: string;
@@ -556,6 +557,14 @@ function buildLongFormInsight(params: {
   ].filter(Boolean).join("");
 }
 
+function buildLongFormHighlight(template: PatternTemplate, lang: Language) {
+  if (lang === "en") {
+    return `Key reminder: this result is not deciding who is right. The part that deserves the most care first is ${template.coreNeed}`;
+  }
+
+  return `重点提醒：这份结果不是在判断谁对谁错，而是在提示你们最需要先照顾的是：${template.coreNeed}`;
+}
+
 export function buildRelationshipReport(params: {
   questions: QuestionLike[];
   answers: AnswerMap;
@@ -579,6 +588,7 @@ export function buildRelationshipReport(params: {
       hasPartner: params.hasPartner,
       lang,
     }),
+    longFormHighlight: buildLongFormHighlight(template, lang),
     coreNeed: template.coreNeed,
     realMessage: template.realMessage,
     possibleMisread: template.possibleMisread,
