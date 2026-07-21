@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Copy,
   Info,
-  X,
   MessageCircleHeart,
   Moon,
   RefreshCw,
@@ -17,6 +16,7 @@ import BlurText from "./components/BlurText";
 import CardNav from "./components/CardNav";
 import CursorGrid from "./components/CursorGrid";
 import Folder from "./components/Folder";
+import LetterExperience from "./components/LetterExperience";
 import { buildDuoRelationshipReport, buildRelationshipReport, type DuoRelationshipReport, type Language } from "./data/relationshipReport";
 import "./styles.css";
 
@@ -477,9 +477,10 @@ const uiText = {
     talkFirst: "最该先聊",
     talkFirstDesc: "先聊最软的需求，再聊谁该改变。",
     evidenceTitle: "为什么这样判断",
-    fullReading: "一封写给你的关系来信",
-    openDossier: "点击打开卷宗",
-    closeLetter: "关闭来信",
+    fullReading: "给你的关系来信",
+    openDossier: "查看我的关系来信",
+    openEnvelope: "打开信封",
+    closeLetter: "合上信件",
     coreNeed: "你真正需要被看见的部分",
     strength: "关系里还亮着的灯",
     misreadTitle: "最容易被误解的地方",
@@ -553,9 +554,10 @@ const uiText = {
     talkFirst: "Talk about first",
     talkFirstDesc: "Start with the softest need, then discuss what could change.",
     evidenceTitle: "Why this result",
-    fullReading: "A letter for this relationship",
-    openDossier: "Open dossier",
-    closeLetter: "Close letter",
+    fullReading: "A letter for you",
+    openDossier: "View my relationship letter",
+    openEnvelope: "Open the envelope",
+    closeLetter: "Close the letter",
     coreNeed: "What truly needs to be seen",
     strength: "What is still lit in the relationship",
     misreadTitle: "Most likely misunderstanding",
@@ -1264,23 +1266,6 @@ function App() {
     return () => window.clearTimeout(timer);
   }, [step]);
 
-  useEffect(() => {
-    if (!letterOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setLetterOpen(false);
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [letterOpen]);
-
   async function copyInviteLink() {
     try {
       await navigator.clipboard.writeText(inviteUrl);
@@ -1668,25 +1653,15 @@ function App() {
               </button>
             </div>
 
-            {letterOpen && (
-              <div className="letter-modal" role="dialog" aria-modal="true" aria-label={text.fullReading}>
-                <button className="letter-backdrop" type="button" aria-label={text.closeLetter} onClick={() => setLetterOpen(false)} />
-                <div className="letter-float-wrap">
-                  <button className="letter-close" type="button" onClick={() => setLetterOpen(false)} aria-label={text.closeLetter}>
-                    <X size={18} aria-hidden="true" />
-                  </button>
-                  <div className="full-reading-card">
-                    <span>{text.fullReading}</span>
-                    <strong>{report.longFormHighlight}</strong>
-                    <div className="letter-body">
-                      {report.longFormInsight.split("\n\n").map((paragraph) => (
-                        <p key={paragraph}>{paragraph}</p>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+            <LetterExperience
+              open={letterOpen}
+              title={text.fullReading}
+              highlight={report.longFormHighlight}
+              paragraphs={report.longFormInsight.split("\n\n").filter(Boolean)}
+              openEnvelopeLabel={text.openEnvelope}
+              closeLetterLabel={text.closeLetter}
+              onClose={() => setLetterOpen(false)}
+            />
 
             <details className="evidence-card">
               <summary>
