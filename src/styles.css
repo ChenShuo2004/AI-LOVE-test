@@ -1037,6 +1037,7 @@ button {
 .action-card,
 .talk-card,
 .credibility-card,
+.full-reading-card,
 .evidence-card,
 .misread-card,
 .source-card {
@@ -1054,6 +1055,7 @@ button {
 .action-card span,
 .talk-card span,
 .credibility-card span,
+.full-reading-card span,
 .evidence-card span,
 .misread-card span,
 .source-card span {
@@ -1074,6 +1076,7 @@ button {
 .action-card p,
 .talk-card p,
 .credibility-card p,
+.full-reading-card p,
 .evidence-card p,
 .misread-card p,
 .source-card p {
@@ -1096,6 +1099,19 @@ button {
 .credibility-card p {
   margin-top: 8px;
   font-size: 14px;
+}
+
+.full-reading-card {
+  margin-top: 12px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.68), rgba(242, 235, 240, 0.78)),
+    rgba(246, 247, 249, 0.86);
+}
+
+.full-reading-card p {
+  color: var(--color-title);
+  font-size: 18px;
+  line-height: 1.82;
 }
 
 .evidence-card,
@@ -1706,6 +1722,7 @@ button {
   .action-card p,
   .talk-card p,
   .credibility-card p,
+  .full-reading-card p,
   .evidence-card p,
   .misread-card p,
   .source-card p {
@@ -1727,6 +1744,7 @@ button {
   .insight-grid article,
   .action-card,
   .talk-card,
+  .full-reading-card,
   .evidence-card,
   .misread-card,
   .source-card {
@@ -1745,6 +1763,11 @@ button {
 
   .talk-card p {
     font-size: 20px;
+  }
+
+  .full-reading-card p {
+    font-size: 16px;
+    line-height: 1.72;
   }
 
   .action-card div {

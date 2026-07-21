@@ -468,6 +468,7 @@ const uiText = {
     talkFirst: "最该先聊",
     talkFirstDesc: "先聊最软的需求，再聊谁该改变。",
     evidenceTitle: "为什么这样判断",
+    fullReading: "完整解读",
     coreNeed: "你真正需要被看见的部分",
     strength: "关系里还亮着的灯",
     misreadTitle: "最容易被误解的地方",
@@ -537,6 +538,7 @@ const uiText = {
     talkFirst: "Talk about first",
     talkFirstDesc: "Start with the softest need, then discuss what could change.",
     evidenceTitle: "Why this result",
+    fullReading: "Full reading",
     coreNeed: "What truly needs to be seen",
     strength: "What is still lit in the relationship",
     misreadTitle: "Most likely misunderstanding",
@@ -1514,6 +1516,16 @@ function App() {
               </article>
             </div>
 
+            <div className="credibility-card" aria-label={text.resultNote}>
+              <span>{text.resultNote}</span>
+              <p>{report.credibilityNote}</p>
+            </div>
+
+            <div className="full-reading-card">
+              <span>{text.fullReading}</span>
+              <p>{report.longFormInsight}</p>
+            </div>
+
             <div className="evidence-card">
               <span>{text.evidenceTitle}</span>
               <div>
@@ -1599,11 +1611,6 @@ function App() {
                 <Copy size={16} /> {text.copySentence}
               </button>
             </div>
-          </div>
-
-          <div className="credibility-card" aria-label={text.resultNote}>
-            <span>{text.resultNote}</span>
-            <p>{report.credibilityNote}</p>
           </div>
         </section>
       )}

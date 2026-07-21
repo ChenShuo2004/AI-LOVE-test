@@ -56,6 +56,7 @@ export type AnswerEvidence = {
 export type RelationshipReport = {
   patternTitle: string;
   oneLineSummary: string;
+  longFormInsight: string;
   coreNeed: string;
   realMessage: string;
   possibleMisread: string;
@@ -517,6 +518,44 @@ function pickSources(template: PatternTemplate, evidence: AnswerEvidence[], lang
   return Array.from(new Set(keys)).slice(0, 3).map(key => cards[key]);
 }
 
+function buildLongFormInsight(params: {
+  template: PatternTemplate;
+  evidence: AnswerEvidence[];
+  sources: SourceCard[];
+  hasPartner: boolean;
+  lang: Language;
+}) {
+  const firstEvidence = params.evidence[0]?.evidence;
+  const secondEvidence = params.evidence[1]?.evidence;
+  const sourceNames = params.sources.map(source => source.title).slice(0, 2).join(params.lang === "en" ? " and " : "、");
+
+  if (params.lang === "en") {
+    const evidenceLine = [firstEvidence, secondEvidence].filter(Boolean).join(" ");
+    return [
+      `Your current relationship pattern is closer to "${params.template.title}". ${params.template.oneLineSummary}`,
+      evidenceLine ? `This reading is not based on a single answer. ${evidenceLine}` : "",
+      `Put together, these choices point to one central need: ${params.template.coreNeed}`,
+      `The part most worth slowing down for is the possible misunderstanding. What you mean is often closer to "${params.template.realMessage}", but TA may hear it as "${params.template.possibleMisread}". A softer and more actionable entry would be: "${params.template.betterExpression}"`,
+      sourceNames ? `This is also why the reference cards include ${sourceNames}: the point is to connect your answers with relationship research on responsiveness, conflict repair, and request-based communication, instead of turning the result into a fixed label.` : "",
+      params.hasPartner
+        ? "Because this is a two-person report, the result should be read as a comparison of rhythms rather than a verdict about who is right. The useful question is not who cares more, but what kind of response helps both people come back into contact."
+        : "Because this is a single-person report, it should be read as a mirror of your current feelings, not as a final conclusion about the relationship.",
+    ].filter(Boolean).join(" ");
+  }
+
+  const evidenceLine = [firstEvidence, secondEvidence].filter(Boolean).join("");
+  return [
+    `这次复盘里，你的关系主线更接近「${params.template.title}」。${params.template.oneLineSummary}`,
+    evidenceLine ? `这个判断不是从单个答案直接跳出来的，而是来自几类相互呼应的选择：${evidenceLine}` : "",
+    `把这些选择放在一起看，它们共同指向一个核心需求：${params.template.coreNeed}`,
+    `真正需要放慢看的，是你们之间可能发生的误读。你想表达的更像是「${params.template.realMessage}」，但 TA 可能听成「${params.template.possibleMisread}」。所以这份报告不建议你继续用试探、反问或冷处理来表达，而是更适合从这句话开始：「${params.template.betterExpression}」`,
+    sourceNames ? `资料依据里会出现「${sourceNames}」，是因为这些资料都指向同一个方向：关系里的安全感通常不是靠一次解释建立的，而是靠被回应、可修复、可请求的小动作反复累积。` : "",
+    params.hasPartner
+      ? "因为这是双人复盘，所以它不是在判断谁更对，而是在比较你们的关系节奏。真正有价值的问题不是谁更爱谁，而是哪一种回应方式能让两个人都重新回到同一边。"
+      : "因为这是单人复盘，所以它更像一面镜子：帮你先看清此刻的感受和需求，不替你给关系下最终结论。",
+  ].filter(Boolean).join("");
+}
+
 export function buildRelationshipReport(params: {
   questions: QuestionLike[];
   answers: AnswerMap;
@@ -528,10 +567,18 @@ export function buildRelationshipReport(params: {
   const evidence = answerEvidence(params.questions, params.answers, lang);
   const template = getTemplate(chooseTemplate(evidence, params.score), lang);
   const selectedEvidence = pickEvidence(evidence);
+  const sources = pickSources(template, selectedEvidence, lang);
 
   return {
     patternTitle: template.title,
     oneLineSummary: template.oneLineSummary,
+    longFormInsight: buildLongFormInsight({
+      template,
+      evidence: selectedEvidence,
+      sources,
+      hasPartner: params.hasPartner,
+      lang,
+    }),
     coreNeed: template.coreNeed,
     realMessage: template.realMessage,
     possibleMisread: template.possibleMisread,
@@ -540,7 +587,7 @@ export function buildRelationshipReport(params: {
     actions: template.actions,
     shareableMessage: template.shareableMessage,
     evidence: selectedEvidence,
-    sources: pickSources(template, selectedEvidence, lang),
+    sources,
     credibilityNote: params.hasPartner
       ? lang === "en"
         ? `This result is based on both of your answers to the same ${params.questions.length} questions. It is only a reflection snapshot for this moment, not a psychological diagnosis or relationship verdict.`
