@@ -1139,15 +1139,68 @@ button {
   right: 18px;
   bottom: 18px;
   z-index: 90;
-  width: min(360px, calc(100vw - 36px));
-  background: rgba(238, 240, 243, 0.72);
-  box-shadow: 0 18px 46px rgba(66, 76, 92, 0.14);
-  backdrop-filter: blur(18px);
+  width: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }
 
-.credibility-card p {
+.credibility-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in srgb, var(--color-line) 82%, transparent);
+  border-radius: 999px;
+  background: rgba(238, 240, 243, 0.88);
+  color: var(--color-tip);
+  box-shadow: 0 14px 36px rgba(66, 76, 92, 0.16);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.credibility-toggle:hover,
+.credibility-card.is-open .credibility-toggle {
+  transform: translateY(-1px);
+  background: var(--color-title);
+  color: white;
+}
+
+.credibility-popover {
+  position: absolute;
+  right: 0;
+  bottom: 54px;
+  width: min(340px, calc(100vw - 36px));
+  border: 1px solid color-mix(in srgb, var(--color-line) 86%, transparent);
+  border-radius: 18px;
+  background: rgba(238, 240, 243, 0.9);
+  padding: 16px;
+  box-shadow: 0 18px 46px rgba(66, 76, 92, 0.14);
+  backdrop-filter: blur(18px);
+  animation: credibility-popover-in 160ms ease both;
+}
+
+.credibility-popover span {
+  color: var(--color-tip);
+}
+
+.credibility-popover p {
   margin-top: 8px;
   font-size: 14px;
+}
+
+@keyframes credibility-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .full-reading-card {
@@ -1828,7 +1881,7 @@ button {
   .insight-grid p,
   .action-card p,
   .talk-card p,
-  .credibility-card p,
+  .credibility-popover p,
   .full-reading-card p,
   .evidence-card p,
   .misread-card p,
@@ -1859,6 +1912,15 @@ button {
 
   .role-card strong {
     font-size: 22px;
+  }
+
+  .credibility-card {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .credibility-popover {
+    width: min(300px, calc(100vw - 24px));
   }
 
   .reveal-grid article,

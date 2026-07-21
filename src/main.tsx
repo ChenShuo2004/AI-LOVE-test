@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
   Copy,
+  Info,
   MessageCircleHeart,
   Moon,
   RefreshCw,
@@ -1083,6 +1084,7 @@ function App() {
   const [quizFolderOpen, setQuizFolderOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [reportReady, setReportReady] = useState(false);
+  const [showResultNote, setShowResultNote] = useState(false);
   const text = uiText[lang];
   const prompts = reflectionPrompts[lang];
   const questions = useMemo(() => questionsFromIds(mode, questionIds).map((question) => localizeQuestion(question, lang)), [mode, questionIds, lang]);
@@ -1117,6 +1119,7 @@ function App() {
     setStep(nextStep);
     setMode(nextMode);
     setQuizFolderOpen(nextFolderOpen);
+    if (nextStep !== "result") setShowResultNote(false);
     window.history.pushState({ step: nextStep, mode: nextMode, quizFolderOpen: nextFolderOpen }, "", window.location.href);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1148,6 +1151,7 @@ function App() {
     setQuestionIds(selectQuestionIds("solo"));
     setQuizFolderOpen(false);
     setReportReady(false);
+    setShowResultNote(false);
   }
 
   function openReport() {
@@ -1531,9 +1535,22 @@ function App() {
               </article>
             </div>
 
-            <div className="credibility-card" aria-label={text.resultNote}>
-              <span>{text.resultNote}</span>
-              <p>{report.credibilityNote}</p>
+            <div className={`credibility-card ${showResultNote ? "is-open" : ""}`}>
+              <button
+                className="credibility-toggle"
+                type="button"
+                onClick={() => setShowResultNote((current) => !current)}
+                aria-label={text.resultNote}
+                aria-expanded={showResultNote}
+              >
+                <Info size={18} aria-hidden="true" />
+              </button>
+              {showResultNote && (
+                <div className="credibility-popover" role="note">
+                  <span>{text.resultNote}</span>
+                  <p>{report.credibilityNote}</p>
+                </div>
+              )}
             </div>
 
             <div className="full-reading-card">
