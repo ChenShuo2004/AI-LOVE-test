@@ -16,7 +16,6 @@ type LetterExperienceProps = {
 
 const OPENING_MS = 1100;
 const CLOSING_MS = 1000;
-const WRITE_INTERVAL_MS = 1250;
 
 export default function LetterExperience({
   open,
@@ -28,10 +27,8 @@ export default function LetterExperience({
   onClose,
 }: LetterExperienceProps) {
   const [stage, setStage] = useState<LetterStage>("envelope");
-  const [visibleCount, setVisibleCount] = useState(0);
   const [showCloseAction, setShowCloseAction] = useState(false);
-  const paperRef = useRef<HTMLDivElement | null>(null);
-  const paragraphRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   const timersRef = useRef<number[]>([]);
   const onCloseRef = useRef(onClose);
   const stageRef = useRef(stage);
@@ -49,7 +46,6 @@ export default function LetterExperience({
   function resetLocalState() {
     clearTimers();
     setStage("envelope");
-    setVisibleCount(0);
     setShowCloseAction(false);
   }
 
@@ -63,9 +59,8 @@ export default function LetterExperience({
     setStage("opening");
     const timer = window.setTimeout(() => {
       setStage("reading");
-      setVisibleCount(1);
       requestAnimationFrame(() => {
-        paperRef.current?.scrollTo({ top: 0, behavior: "auto" });
+        scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
       });
     }, OPENING_MS);
     timersRef.current.push(timer);
@@ -86,7 +81,6 @@ export default function LetterExperience({
     }
 
     setStage("envelope");
-    setVisibleCount(0);
     setShowCloseAction(false);
   }, [open]);
 
@@ -118,50 +112,10 @@ export default function LetterExperience({
   useEffect(() => {
     if (stage !== "reading") return;
 
-    const nodes = paragraphRefs.current.filter(Boolean) as HTMLParagraphElement[];
-    if (!nodes.length) return;
-
-    const revealFromScroll = () => {
-      const root = paperRef.current;
-      if (!root || root.scrollTop < 24) return;
-      const rootRect = root.getBoundingClientRect();
-      let farthest = 0;
-      nodes.forEach((node, index) => {
-        const rect = node.getBoundingClientRect();
-        const visible =
-          rect.top < rootRect.bottom - rootRect.height * 0.08 &&
-          rect.bottom > rootRect.top + 40;
-        if (visible) farthest = Math.max(farthest, index + 1);
-      });
-      if (farthest > 0) {
-        setVisibleCount((current) => Math.max(current, farthest));
-      }
-    };
-
-    const root = paperRef.current;
-    root?.addEventListener("scroll", revealFromScroll, { passive: true });
-    return () => root?.removeEventListener("scroll", revealFromScroll);
-  }, [stage, bodyParagraphs.length]);
-
-  useEffect(() => {
-    if (stage !== "reading") return;
-    if (visibleCount >= bodyParagraphs.length) return;
-
-    const timer = window.setTimeout(() => {
-      setVisibleCount((current) => Math.min(current + 1, bodyParagraphs.length));
-    }, WRITE_INTERVAL_MS);
+    const timer = window.setTimeout(() => setShowCloseAction(true), 900);
     timersRef.current.push(timer);
     return () => window.clearTimeout(timer);
-  }, [stage, visibleCount, bodyParagraphs.length]);
-
-  useEffect(() => {
-    if (stage !== "reading") return;
-    if (visibleCount < bodyParagraphs.length) return;
-
-    const timer = window.setTimeout(() => setShowCloseAction(true), 700);
-    timersRef.current.push(timer);
-    return () => window.clearTimeout(timer);
-  }, [stage, visibleCount, bodyParagraphs.length]);
+  }, [stage]);
 
   useEffect(() => () => clearTimers(), []);
 
@@ -211,39 +165,31 @@ export default function LetterExperience({
         )}
 
         {(stage === "opening" || stage === "reading" || stage === "closing") && (
-          <div className="lex-paper-scene" ref={paperRef}>
+          <div className="lex-paper-scene">
             <article className="lex-paper">
               <header className="lex-paper-header">
                 <p>{title}</p>
               </header>
 
-              <div className="lex-paper-body">
-                {bodyParagraphs.map((paragraph, index) => (
-                  <p
-                    key={`${index}-${paragraph.slice(0, 24)}`}
-                    ref={(node) => {
-                      paragraphRefs.current[index] = node;
-                    }}
-                    data-index={index}
-                    className={index === 0 ? "lex-highlight" : undefined}
-                    data-visible={
-                      stage === "reading" && index < visibleCount
-                        ? "true"
-                        : stage === "opening" && index === 0
-                          ? "true"
-                          : "false"
-                    }
-                  >
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              <div className="lex-paper-scroll" ref={scrollRef}>
+                <div className="lex-paper-body">
+                  {bodyParagraphs.map((paragraph, index) => (
+                    <p
+                      key={`${index}-${paragraph.slice(0, 24)}`}
+                      className={index === 0 ? "lex-highlight" : undefined}
+                      style={{ animationDelay: `${Math.min(index, 6) * 90}ms` }}
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
 
-              <footer className={`lex-paper-footer${showCloseAction ? " is-visible" : ""}`}>
-                <button className="lex-close-button" type="button" onClick={beginClose}>
-                  {closeLetterLabel}
-                </button>
-              </footer>
+                <footer className={`lex-paper-footer${showCloseAction ? " is-visible" : ""}`}>
+                  <button className="lex-close-button" type="button" onClick={beginClose}>
+                    {closeLetterLabel}
+                  </button>
+                </footer>
+              </div>
             </article>
           </div>
         )}

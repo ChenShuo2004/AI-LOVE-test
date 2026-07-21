@@ -14,7 +14,6 @@
   --lex-paper-deep: #e8d5b8;
   --lex-envelope: #edd9c2;
   --lex-envelope-deep: #d9c0a4;
-  --lex-line: rgba(104, 78, 56, 0.18);
   font-family:
     "Songti SC",
     "STSong",
@@ -33,10 +32,10 @@
   padding: 0;
   cursor: pointer;
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(248, 242, 232, 0.28), transparent 52%),
-    linear-gradient(180deg, rgba(48, 38, 32, 0.42), rgba(42, 34, 28, 0.55));
-  backdrop-filter: blur(30px) saturate(0.72);
-  -webkit-backdrop-filter: blur(30px) saturate(0.72);
+    radial-gradient(ellipse at 50% 42%, rgba(248, 242, 232, 0.22), transparent 54%),
+    linear-gradient(180deg, rgba(42, 34, 28, 0.48), rgba(36, 28, 24, 0.62));
+  backdrop-filter: blur(32px) saturate(0.7);
+  -webkit-backdrop-filter: blur(32px) saturate(0.7);
   animation: lex-backdrop-in 700ms ease both;
 }
 
@@ -49,11 +48,12 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  max-width: 920px;
-  margin: 0 auto;
+  min-height: 0;
   display: grid;
   place-items: center;
   pointer-events: none;
+  padding: clamp(16px, 3vh, 28px);
+  box-sizing: border-box;
 }
 
 .letter-experience-center > * {
@@ -96,7 +96,6 @@
   background: rgba(78, 58, 42, 0.22);
   filter: blur(14px);
   transform: translateX(-50%);
-  transition: opacity 500ms ease, transform 500ms ease;
 }
 
 .lex-envelope-back,
@@ -122,8 +121,7 @@
   inset: auto 12% 38px;
   height: 118px;
   border-radius: 10px 10px 4px 4px;
-  background:
-    linear-gradient(180deg, #faf3e6, var(--lex-paper));
+  background: linear-gradient(180deg, #faf3e6, var(--lex-paper));
   box-shadow: 0 10px 24px rgba(78, 58, 42, 0.12);
   display: grid;
   align-content: start;
@@ -169,8 +167,7 @@
   z-index: 5;
   clip-path: polygon(0 34%, 50% 0, 100% 34%, 50% 68%);
   border-radius: 18px 18px 0 0;
-  background:
-    linear-gradient(180deg, #faf1e4, #e7d0b5);
+  background: linear-gradient(180deg, #faf1e4, #e7d0b5);
   transform-origin: 50% 34%;
   box-shadow: 0 8px 18px rgba(78, 58, 42, 0.08);
   transition: transform 900ms cubic-bezier(0.22, 0.72, 0.2, 1);
@@ -198,7 +195,6 @@
 .letter-experience.is-closing .lex-mini-paper {
   transform: translateY(24px);
   opacity: 0.9;
-  transition-delay: 0ms;
 }
 
 .lex-envelope-copy {
@@ -212,26 +208,27 @@
 
 .lex-envelope-title {
   margin: 0;
-  color: var(--lex-ink);
+  color: #f4ebe0;
   font-size: clamp(22px, 3.4vw, 30px);
   font-weight: 600;
   letter-spacing: 0.08em;
   line-height: 1.4;
+  text-shadow: 0 8px 28px rgba(20, 14, 10, 0.35);
 }
 
 .lex-open-button,
 .lex-close-button {
   appearance: none;
-  border: 1px solid rgba(104, 78, 56, 0.22);
+  border: 1px solid rgba(255, 244, 230, 0.28);
   border-radius: 999px;
-  background: rgba(255, 250, 242, 0.78);
+  background: rgba(255, 248, 238, 0.88);
   color: var(--lex-ink);
   padding: 12px 28px;
   font: inherit;
   font-size: 15px;
   letter-spacing: 0.12em;
   cursor: pointer;
-  box-shadow: 0 10px 28px rgba(78, 58, 42, 0.08);
+  box-shadow: 0 12px 32px rgba(20, 14, 10, 0.18);
   transition:
     transform 180ms ease,
     background 180ms ease,
@@ -241,54 +238,47 @@
 .lex-open-button:hover,
 .lex-close-button:hover {
   transform: translateY(-1px);
-  background: rgba(255, 252, 246, 0.94);
-  box-shadow: 0 14px 32px rgba(78, 58, 42, 0.12);
+  background: rgba(255, 252, 246, 0.96);
 }
 
 /* ---------- Paper / reading ---------- */
 
 .lex-paper-scene {
-  position: absolute;
-  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   display: grid;
-  justify-items: center;
-  align-content: start;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: clamp(28px, 6vh, 56px) 20px clamp(48px, 8vh, 72px);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(104, 78, 56, 0.28) transparent;
+  place-items: center;
+  min-height: 0;
 }
 
-.letter-experience.is-opening .lex-paper-scene {
-  overflow: hidden;
+.letter-experience.is-opening .lex-paper-scene,
+.letter-experience.is-closing .lex-paper-scene {
   pointer-events: none;
 }
 
 .letter-experience.is-closing .lex-paper-scene {
-  overflow: hidden;
-  pointer-events: none;
   animation: lex-paper-retract 1000ms cubic-bezier(0.4, 0.08, 0.28, 1) both;
 }
 
 .lex-paper {
   position: relative;
-  width: min(700px, calc(100% - 40px));
-  max-width: 700px;
-  min-height: auto;
-  border-radius: 18px;
+  width: min(700px, 100%);
+  height: min(820px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
   background:
     radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.42), transparent 28%),
     radial-gradient(circle at 84% 88%, rgba(156, 112, 72, 0.08), transparent 26%),
     linear-gradient(165deg, #f7ecda 0%, var(--lex-paper) 48%, var(--lex-paper-deep) 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.38),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
     inset 0 0 48px rgba(132, 96, 62, 0.08),
-    0 4px 10px rgba(78, 58, 42, 0.06),
-    0 22px 48px rgba(78, 58, 42, 0.2),
-    0 48px 90px rgba(48, 36, 28, 0.16);
-  padding: 0 0 42px;
+    0 4px 10px rgba(78, 58, 42, 0.08),
+    0 24px 56px rgba(78, 58, 42, 0.22),
+    0 48px 96px rgba(20, 14, 10, 0.22);
   overflow: hidden;
   transform-origin: 50% 85%;
 }
@@ -299,6 +289,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 0;
 }
 
 .lex-paper::before {
@@ -326,20 +317,16 @@
 }
 
 .lex-paper-header,
-.lex-paper-body,
+.lex-paper-scroll,
 .lex-paper-footer {
   position: relative;
   z-index: 1;
 }
 
 .lex-paper-header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding: 28px 56px 18px;
-  background:
-    linear-gradient(180deg, rgba(247, 236, 218, 0.96) 55%, rgba(247, 236, 218, 0));
-  backdrop-filter: blur(2px);
+  flex: 0 0 auto;
+  padding: 26px 48px 14px;
+  background: linear-gradient(180deg, rgba(247, 236, 218, 0.98), rgba(247, 236, 218, 0.88));
 }
 
 .lex-paper-header p {
@@ -351,12 +338,34 @@
   text-align: center;
 }
 
+.lex-paper-scroll {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(104, 78, 56, 0.35) transparent;
+}
+
+.lex-paper-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lex-paper-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(104, 78, 56, 0.28);
+}
+
 .lex-paper-body {
-  width: min(680px, 100%);
+  width: min(640px, 100%);
   margin: 0 auto;
-  padding: 8px 56px 12px;
+  padding: 8px 48px 12px;
   display: grid;
-  gap: 1.55em;
+  gap: 1.6em;
 }
 
 .lex-paper-body p {
@@ -367,16 +376,7 @@
   letter-spacing: 0.02em;
   text-align: justify;
   text-justify: inter-ideograph;
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity 780ms ease,
-    transform 780ms ease;
-}
-
-.lex-paper-body p[data-visible="true"] {
-  opacity: 1;
-  transform: translateY(0);
+  animation: lex-paragraph-in 560ms ease both;
 }
 
 .lex-paper-body p.lex-highlight {
@@ -389,9 +389,9 @@
 .lex-paper-footer {
   display: grid;
   justify-items: center;
-  padding: 36px 24px 8px;
+  padding: 28px 24px 36px;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(8px);
   pointer-events: none;
   transition:
     opacity 800ms ease,
@@ -405,8 +405,22 @@
 }
 
 .lex-close-button {
+  border-color: rgba(104, 78, 56, 0.2);
   letter-spacing: 0.16em;
-  background: rgba(255, 250, 242, 0.66);
+  background: rgba(255, 250, 242, 0.86);
+  box-shadow: 0 10px 24px rgba(78, 58, 42, 0.1);
+}
+
+@keyframes lex-paragraph-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---------- Keyframes ---------- */
@@ -475,7 +489,7 @@
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
-    border-radius: 18px;
+    border-radius: 20px;
   }
 }
 
@@ -509,6 +523,10 @@
 /* ---------- Mobile ---------- */
 
 @media (max-width: 720px) {
+  .letter-experience-center {
+    padding: 12px 12px 16px;
+  }
+
   .lex-envelope {
     width: min(280px, 78vw);
     height: 188px;
@@ -524,23 +542,19 @@
     letter-spacing: 0.06em;
   }
 
-  .lex-paper-scene {
-    padding: 16px 10px 36px;
-  }
-
   .lex-paper {
-    width: calc(100% - 20px);
-    min-height: auto;
-    border-radius: 16px;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
   }
 
   .lex-paper-header {
-    padding: 22px 22px 14px;
+    padding: 20px 22px 12px;
   }
 
   .lex-paper-body {
-    padding: 4px 22px 8px;
-    gap: 1.4em;
+    padding: 4px 22px 24px;
+    gap: 1.45em;
   }
 
   .lex-paper-body p {
@@ -553,7 +567,7 @@
   }
 
   .lex-paper-footer {
-    padding-top: 28px;
+    padding: 8px 16px 18px;
   }
 }
 
