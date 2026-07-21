@@ -2066,12 +2066,26 @@ button {
   }
 
   .credibility-card {
-    right: 12px;
-    bottom: 12px;
+    position: static;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 12px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .credibility-card.is-open {
+    display: grid;
+    gap: 8px;
   }
 
   .credibility-popover {
-    width: min(300px, calc(100vw - 24px));
+    position: static;
+    width: 100%;
   }
 
   .reveal-grid article,
@@ -2136,14 +2150,6 @@ button {
     width: 100%;
     justify-content: center;
     min-height: 46px;
-  }
-
-  .credibility-card {
-    right: 12px;
-    bottom: 12px;
-    width: calc(100vw - 24px);
-    border-radius: 18px;
-    padding: 14px;
   }
 }
 
