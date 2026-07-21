@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Copy,
   Info,
+  X,
   MessageCircleHeart,
   Moon,
   RefreshCw,
@@ -477,6 +478,7 @@ const uiText = {
     evidenceTitle: "为什么这样判断",
     fullReading: "一封写给你的关系来信",
     openDossier: "点击打开卷宗",
+    closeLetter: "关闭来信",
     coreNeed: "你真正需要被看见的部分",
     strength: "关系里还亮着的灯",
     misreadTitle: "最容易被误解的地方",
@@ -552,6 +554,7 @@ const uiText = {
     evidenceTitle: "Why this result",
     fullReading: "A letter for this relationship",
     openDossier: "Open dossier",
+    closeLetter: "Close letter",
     coreNeed: "What truly needs to be seen",
     strength: "What is still lit in the relationship",
     misreadTitle: "Most likely misunderstanding",
@@ -1093,6 +1096,7 @@ function App() {
   const [toastMessage, setToastMessage] = useState("");
   const [reportReady, setReportReady] = useState(false);
   const [showResultNote, setShowResultNote] = useState(false);
+  const [letterOpen, setLetterOpen] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(() => localStorage.getItem("warmth-sound") !== "off");
   const backgroundAudioRef = useRef<HTMLAudioElement | null>(null);
   const buttonAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -1190,6 +1194,7 @@ function App() {
     setMode(nextMode);
     setQuizFolderOpen(nextFolderOpen);
     if (nextStep !== "result") setShowResultNote(false);
+    if (nextStep !== "result") setLetterOpen(false);
     window.history.pushState({ step: nextStep, mode: nextMode, quizFolderOpen: nextFolderOpen }, "", window.location.href);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -1222,6 +1227,7 @@ function App() {
     setQuizFolderOpen(false);
     setReportReady(false);
     setShowResultNote(false);
+    setLetterOpen(false);
   }
 
   function openReport() {
@@ -1256,6 +1262,17 @@ function App() {
     const timer = window.setTimeout(() => setReportReady(true), 2200);
     return () => window.clearTimeout(timer);
   }, [step]);
+
+  useEffect(() => {
+    if (!letterOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setLetterOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [letterOpen]);
 
   async function copyInviteLink() {
     try {
@@ -1621,21 +1638,32 @@ function App() {
               )}
             </div>
 
-            <details className="letter-dossier">
-              <summary>
+            <div className="letter-dossier">
+              <button type="button" className="letter-dossier-cover" onClick={() => setLetterOpen(true)}>
                 <span>{text.fullReading}</span>
                 <strong>{text.openDossier}</strong>
-              </summary>
-              <div className="full-reading-card">
-                <span>{text.fullReading}</span>
-                <strong>{report.longFormHighlight}</strong>
-                <div className="letter-body">
-                  {report.longFormInsight.split("\n\n").map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
+              </button>
+            </div>
+
+            {letterOpen && (
+              <div className="letter-modal" role="dialog" aria-modal="true" aria-label={text.fullReading}>
+                <button className="letter-backdrop" type="button" aria-label={text.closeLetter} onClick={() => setLetterOpen(false)} />
+                <div className="letter-float-wrap">
+                  <button className="letter-close" type="button" onClick={() => setLetterOpen(false)} aria-label={text.closeLetter}>
+                    <X size={18} aria-hidden="true" />
+                  </button>
+                  <div className="full-reading-card">
+                    <span>{text.fullReading}</span>
+                    <strong>{report.longFormHighlight}</strong>
+                    <div className="letter-body">
+                      {report.longFormInsight.split("\n\n").map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </details>
+            )}
 
             <details className="evidence-card">
               <summary>

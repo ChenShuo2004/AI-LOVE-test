@@ -1252,7 +1252,7 @@ button {
   margin-top: 46px;
 }
 
-.letter-dossier summary {
+.letter-dossier-cover {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -1262,6 +1262,7 @@ button {
   overflow: visible;
   border: 1px solid rgba(169, 122, 147, 0.26);
   border-radius: 0 22px 22px 22px;
+  width: 100%;
   background:
     linear-gradient(145deg, rgba(248, 229, 186, 0.96), rgba(210, 168, 105, 0.72)),
     #ead0a3;
@@ -1271,10 +1272,19 @@ button {
     inset 0 0 0 1px rgba(255, 255, 255, 0.36),
     0 18px 42px rgba(100, 72, 44, 0.14);
   cursor: pointer;
-  list-style: none;
+  font: inherit;
+  text-align: left;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
-.letter-dossier summary::before {
+.letter-dossier-cover:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.36),
+    0 24px 52px rgba(100, 72, 44, 0.2);
+}
+
+.letter-dossier-cover::before {
   content: "";
   position: absolute;
   left: -1px;
@@ -1286,7 +1296,7 @@ button {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.letter-dossier summary::after {
+.letter-dossier-cover::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1296,23 +1306,19 @@ button {
   pointer-events: none;
 }
 
-.letter-dossier summary::-webkit-details-marker {
-  display: none;
-}
-
-.letter-dossier summary span,
-.letter-dossier summary strong {
+.letter-dossier-cover span,
+.letter-dossier-cover strong {
   position: relative;
   z-index: 1;
 }
 
-.letter-dossier summary span {
+.letter-dossier-cover span {
   font-size: clamp(24px, 3vw, 34px);
   font-weight: 850;
   line-height: 1.18;
 }
 
-.letter-dossier summary strong {
+.letter-dossier-cover strong {
   justify-self: end;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.42);
@@ -1322,9 +1328,96 @@ button {
   font-weight: 820;
 }
 
-.letter-dossier[open] summary {
-  border-radius: 0 20px 20px 20px;
-  transform: translateY(-2px);
+.letter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+
+.letter-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.18), transparent 34%),
+    rgba(39, 46, 59, 0.42);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  animation: letter-backdrop-in 180ms ease both;
+}
+
+.letter-float-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(860px, calc(100vw - 48px));
+  max-height: min(82vh, 920px);
+  animation: letter-float-in 240ms ease both, letter-float-idle 4200ms ease-in-out 260ms infinite;
+}
+
+.letter-float-wrap .full-reading-card {
+  max-height: min(82vh, 920px);
+  overflow: auto;
+  margin-top: 0;
+  padding-right: 34px;
+}
+
+.letter-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(159, 116, 72, 0.24);
+  border-radius: 999px;
+  background: rgba(255, 249, 226, 0.94);
+  color: #4f3828;
+  box-shadow: 0 14px 30px rgba(66, 76, 92, 0.18);
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.letter-close:hover {
+  transform: translateY(-1px);
+  background: white;
+}
+
+@keyframes letter-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes letter-float-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96) rotate(-0.6deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(-0.35deg);
+  }
+}
+
+@keyframes letter-float-idle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.35deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(0.25deg);
+  }
 }
 
 .full-reading-card {
@@ -2065,7 +2158,7 @@ button {
     margin-top: 34px;
   }
 
-  .letter-dossier summary {
+  .letter-dossier-cover {
     grid-template-columns: 1fr;
     gap: 12px;
     min-height: 104px;
@@ -2073,14 +2166,35 @@ button {
     padding: 22px 18px;
   }
 
-  .letter-dossier summary::before {
+  .letter-dossier-cover::before {
     width: 126px;
     height: 32px;
     border-radius: 14px 14px 0 0;
   }
 
-  .letter-dossier summary strong {
+  .letter-dossier-cover strong {
     justify-self: start;
+  }
+
+  .letter-modal {
+    padding: 14px;
+  }
+
+  .letter-float-wrap {
+    width: calc(100vw - 28px);
+    max-height: 86vh;
+  }
+
+  .letter-float-wrap .full-reading-card {
+    max-height: 86vh;
+    padding-right: 18px;
+  }
+
+  .letter-close {
+    top: -10px;
+    right: -8px;
+    width: 38px;
+    height: 38px;
   }
 
   .credibility-card {
