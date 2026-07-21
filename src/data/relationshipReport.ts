@@ -529,32 +529,39 @@ function buildLongFormInsight(params: {
   const firstEvidence = params.evidence[0]?.evidence;
   const secondEvidence = params.evidence[1]?.evidence;
   const sourceNames = params.sources.map(source => source.title).slice(0, 2).join(params.lang === "en" ? " and " : "、");
+  const actionLine = params.template.actions.slice(0, 3).join(params.lang === "en" ? "; " : "；");
 
   if (params.lang === "en") {
     const evidenceLine = [firstEvidence, secondEvidence].filter(Boolean).join(" ");
     return [
-      `Your current relationship pattern is closer to "${params.template.title}". ${params.template.oneLineSummary}`,
-      evidenceLine ? `This reading is not based on a single answer. ${evidenceLine}` : "",
-      `Put together, these choices point to one central need: ${params.template.coreNeed}`,
-      `The part most worth slowing down for is the possible misunderstanding. What you mean is often closer to "${params.template.realMessage}", but TA may hear it as "${params.template.possibleMisread}". A softer and more actionable entry would be: "${params.template.betterExpression}"`,
-      sourceNames ? `This is also why the reference cards include ${sourceNames}: the point is to connect your answers with relationship research on responsiveness, conflict repair, and request-based communication, instead of turning the result into a fixed label.` : "",
+      `Dear you, this reflection reads your current relationship rhythm as closer to "${params.template.title}". ${params.template.oneLineSummary} This does not mean you are fixed as this type. It simply means that, in this round of answers, this is the emotional doorway that showed up most clearly.`,
+      `What you may be asking for is not a perfect partner or a flawless relationship. The deeper need is this: ${params.template.coreNeed} When this need is not met, small moments can start to feel larger than they look from the outside.`,
+      evidenceLine ? `This reading is not based on one answer alone. Several choices pointed in the same direction: ${evidenceLine}` : "",
+      `The most tender part is the misunderstanding. What you mean is often closer to "${params.template.realMessage}", but TA may hear it as "${params.template.possibleMisread}" Once this happens, both people can begin protecting themselves instead of reaching for each other.`,
+      `A softer sentence to begin with would be: "${params.template.betterExpression}" It gives TA a clearer way to respond, and it also protects your own feeling from being hidden behind testing, silence, or sharp questions.`,
       params.hasPartner
-        ? "Because this is a two-person report, the result should be read as a comparison of rhythms rather than a verdict about who is right. The useful question is not who cares more, but what kind of response helps both people come back into contact."
-        : "Because this is a single-person report, it should be read as a mirror of your current feelings, not as a final conclusion about the relationship.",
-    ].filter(Boolean).join(" ");
+        ? "Because this is a two-person reflection, please read it as a comparison of rhythms rather than a verdict about who is right. The useful question is not who loves more, but what kind of response helps both people return to the same side."
+        : "Because this is a solo reflection, please read it as a mirror for this moment, not as a final conclusion about the relationship. A feeling can be real without needing to become a verdict immediately.",
+      actionLine ? `Over the next seven days, start very small: ${actionLine}. The goal is not to solve the whole relationship at once, but to create one repeatable way back into contact.` : "",
+      sourceNames ? `The reference cards include ${sourceNames} because the report is grounded in relationship ideas about responsiveness, repair, and request-based communication, not in a fixed label about your personality.` : "",
+      `One sentence to keep: "${params.template.shareableMessage}"`,
+    ].filter(Boolean).join("\n\n");
   }
 
   const evidenceLine = [firstEvidence, secondEvidence].filter(Boolean).join("");
   return [
-    `这次复盘里，你的关系主线更接近「${params.template.title}」。${params.template.oneLineSummary}`,
+    `亲爱的你：这次复盘里，我看到你的关系主线更接近「${params.template.title}」。${params.template.oneLineSummary} 这不是给你贴上一个固定标签，而是说，在这一轮回答里，这个部分最先浮出了水面，也最值得被温柔地看见。`,
+    `你真正想要的，可能不是一个永远不会出错的恋人，也不是一段完全没有矛盾的关系。你更深处的需要是：${params.template.coreNeed} 当这个需要没有被接住时，一些看起来很小的事情，就会慢慢变得很重。`,
     evidenceLine ? `这个判断不是从单个答案直接跳出来的，而是来自几类相互呼应的选择：${evidenceLine}` : "",
-    `把这些选择放在一起看，它们共同指向一个核心需求：${params.template.coreNeed}`,
-    `真正需要放慢看的，是你们之间可能发生的误读。你想表达的更像是「${params.template.realMessage}」，但 TA 可能听成「${params.template.possibleMisread}」。所以这份报告不建议你继续用试探、反问或冷处理来表达，而是更适合从这句话开始：「${params.template.betterExpression}」`,
-    sourceNames ? `资料依据里会出现「${sourceNames}」，是因为这些资料都指向同一个方向：关系里的安全感通常不是靠一次解释建立的，而是靠被回应、可修复、可请求的小动作反复累积。` : "",
+    `真正需要放慢看的，是你们之间可能发生的误读。你想表达的更像是「${params.template.realMessage}」，但 TA 可能听成「${params.template.possibleMisread}」。一旦误读发生，两个人就容易从“想靠近”变成“先保护自己”。`,
+    `所以这份来信想替你把话说得更轻一点。你可以试着从这句话开始：「${params.template.betterExpression}」它比试探更清楚，比反问更柔软，也更容易让对方知道自己可以怎么回应你。`,
     params.hasPartner
-      ? "因为这是双人复盘，所以它不是在判断谁更对，而是在比较你们的关系节奏。真正有价值的问题不是谁更爱谁，而是哪一种回应方式能让两个人都重新回到同一边。"
-      : "因为这是单人复盘，所以它更像一面镜子：帮你先看清此刻的感受和需求，不替你给关系下最终结论。",
-  ].filter(Boolean).join("");
+      ? "因为这是双人复盘，所以它不是在判断谁更对，而是在比较你们的关系节奏。真正有价值的问题不是谁更爱谁，而是哪一种回应方式能让两个人重新回到同一边。"
+      : "因为这是单人复盘，所以它更像一面镜子：帮你先看清此刻的感受和需求，不替你给关系下最终结论。感受是真的，但感受不一定要马上变成判决。",
+    actionLine ? `接下来 7 天，不用急着把整段关系一次性修好。你可以先从很小的动作开始：${actionLine}。关系里真正有用的改变，往往不是一句很大的承诺，而是一个可以反复做到的小入口。` : "",
+    sourceNames ? `资料依据里会出现「${sourceNames}」，是因为这些资料都指向同一个方向：关系里的安全感、亲密感和修复力，通常不是靠一次解释建立的，而是靠被回应、可修复、可请求的小动作反复累积。` : "",
+    `最后，把这句话留给你：${params.template.shareableMessage}`,
+  ].filter(Boolean).join("\n\n");
 }
 
 function buildLongFormHighlight(template: PatternTemplate, lang: Language) {
