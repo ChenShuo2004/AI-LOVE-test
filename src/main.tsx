@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
+  ArrowLeft,
   ArrowRight,
   Copy,
   Info,
@@ -1233,6 +1234,15 @@ function App() {
     setLetterOpen(false);
   }
 
+  function handleBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    reset();
+  }
+
   function openReport() {
     goToStep(mode === "duo" && !partnerAnswers ? "invite" : "result");
   }
@@ -1330,6 +1340,16 @@ function App() {
           {toastMessage}
         </div>
       )}
+
+      <button
+        className="page-back-button"
+        type="button"
+        onClick={handleBack}
+        aria-label={lang === "zh" ? "返回" : "Back"}
+        title={lang === "zh" ? "返回" : "Back"}
+      >
+        <ArrowLeft size={18} aria-hidden="true" />
+      </button>
 
       <CardNav
         logo="/brand/warmth-logo.png"
