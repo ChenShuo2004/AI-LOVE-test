@@ -241,6 +241,12 @@
   pointer-events: none;
 }
 
+.quiz-folder .folder.open .folder__back::after,
+.quiz-folder .folder.open .folder__front,
+.quiz-folder .folder.open .folder__label {
+  pointer-events: none;
+}
+
 .quiz-folder .paper:nth-child(1),
 .quiz-folder .paper:nth-child(2) {
   display: none;
