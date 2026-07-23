@@ -236,6 +236,7 @@
     order: 2;
     min-width: 0;
     height: auto;
+    gap: 6px;
   }
 
   .logo-container {
@@ -319,11 +320,11 @@
   .logo-container {
     gap: 8px;
     min-width: 0;
+    padding-left: 46px;
   }
 
   .logo {
-    width: 42px;
-    height: 42px;
+    display: none;
   }
 
   .logo-copy strong {
@@ -331,7 +332,7 @@
   }
 
   .logo-copy small {
-    max-width: 142px;
+    max-width: 112px;
     overflow: hidden;
     font-size: 10px;
     text-overflow: ellipsis;
