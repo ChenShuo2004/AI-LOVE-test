@@ -10,6 +10,10 @@
   <a href="https://x.com/ChenshuoAI">关注作者</a>
 </p>
 
+<p align="center">
+  <img src="./assets/product-preview.png" alt="WARMTH 产品预览" width="100%" />
+</p>
+
 ## 产品体验
 
 WARMTH 适合在关系中出现“想聊聊，但不知道从哪里开始”的时刻。用户可以独立完成关系复盘，也可以邀请另一半共同参与；产品用关系天气、关系称号、今日复盘卡和给 TA 的一句话，将抽象感受转化为可继续讨论的线索。
