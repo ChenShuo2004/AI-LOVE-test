@@ -1,3 +1,5 @@
+> **English:** WARMTH is a lightweight relationship-reflection demo with individual tests, partner invitations, and feedback.
+
 # WARMTH · 有温度阅览室
 
 一个轻量、克制而有温度的情侣关系复盘小游戏。WARMTH 通过单人测试、双人邀请和关系反馈，把一次对话变成一次更容易开始的关系复盘。
